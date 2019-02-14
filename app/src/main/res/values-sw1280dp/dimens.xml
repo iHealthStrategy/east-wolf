@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<dimen name="success_width">160.0000dp</dimen>
+	<dimen name="detect_out">7.1111dp</dimen>
+	<dimen name="preview_margin">177.7778dp</dimen>
+	<dimen name="preview_land_margin">71.1111dp</dimen>
+	<dimen name="head_width">711.1111dp</dimen>
+	<dimen name="round">3.5556dp</dimen>
+</resources>

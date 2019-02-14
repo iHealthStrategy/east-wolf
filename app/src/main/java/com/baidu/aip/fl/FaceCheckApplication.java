@@ -4,18 +4,18 @@
 package com.baidu.aip.fl;
 
 
+import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.baidu.aip.FaceEnvironment;
 import com.baidu.aip.FaceSDKManager;
 import com.baidu.aip.fl.exception.FaceError;
 import com.baidu.aip.fl.model.AccessToken;
 import com.baidu.aip.fl.utils.OnResultListener;
 import com.baidu.idl.facesdk.FaceTracker;
-
-import android.app.Application;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
 
 public class FaceCheckApplication extends Application {
 
