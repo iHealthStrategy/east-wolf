@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
  */
-package com.baidu.aip.fl;
+package com.ihealth;
 
 
 import android.app.Application;
@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.baidu.aip.FaceEnvironment;
 import com.baidu.aip.FaceSDKManager;
+import com.baidu.aip.fl.APIService;
+import com.baidu.aip.fl.Config;
 import com.baidu.aip.fl.exception.FaceError;
 import com.baidu.aip.fl.model.AccessToken;
 import com.baidu.aip.fl.utils.OnResultListener;

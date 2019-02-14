@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
  */
-package com.baidu.aip.fl;
+package com.ihealth;
 
 
 import android.Manifest;
@@ -13,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.ihealth.activities.AttrActivity;
+import com.ihealth.activities.DetectActivity;
+import com.ihealth.activities.TrackActivity;
 import com.ihealth.facecheckinapp.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

@@ -6,4 +6,14 @@
 	<dimen name="preview_land_margin">75.8333dp</dimen>
 	<dimen name="head_width">758.3333dp</dimen>
 	<dimen name="round">3.7917dp</dimen>
+	<dimen name="line_space_extra">37.9167dp</dimen>
+	<dimen name="text_image_space_extra">75.8333dp</dimen>
+	<dimen name="text_size_12sp">45.5000sp</dimen>
+	<dimen name="text_size_14sp">53.0833sp</dimen>
+	<dimen name="text_size_16sp">60.6667sp</dimen>
+	<dimen name="text_size_18sp">68.2500sp</dimen>
+	<dimen name="text_size_20sp">75.8333sp</dimen>
+	<dimen name="text_size_24sp">91.0000sp</dimen>
+	<dimen name="text_size_28sp">106.1667sp</dimen>
+	<dimen name="text_size_32sp">121.3333sp</dimen>
 </resources>

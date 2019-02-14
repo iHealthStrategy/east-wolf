@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018 Baidu, Inc. All Rights Reserved.
  */
-package com.baidu.aip.fl;
+package com.ihealth.activities;
 
 
 import android.Manifest;
