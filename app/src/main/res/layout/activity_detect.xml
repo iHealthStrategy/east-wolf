@@ -2,44 +2,191 @@
   ~ Copyright (C) 2018 Baidu, Inc. All Rights Reserved.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true">
 
+    <LinearLayout
+        android:id="@+id/ll_preview_view"
+        android:layout_width="@dimen/preview_image_height"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/preview_margin">
+        <RelativeLayout
+            android:layout_width="@dimen/preview_image_height"
+            android:layout_height="@dimen/preview_image_height">
+            <com.baidu.aip.face.TexturePreviewView
+                android:id="@+id/preview_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <TextureView
+                android:id="@+id/texture_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
 
-    <com.baidu.aip.face.TexturePreviewView
-        android:id="@+id/preview_view"
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recyclerview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_marginBottom="10dp" />-->
+
+    </LinearLayout>
+
+    <View
+        android:layout_toEndOf="@+id/ll_preview_view"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:id="@+id/ll_detect_result_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/ll_preview_view"
+        android:orientation="vertical"
+        android:padding="@dimen/preview_margin">
+        <TextView
+            android:id="@+id/tv_detect_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/layout_size_10dp"
+            android:layout_marginEnd="@dimen/layout_size_10dp"
+            android:layout_marginTop="@dimen/layout_size_40dp"
+            android:layout_marginBottom="@dimen/layout_size_20dp"
+            android:text="正在识别..."
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="@dimen/text_size_32sp"
+            android:textStyle="bold"/>
 
-    <TextureView
-        android:id="@+id/texture_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <RelativeLayout
+            android:id="@+id/ll_detect_old_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/ll_detect_old_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/preview_land_margin"
+                android:layout_marginStart="@dimen/preview_land_margin"
+                android:layout_marginEnd="@dimen/preview_land_margin"
+                android:layout_marginBottom="0dp">
+                <TextView
+                    android:id="@+id/tv_detect_result_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="姓名："
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_18sp" />
+                <TextView
+                    android:id="@+id/tv_detect_result_name_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_detect_old_user_gender"
+                android:layout_below="@+id/ll_detect_old_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/preview_land_margin"
+                android:layout_marginStart="@dimen/preview_land_margin"
+                android:layout_marginEnd="@dimen/preview_land_margin"
+                android:layout_marginBottom="0dp">
+                <TextView
+                    android:id="@+id/tv_detect_result_gender_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="性别："
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_18sp" />
+                <TextView
+                    android:id="@+id/tv_detect_result_gender_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_below="@+id/ll_detect_old_user_gender"
+                android:layout_marginTop="@dimen/layout_size_20dp">
+                <Button
+                    android:id="@+id/btn_detect_new_user_step_2_previous"
+                    android:layout_width="@dimen/layout_size_80dp"
+                    android:layout_height="@dimen/layout_size_32dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_round_shape"
+                    android:text="上一步"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_16sp"/>
+                <Button
+                    android:id="@+id/btn_detect_new_user_step_2_next"
+                    android:layout_width="@dimen/layout_size_120dp"
+                    android:layout_height="@dimen/layout_size_32dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_round_shape"
+                    android:layout_marginStart="@dimen/layout_size_10dp"
+                    android:text="建立新患者"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_16sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_detect_result_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/layout_size_10dp"
+                android:text="20s"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_24sp"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/closeIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:src="@mipmap/detect_close" />
 
-    <TextView
-        android:id="@+id/tips_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text="@string/track_tips"
-        android:textColor="@android:color/holo_orange_light"
-        android:textSize="18sp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_above="@id/tips_view"
-        android:layout_marginBottom="10dp" />
+    <!--<TextView-->
+        <!--android:id="@+id/tips_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:text="@string/track_tips"-->
+        <!--android:textColor="@android:color/holo_orange_light"-->
+        <!--android:textSize="18sp" />-->
 
 </RelativeLayout>

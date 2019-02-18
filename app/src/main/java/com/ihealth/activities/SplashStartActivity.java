@@ -3,12 +3,12 @@ package com.ihealth.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.ihealth.BaseActivity;
 import com.ihealth.facecheckinapp.R;
 
-public class SplashStartActivity extends AppCompatActivity implements View.OnClickListener {
+public class SplashStartActivity extends BaseActivity implements View.OnClickListener {
 
     FloatingActionButton floatingActionButton;
 
@@ -41,6 +41,7 @@ public class SplashStartActivity extends AppCompatActivity implements View.OnCli
             case R.id.fabtn_login_next_step:
                 Intent intent = new Intent(this,LoginActivity.class);
                 startActivity(intent);
+                this.finish();
                 break;
             default:
                 break;

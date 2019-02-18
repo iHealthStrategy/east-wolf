@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.TextureView;
@@ -36,6 +35,7 @@ import com.baidu.aip.face.camera.PermissionCallback;
 import com.baidu.aip.fl.cube.SquareRenderer;
 import com.baidu.aip.fl.widget.BrightnessTools;
 import com.baidu.idl.facesdk.FaceInfo;
+import com.ihealth.BaseActivity;
 import com.ihealth.facecheckinapp.R;
 
 import java.lang.ref.WeakReference;
@@ -45,7 +45,7 @@ import java.lang.ref.WeakReference;
  * Intent intent = new Intent(MainActivity.this, AttrActivity.class);
  * startActivity(intent);
  */
-public class AttrActivity extends AppCompatActivity {
+public class AttrActivity extends BaseActivity {
 
     private static final int MSG_INITVIEW = 1001;
     private PreviewView previewView;

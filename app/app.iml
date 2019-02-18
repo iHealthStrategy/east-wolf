@@ -130,9 +130,11 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-v4:25.3.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat:25.3.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable:25.3.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-gson:2.0.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-core-ui:25.3.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/liyanwen/PekingProjects/FaceCheckInApp/facesdk/libs/facesdk.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/liyanwen/PekingProjects/FaceCheckInApp/facesdk/libs/ast.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.6.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: cat.ereza:customactivityoncrash:1.5.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:design:25.3.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-fragment:25.3.1@aar" level="project" />

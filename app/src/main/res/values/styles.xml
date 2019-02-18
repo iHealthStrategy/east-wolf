@@ -14,4 +14,9 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="hintAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_size_18sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>
