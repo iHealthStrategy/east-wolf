@@ -3,19 +3,19 @@
  */
 package com.baidu.aip.face;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
+import android.content.Context;
+import android.media.Image;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import com.baidu.aip.FaceDetector;
 import com.baidu.aip.ImageFrame;
 import com.baidu.aip.face.camera.Camera1Control;
 import com.baidu.aip.face.camera.ICameraControl;
 
-import android.content.Context;
-import android.media.Image;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 /**
  * 封装了系统做机做为输入源。
@@ -80,11 +80,11 @@ public class CameraImageSource extends ImageSource {
                 // liujinhui modify
 
                 // 旋转了90或270度。高宽需要替换
-                if (rotation % 180 == 90) {
-                    int temp = width;
-                    width = height;
-                    height = temp;
-                }
+//                if (rotation % 180 == 90) {
+//                    int temp = width;
+//                    width = height;
+//                    height = temp;
+//                }
 
                 ImageFrame frame = new ImageFrame();
                 frame.setArgb(argb);

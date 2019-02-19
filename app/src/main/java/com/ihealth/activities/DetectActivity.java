@@ -5,6 +5,8 @@ package com.ihealth.activities;
 
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +15,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +26,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.baidu.aip.ImageFrame;
 import com.baidu.aip.face.CameraImageSource;
@@ -36,16 +40,17 @@ import com.baidu.aip.fl.widget.BrightnessTools;
 import com.baidu.idl.facesdk.FaceInfo;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
-import com.ihealth.bean.AddUserBean;
-import com.ihealth.bean.AddUserRequestBean;
-import com.ihealth.bean.UserInfo;
+import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
+import com.ihealth.retrofit.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -61,9 +66,16 @@ import retrofit2.Response;
 public class DetectActivity extends BaseActivity {
 
     private static final int MSG_INITVIEW = 1001;
+    private Context mContext;
+
+    private TextView tvDetectResultTitle;
+    private TextView tvDetectResultName;
+    private TextView tvDetectResultMobile;
+    private TextView tvDetectResultIdCard;
+
     private PreviewView previewView;
     private ImageView closeIv;
-    private boolean mDetectStoped = false;
+    private boolean mDetectStopped = false;
 
     private FaceDetectManager faceDetectManager;
     private DetectRegionProcessor cropProcessor = new DetectRegionProcessor();
@@ -79,6 +91,10 @@ public class DetectActivity extends BaseActivity {
 
     private int mFrameIndex = 0;
     private int mRound = 2;
+
+    private CountDownTimer timer;
+
+    private int mSearchFailTimes = 0;
 
     private enum detectState {
         /**
@@ -119,6 +135,7 @@ public class DetectActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detect);
+        mContext = this;
         faceDetectManager = new FaceDetectManager(this);
         initScreen();
         initView();
@@ -145,6 +162,12 @@ public class DetectActivity extends BaseActivity {
     private void initView() {
         previewView = (PreviewView) findViewById(R.id.preview_view);
         mTextureView = (TextureView) findViewById(R.id.texture_view);
+
+        tvDetectResultTitle = (TextView) findViewById(R.id.tv_detect_title);
+        tvDetectResultName = (TextView) findViewById(R.id.tv_detect_result_name_content);
+        tvDetectResultMobile = (TextView) findViewById(R.id.tv_detect_result_mobile_content);
+        tvDetectResultIdCard = (TextView) findViewById(R.id.tv_detect_result_id_card_content);
+
         mTextureView.setOpaque(false);
         // mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
 
@@ -235,7 +258,7 @@ public class DetectActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         faceDetectManager.stop();
-        mDetectStoped = true;
+        mDetectStopped = true;
         int size = mList.size();
         for (int i = 0; i < size; i++) {
             Bitmap bmp = mList.get(i);
@@ -255,12 +278,21 @@ public class DetectActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mDetectStoped) {
+        if (mDetectStopped) {
             faceDetectManager.start();
-            mDetectStoped = false;
+            mDetectStopped = false;
         }
-        mHandler.postDelayed(scrollRunnable, 10);
+        mHandler.postDelayed(searchFaceRunnable, 10);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != timer){
+            timer.cancel();
+            timer = null;
+        }
     }
 
     private static class InnerHandler extends Handler {
@@ -318,10 +350,10 @@ public class DetectActivity extends BaseActivity {
         if (model != null) {
             FaceInfo info = model.getInfo();
             model.getImageFrame().retain();
-            RectF rectCenter = new RectF(info.mCenter_x - 2 - info.mWidth * 3 / 5,
-                    info.mCenter_y - 2 - info.mWidth * 3 / 5,
-                    info.mCenter_x + 2 + info.mWidth * 3 / 5,
-                    info.mCenter_y + 2 + info.mWidth * 3 / 5);
+            RectF rectCenter = new RectF(info.mCenter_x - 2 - info.mWidth * 1 / 2,
+                    info.mCenter_y - 2 - info.mWidth * 1 / 2,
+                    info.mCenter_x + 2 + info.mWidth * 1 / 2,
+                    info.mCenter_y + 2 + info.mWidth * 1 / 2);
             previewView.mapFromOriginalRect(rectCenter);
             // 绘制框
             paint.setStrokeWidth(mRound);
@@ -333,101 +365,87 @@ public class DetectActivity extends BaseActivity {
                 paint.setColor(Color.GREEN);
             }
             final Bitmap face = model.cropFace();
-            //  final Bitmap face =ImageUtil.bitmapFromArgb(model.getImageFrame());
             if (face != null) {
-//                    int size = mList.size();
-//                    // 释放一些，以防止太多
-//                    if (size >= 6) {
-//                        Bitmap bmp = mList.get(size - 6);
-//                        if (bmp != null) {
-//                            bmp.recycle();
-//                            Log.d("liujinhui", "recycle size is:" + size);
-//                            bmp = null;
-//                        }
-//                    }
                 mList.add(face);
-                // Log.d("liujinhui", "add face ok");
                 if (mList.size() == 5){
-                    mHandler.postDelayed(scrollRunnable, 100);
+                    mHandler.postDelayed(searchFaceRunnable, 100);
                 }
-
-                // mFrameIndex = 0;
             }
-//            mFrameIndex++;
-//            Log.d("liujinhui", "add face index is:" + mFrameIndex);
-//            if (mFrameIndex == 10) {
-//                final Bitmap face = model.cropFace();
-//                //  final Bitmap face =ImageUtil.bitmapFromArgb(model.getImageFrame());
-//                if (face != null) {
-////                    int size = mList.size();
-////                    // 释放一些，以防止太多
-////                    if (size >= 6) {
-////                        Bitmap bmp = mList.get(size - 6);
-////                        if (bmp != null) {
-////                            bmp.recycle();
-////                            Log.d("liujinhui", "recycle size is:" + size);
-////                            bmp = null;
-////                        }
-////                    }
-//                    mList.add(face);
-//                    Log.d("liujinhui", "add face ok");
-//                    mHandler.postDelayed(scrollRunnable, 100);
-//                    // mFrameIndex = 0;
-//                }
-//            }
         }
         mTextureView.unlockCanvasAndPost(canvas);
     }
 
-
-    Runnable scrollRunnable = new Runnable() {
+    Runnable searchFaceRunnable = new Runnable() {
         @Override
         public void run() {
             if (mList.size()>0){
-                Bitmap uploadedFace = mList.get(0);
-                String base64Image = convertImageToBase64String(uploadedFace);
-                Log.i("scrollRunnable", "run: base64Image = "+base64Image);
+                Bitmap uploadedFace = mList.get(mList.size()-1);
+                final String base64Image = convertImageToBase64String(uploadedFace);
+                //Log.i("searchFaceRunnable", "run: base64Image = "+base64Image);
 
-                AddUserRequestBean addUserRequestBean = new AddUserRequestBean();
-                addUserRequestBean.setBase64Image(base64Image);
-                addUserRequestBean.setUserInfo(new UserInfo("17703941614","曹大帅","372328199109080614"));
-                addUserRequestBean.setHospitalId("chaoyang");
+                Map<String,String> requestMap = new HashMap<>();
+
+                requestMap.put("base64Image", base64Image);
+                requestMap.put("hospitalId","chaoyang");
 
                 Gson gson = new Gson();
-                String jsonStr = gson.toJson(addUserRequestBean, AddUserRequestBean.class);
+                String jsonStr = gson.toJson(requestMap, HashMap.class);
 
-                // Log.i("kkkkk", "run: jsonStr"+jsonStr);
-                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
+               //  Log.i("searchFaceRunnable", "run: jsonStr = "+ jsonStr);
 
-                ApiUtil.addUserCall(requestBody).enqueue(new Callback<AddUserBean>() {
+                final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
+
+                ApiUtil.searchFaceCall(requestBody).enqueue(new Callback<ResponseMessageBean>() {
                     @Override
-                    public void onResponse(Call<AddUserBean> call, Response<AddUserBean> response) {
-                        Log.i("scrollRunnable", "onResponse: "+ response.body().getResultContent());
-                        if (response.isSuccessful()){
-
-                        } else {
-
+                    public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
+                        Log.i("searchFaceRunnable", "onResponse: response = "+ response.body());
+                        ResponseMessageBean responseMessage = response.body();
+                        switch (responseMessage.getResultStatus()){
+                            case Constants.FACE_RESPONSE_CODE_SUCCESS:
+                                tvDetectResultTitle.setText("签到成功！谢谢！");
+                                tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+                                ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
+                                String name = resultContent.getNickname();
+                                String originMobile = resultContent.getPhoneNumber();
+                                String mobile = originMobile.substring(0,3) + "****"+originMobile.substring(7,11);
+                                tvDetectResultName.setText(name);
+                                tvDetectResultMobile.setText(mobile);
+                                String originIdCard = resultContent.getIdCard();
+                                if (!originIdCard.isEmpty()){
+                                    String idCard = originIdCard.substring(0,6) + "********"+originIdCard.substring(originIdCard.length()-4);
+                                    tvDetectResultIdCard.setText(idCard);
+                                }
+                                break;
+                            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
+                                // mHandler.postDelayed(addUserRunnable, 100);
+                                startRegisterActivity(base64Image);
+                                break;
+                            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
+                                tvDetectResultTitle.setText("人脸匹配失败，请重试。(错误码:1002)");
+                                tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                mList.clear();
+                                mSearchFailTimes ++;
+                                if (mSearchFailTimes == 3){
+                                    startRegisterActivity(base64Image);
+                                    mSearchFailTimes = 0;
+                                }
+                                break;
+                            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
+                                tvDetectResultTitle.setText("人脸匹配失败，请重试。(错误码:2001)");
+                                tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                break;
+                                default:
+                                    break;
                         }
+
                     }
 
                     @Override
-                    public void onFailure(Call<AddUserBean> call, Throwable t) {
-                        Log.i("scrollRunnable", "onFailure: "+t.toString());
+                    public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
+                        Log.i("searchFaceRunnable", "onResponse: t = "+ t);
                     }
                 });
 
-
-//            MultipartBody.Builder builder = new MultipartBody.Builder()
-//                    .setType(MultipartBody.FORM)
-//                    .addFormDataPart("hospitalId","012345");
-//            RequestBody image = RequestBody.create(MediaType.parse("multipart/form-data"),uploadedFace);
-
-//            int count = mRecyAdapter.getItemCount();
-//            int curIndex = count - 1;
-//            // mRecyclerview.scrollToPosition(curIndex);
-//            mRecyAdapter.setDatas(mList);
-//            // mRecyclerview.invalidate();
-//            //  Log.d("liujinhui", "in runnuable data size is:" + mList.size());
             }
 
         }
@@ -443,6 +461,79 @@ public class DetectActivity extends BaseActivity {
             return null;
         }
     }
+
+
+//    /**
+//     * 展示对话框
+//     *
+//     * @param
+//     */
+//    private void showRegisteredResultDialog(String dialogContent) {
+//        final BaseDialog dialogRegisteredSucceeded = new BaseDialog(mContext);
+//        View view;
+//        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_register_success, null);
+//
+//        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_dialog_content);
+//        tvDialogContent.setText(dialogContent);
+//
+//        (view.findViewById(R.id.btn_dialog_back_immediately)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialogRegisteredSucceeded.dismiss();
+//            }
+//        });
+//
+//        final TextView tvDialogBackCounter = (TextView) view.findViewById(R.id.btn_dialog_counter_back);
+//        timer = new CountDownTimer(3000,1000) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//                tvDialogBackCounter.setText(( millisUntilFinished/1000 +1)  + " 秒后关闭");
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                dialogRegisteredSucceeded.dismiss();
+//            }
+//        }.start();
+//
+//        dialogRegisteredSucceeded.setContentView(view);
+//        dialogRegisteredSucceeded.setCancelable(true);
+//        dialogRegisteredSucceeded.show();
+//    }
+//
+//    /**
+//     * 展示对话框
+//     *
+//     * @param
+//     */
+//    private void showSearchResultDialog(String dialogContent) {
+//        final BaseDialog dialogRegisteredSucceeded = new BaseDialog(mContext);
+//        View view;
+//        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
+//
+//        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
+//        tvDialogContent.setText(dialogContent);
+//
+//        (view.findViewById(R.id.btn_dialog_retry)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialogRegisteredSucceeded.dismiss();
+//            }
+//        });
+//
+//        dialogRegisteredSucceeded.setContentView(view);
+//        dialogRegisteredSucceeded.setCancelable(false);
+//        dialogRegisteredSucceeded.show();
+//    }
+
+    private void startRegisterActivity (String base64Image){
+        Bundle bundle = new Bundle();
+        bundle.putString("new_user_image",base64Image);
+        Intent intent = new Intent(mContext, RegisterActivity.class);
+        intent.putExtra("data_from_detect_activity",bundle);
+        startActivity(intent);
+    }
+
 
     /**
      * 初始化recycleView画截图得到的人脸图像

@@ -6,6 +6,15 @@
 
     <dimen name="layout_btn_width">250dp</dimen>
     <dimen name="layout_btn_height">50dp</dimen>
+    <dimen name="layout_size_1dp">1dp</dimen>
+    <dimen name="layout_size_2dp">2dp</dimen>
+    <dimen name="layout_size_3dp">3dp</dimen>
+    <dimen name="layout_size_4dp">4dp</dimen>
+    <dimen name="layout_size_5dp">5dp</dimen>
+    <dimen name="layout_size_6dp">6dp</dimen>
+    <dimen name="layout_size_7dp">7dp</dimen>
+    <dimen name="layout_size_8dp">8dp</dimen>
+    <dimen name="layout_size_9dp">9dp</dimen>
     <dimen name="layout_size_10dp">10dp</dimen>
     <dimen name="layout_size_12dp">12dp</dimen>
     <dimen name="layout_size_14dp">14dp</dimen>
@@ -57,10 +66,6 @@
     <dimen name="layout_size_460dp">460dp</dimen>
     <dimen name="layout_size_480dp">480dp</dimen>
     <dimen name="layout_size_500dp">500dp</dimen>
-
-
-
-
 
     <dimen name="success_width">45dp</dimen>
     <dimen name="detect_out">2dp</dimen>

@@ -2,6 +2,15 @@
 <resources>
 	<dimen name="layout_btn_width">370.1389dp</dimen>
 	<dimen name="layout_btn_height">74.0278dp</dimen>
+	<dimen name="layout_size_1dp">1.4806dp</dimen>
+	<dimen name="layout_size_2dp">2.9611dp</dimen>
+	<dimen name="layout_size_3dp">4.4417dp</dimen>
+	<dimen name="layout_size_4dp">5.9222dp</dimen>
+	<dimen name="layout_size_5dp">7.4028dp</dimen>
+	<dimen name="layout_size_6dp">8.8833dp</dimen>
+	<dimen name="layout_size_7dp">10.3639dp</dimen>
+	<dimen name="layout_size_8dp">11.8444dp</dimen>
+	<dimen name="layout_size_9dp">13.3250dp</dimen>
 	<dimen name="layout_size_10dp">14.8056dp</dimen>
 	<dimen name="layout_size_12dp">17.7667dp</dimen>
 	<dimen name="layout_size_14dp">20.7278dp</dimen>

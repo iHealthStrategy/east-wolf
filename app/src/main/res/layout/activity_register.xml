@@ -12,6 +12,7 @@
         android:orientation="vertical"
         android:padding="@dimen/preview_margin">
         <TextView
+            android:id="@+id/tv_register_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -19,7 +20,7 @@
             android:layout_marginStart="@dimen/layout_size_10dp"
             android:layout_marginEnd="@dimen/layout_size_10dp"
             android:layout_marginTop="@dimen/layout_size_20dp"
-            android:text="建立患者信息"
+            android:text="建立患者信息（1/3）"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_18sp"
             android:textStyle="bold"/>
@@ -39,104 +40,125 @@
             android:textSize="@dimen/text_size_24sp"
             android:textStyle="bold"/>
 
-        <RelativeLayout
-            android:id="@+id/ll_detect_old_user"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:id="@+id/ll_detect_old_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/preview_land_margin"
-                android:layout_marginStart="@dimen/preview_land_margin"
-                android:layout_marginEnd="@dimen/preview_land_margin"
-                android:layout_marginBottom="0dp">
-                <TextView
-                    android:id="@+id/tv_detect_result_name_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="姓名："
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_18sp" />
-                <TextView
-                    android:id="@+id/tv_detect_result_name_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_below="@+id/ll_detect_old_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/preview_land_margin"
-                android:layout_marginStart="@dimen/preview_land_margin"
-                android:layout_marginEnd="@dimen/preview_land_margin"
-                android:layout_marginBottom="0dp">
-                <TextView
-                    android:id="@+id/tv_detect_result_gender_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="性别："
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_18sp" />
-                <TextView
-                    android:id="@+id/tv_detect_result_gender_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_18sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_detect_result_counter_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="@dimen/layout_size_10dp"
-                android:text="20s"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_24sp"
-                android:textStyle="bold"/>
-
-        </RelativeLayout>
+            android:layout_height="@dimen/layout_size_1dp"
+            android:background="@color/colorPrimary"/>
 
         <ViewFlipper
             android:id="@+id/vf_register_new_user_infos"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_margin="@dimen/layout_size_10dp"-->
+                <!-->-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="@dimen/layout_size_220dp"-->
+                    <!--android:layout_height="@dimen/layout_size_220dp">-->
+                    <!--<com.baidu.aip.face.TexturePreviewView-->
+                        <!--android:id="@+id/register_preview_view"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent" />-->
+                    <!--<TextureView-->
+                        <!--android:id="@+id/register_texture_view"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent" />-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/tv_register_take_photo_tip"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_alignParentBottom="true"-->
+                        <!--android:text="请正视摄像头"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:background="@android:color/holo_red_light"-->
+                        <!--android:textSize="@dimen/text_size_14sp"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:padding="@dimen/layout_size_4dp"/>-->
+
+                <!--</RelativeLayout>-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_margin="@dimen/layout_size_10dp"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:gravity="center">-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/iv_user_photo_preview"-->
+                        <!--android:layout_width="@dimen/layout_size_120dp"-->
+                        <!--android:layout_height="@dimen/layout_size_120dp"-->
+                        <!--android:src="@drawable/ic_photo_null"/>-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_marginTop="@dimen/layout_size_10dp">-->
+                        <!--<Button-->
+                            <!--android:id="@+id/btn_detect_new_user_step_1_take_photo"-->
+                            <!--android:layout_width="@dimen/layout_size_160dp"-->
+                            <!--android:layout_height="@dimen/layout_size_32dp"-->
+                            <!--android:layout_gravity="center"-->
+                            <!--android:background="@drawable/button_round_shape_enabled"-->
+                            <!--android:text="拍照"-->
+                            <!--android:textColor="@android:color/white"-->
+                            <!--android:textSize="@dimen/text_size_16sp"-->
+                            <!--android:textStyle="bold"/>-->
+
+                    <!--</LinearLayout>-->
+
+                <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_margin="@dimen/layout_size_10dp">
                 <EditText
+                    android:id="@+id/etv_register_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="请输入患者姓名"
                     android:textSize="@dimen/text_size_14sp"
                     android:singleLine="true"
                     android:inputType="textPersonName"/>
+
                 <Button
-                    android:id="@+id/btn_detect_new_user_step_1_next"
-                    android:layout_width="@dimen/layout_size_80dp"
+                    android:id="@+id/btn_detect_new_user_step_2_previous"
+                    android:layout_width="@dimen/layout_size_120dp"
                     android:layout_height="@dimen/layout_size_32dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/layout_size_10dp"
-                    android:background="@drawable/button_round_shape"
+                    android:background="@drawable/button_round_shape_disabled"
+                    android:text="上一步"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/btn_detect_new_user_step_2_next"
+                    android:layout_width="@dimen/layout_size_120dp"
+                    android:layout_height="@dimen/layout_size_32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_10dp"
+                    android:background="@drawable/button_round_shape_disabled"
                     android:text="下一步"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_16sp"/>
+                    android:textSize="@dimen/text_size_16sp"
+                    android:enabled="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -144,49 +166,9 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_margin="@dimen/layout_size_10dp">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="请输入患者联系电话"
-                    android:textSize="@dimen/text_size_14sp"
-                    android:singleLine="true"
-                    android:inputType="phone"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/layout_size_10dp">
-                    <Button
-                        android:id="@+id/btn_detect_new_user_step_2_previous"
-                        android:layout_width="@dimen/layout_size_80dp"
-                        android:layout_height="@dimen/layout_size_32dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape"
-                        android:text="上一步"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"/>
-                    <Button
-                        android:id="@+id/btn_detect_new_user_step_2_next"
-                        android:layout_width="@dimen/layout_size_80dp"
-                        android:layout_height="@dimen/layout_size_32dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape"
-                        android:layout_marginStart="@dimen/layout_size_10dp"
-                        android:text="下一步"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"/>
-                </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/layout_size_10dp">
                 <EditText
+                    android:id="@+id/etv_register_id_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="请输入患者身份证号"
@@ -203,24 +185,36 @@
                     android:layout_marginTop="@dimen/layout_size_10dp">
                     <Button
                         android:id="@+id/btn_detect_new_user_step_3_previous"
-                        android:layout_width="@dimen/layout_size_80dp"
+                        android:layout_width="@dimen/layout_size_120dp"
                         android:layout_height="@dimen/layout_size_32dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape"
+                        android:background="@drawable/button_round_shape_enabled"
                         android:text="上一步"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_16sp"/>
                     <Button
                         android:id="@+id/btn_detect_new_user_step_3_next"
-                        android:layout_width="@dimen/layout_size_80dp"
+                        android:layout_width="@dimen/layout_size_120dp"
                         android:layout_height="@dimen/layout_size_32dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape"
+                        android:background="@drawable/button_round_shape_disabled"
                         android:layout_marginStart="@dimen/layout_size_10dp"
-                        android:text="跳过"
+                        android:text="下一步"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"/>
+                        android:textSize="@dimen/text_size_16sp"
+                        android:enabled="false"/>
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_detect_new_user_step_3_skip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/layout_size_32dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:layout_marginTop="@dimen/layout_size_6dp"
+                    android:text="忘记身份证号码？跳过 >>"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12sp"/>
 
             </LinearLayout>
 
@@ -229,6 +223,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_margin="@dimen/layout_size_10dp">
+                <EditText
+                    android:id="@+id/etv_register_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="请输入患者联系电话"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:singleLine="true"
+                    android:inputType="phone"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -238,23 +240,24 @@
                     android:layout_marginTop="@dimen/layout_size_10dp">
                     <Button
                         android:id="@+id/btn_detect_new_user_step_4_previous"
-                        android:layout_width="@dimen/layout_size_80dp"
+                        android:layout_width="@dimen/layout_size_120dp"
                         android:layout_height="@dimen/layout_size_32dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape"
+                        android:background="@drawable/button_round_shape_enabled"
                         android:text="上一步"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_16sp"/>
                     <Button
-                        android:id="@+id/btn_detect_new_user_step_4_take_photo"
-                        android:layout_width="@dimen/layout_size_80dp"
+                        android:id="@+id/btn_detect_new_user_step_4_done"
+                        android:layout_width="@dimen/layout_size_120dp"
                         android:layout_height="@dimen/layout_size_32dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape"
+                        android:background="@drawable/button_round_shape_disabled"
                         android:layout_marginStart="@dimen/layout_size_10dp"
-                        android:text="拍照"
+                        android:text="完成"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"/>
+                        android:textSize="@dimen/text_size_16sp"
+                        android:enabled="false"/>
                 </LinearLayout>
 
             </LinearLayout>

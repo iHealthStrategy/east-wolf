@@ -6,11 +6,11 @@ package com.ihealth.bean;
  * @author liyanwen
  * @date 2019-02-14
  */
-public class AddUserBean {
-    private boolean resultStatus;
+public class ResponseMessageBean {
+    private int resultStatus;
     private String resultMessage;
     private resultContent resultContent;
-    private static class resultContent {
+    public static class resultContent {
         private String userId;
         private String phoneNumber;
         private String nickname;
@@ -59,11 +59,11 @@ public class AddUserBean {
         }
     }
 
-    public Boolean getResultStatus() {
+    public int getResultStatus() {
         return resultStatus;
     }
 
-    public void setResultStatus(Boolean resultStatus) {
+    public void setResultStatus(int resultStatus) {
         this.resultStatus = resultStatus;
     }
 
@@ -73,14 +73,6 @@ public class AddUserBean {
 
     public void setResultContent(resultContent resultContent) {
         this.resultContent = resultContent;
-    }
-
-    public boolean isResultStatus() {
-        return resultStatus;
-    }
-
-    public void setResultStatus(boolean resultStatus) {
-        this.resultStatus = resultStatus;
     }
 
     public String getResultMessage() {
@@ -93,7 +85,7 @@ public class AddUserBean {
 
     @Override
     public String toString() {
-        return "AddUserBean{" +
+        return "ResponseMessageBean{" +
                 "resultStatus=" + resultStatus +
                 ", resultContent = "+ resultContent.toString() +
                 ", resultMessage='" + resultMessage + '\'' +

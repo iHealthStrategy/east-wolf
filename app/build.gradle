@@ -62,4 +62,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
 
+    compile 'com.dilusense.android:customkeyboard:1.1'
+
 }
