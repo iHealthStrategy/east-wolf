@@ -62,7 +62,7 @@
             android:layout_marginTop="@dimen/layout_size_40dp"
             android:layout_marginBottom="@dimen/layout_size_20dp"
             android:text="正在识别..."
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@android:color/holo_blue_dark"
             android:textSize="@dimen/text_size_32sp"
             android:textStyle="bold"/>
 
@@ -159,16 +159,32 @@
                     android:textSize="@dimen/text_size_18sp" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_detect_continue_signing"
+                android:layout_width="@dimen/layout_size_120dp"
+                android:layout_height="@dimen/layout_size_32dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/ll_detect_user_id_card"
+                android:layout_marginTop="@dimen/preview_land_margin"
+                android:layout_marginStart="@dimen/preview_land_margin"
+                android:layout_marginEnd="@dimen/preview_land_margin"
+                android:background="@drawable/button_round_shape_enabled"
+                android:text="继续签到"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_16sp"/>
+
             <TextView
-                android:id="@+id/tv_detect_result_counter"
+                android:id="@+id/tv_detect_next_signing_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/layout_size_10dp"
-                android:text="20s"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_24sp"
+                android:text="--"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_12sp"
                 android:textStyle="bold"/>
 
         </RelativeLayout>

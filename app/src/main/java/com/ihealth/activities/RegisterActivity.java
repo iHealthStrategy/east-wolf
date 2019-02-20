@@ -524,7 +524,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
 
-            ApiUtil.addUserCall(requestBody).enqueue(new Callback<ResponseMessageBean>() {
+            ApiUtil.addUserCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
                 @Override
                 public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
                     Log.i("addUserRunnable", "onResponse: "+ response.body());

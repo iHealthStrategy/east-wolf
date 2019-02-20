@@ -5,6 +5,7 @@ package com.ihealth.activities;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -22,9 +23,11 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +43,7 @@ import com.baidu.aip.fl.widget.BrightnessTools;
 import com.baidu.idl.facesdk.FaceInfo;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
+import com.ihealth.BaseDialog;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
@@ -72,6 +76,9 @@ public class DetectActivity extends BaseActivity {
     private TextView tvDetectResultName;
     private TextView tvDetectResultMobile;
     private TextView tvDetectResultIdCard;
+
+    private Button btnDetectContinueSigning;
+    private TextView tvDetectNextSigningTimer;
 
     private PreviewView previewView;
     private ImageView closeIv;
@@ -167,6 +174,19 @@ public class DetectActivity extends BaseActivity {
         tvDetectResultName = (TextView) findViewById(R.id.tv_detect_result_name_content);
         tvDetectResultMobile = (TextView) findViewById(R.id.tv_detect_result_mobile_content);
         tvDetectResultIdCard = (TextView) findViewById(R.id.tv_detect_result_id_card_content);
+
+        btnDetectContinueSigning = (Button) findViewById(R.id.btn_detect_continue_signing);
+        tvDetectNextSigningTimer = (TextView) findViewById(R.id.tv_detect_next_signing_timer);
+
+        btnDetectContinueSigning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvDetectNextSigningTimer.setText("<< 正在签到 >>");
+                timer.cancel();
+                mList.clear();
+                resetDisplayContents();
+            }
+        });
 
         mTextureView.setOpaque(false);
         // mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
@@ -289,7 +309,7 @@ public class DetectActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != timer){
+        if (null != timer) {
             timer.cancel();
             timer = null;
         }
@@ -367,7 +387,7 @@ public class DetectActivity extends BaseActivity {
             final Bitmap face = model.cropFace();
             if (face != null) {
                 mList.add(face);
-                if (mList.size() == 5){
+                if (mList.size() == 5) {
                     mHandler.postDelayed(searchFaceRunnable, 100);
                 }
             }
@@ -378,71 +398,86 @@ public class DetectActivity extends BaseActivity {
     Runnable searchFaceRunnable = new Runnable() {
         @Override
         public void run() {
-            if (mList.size()>0){
-                Bitmap uploadedFace = mList.get(mList.size()-1);
+            if (mList.size() > 0) {
+                Bitmap uploadedFace = mList.get(mList.size() - 1);
                 final String base64Image = convertImageToBase64String(uploadedFace);
-                //Log.i("searchFaceRunnable", "run: base64Image = "+base64Image);
 
-                Map<String,String> requestMap = new HashMap<>();
+                Map<String, String> requestMap = new HashMap<>();
 
                 requestMap.put("base64Image", base64Image);
-                requestMap.put("hospitalId","chaoyang");
+                requestMap.put("hospitalId", "chaoyang");
 
                 Gson gson = new Gson();
                 String jsonStr = gson.toJson(requestMap, HashMap.class);
 
-               //  Log.i("searchFaceRunnable", "run: jsonStr = "+ jsonStr);
-
                 final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
 
-                ApiUtil.searchFaceCall(requestBody).enqueue(new Callback<ResponseMessageBean>() {
+                ApiUtil.searchFaceCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
                     @Override
                     public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                        Log.i("searchFaceRunnable", "onResponse: response = "+ response.body());
+                        Log.i("searchFaceRunnable", "onResponse: response = " + response.body());
                         ResponseMessageBean responseMessage = response.body();
-                        switch (responseMessage.getResultStatus()){
-                            case Constants.FACE_RESPONSE_CODE_SUCCESS:
-                                tvDetectResultTitle.setText("签到成功！谢谢！");
-                                tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_green_light));
-                                ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
-                                String name = resultContent.getNickname();
-                                String originMobile = resultContent.getPhoneNumber();
-                                String mobile = originMobile.substring(0,3) + "****"+originMobile.substring(7,11);
-                                tvDetectResultName.setText(name);
-                                tvDetectResultMobile.setText(mobile);
-                                String originIdCard = resultContent.getIdCard();
-                                if (!originIdCard.isEmpty()){
-                                    String idCard = originIdCard.substring(0,6) + "********"+originIdCard.substring(originIdCard.length()-4);
-                                    tvDetectResultIdCard.setText(idCard);
-                                }
-                                break;
-                            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
-                                // mHandler.postDelayed(addUserRunnable, 100);
-                                startRegisterActivity(base64Image);
-                                break;
-                            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
-                                tvDetectResultTitle.setText("人脸匹配失败，请重试。(错误码:1002)");
-                                tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-                                mList.clear();
-                                mSearchFailTimes ++;
-                                if (mSearchFailTimes == 3){
+                        if (responseMessage!=null){
+                            switch (responseMessage.getResultStatus()) {
+                                case Constants.FACE_RESPONSE_CODE_SUCCESS:
+                                    tvDetectResultTitle.setText("签到成功！谢谢！");
+                                    tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+                                    ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
+                                    String name = resultContent.getNickname();
+                                    String originMobile = resultContent.getPhoneNumber();
+                                    String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
+                                    tvDetectResultName.setText(name);
+                                    tvDetectResultMobile.setText(mobile);
+                                    String originIdCard = resultContent.getIdCard();
+                                    if (!originIdCard.isEmpty()) {
+                                        String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
+                                        tvDetectResultIdCard.setText(idCard);
+                                    }else {
+                                        tvDetectResultIdCard.setText("--");
+                                    }
+                                    timer = new CountDownTimer(3000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                            tvDetectNextSigningTimer.setText(("<< "+millisUntilFinished / 1000 + 1) + " 秒后继续签到 >>");
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            tvDetectNextSigningTimer.setText("<< 正在签到 >>");
+                                            timer.cancel();
+                                            mList.clear();
+                                            resetDisplayContents();
+                                        }
+                                    }.start();
+                                    break;
+                                case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
                                     startRegisterActivity(base64Image);
-                                    mSearchFailTimes = 0;
-                                }
-                                break;
-                            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
-                                tvDetectResultTitle.setText("人脸匹配失败，请重试。(错误码:2001)");
-                                tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-                                break;
+                                    break;
+                                case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
+                                    tvDetectResultTitle.setText("人脸匹配失败，请重试。\n(错误码:1002)");
+                                    tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                    mList.clear();
+                                    mSearchFailTimes++;
+                                    if (mSearchFailTimes == 3) {
+                                        startRegisterActivity(base64Image);
+                                        mSearchFailTimes = 0;
+                                    }
+                                    break;
+                                case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
+                                    tvDetectResultTitle.setText("人脸匹配失败，请重试。\n(错误码:2001)");
+                                    tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                    break;
                                 default:
                                     break;
+                            }
+                        } else {
+                            showMessageDialog("系统认证失败，请重新登录。");
                         }
-
                     }
 
                     @Override
                     public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                        Log.i("searchFaceRunnable", "onResponse: t = "+ t);
+                        Log.i("searchFaceRunnable", "onResponse: t = " + t);
                     }
                 });
 
@@ -451,17 +486,25 @@ public class DetectActivity extends BaseActivity {
         }
     };
 
-    private static String convertImageToBase64String(Bitmap imageBitmap){
+    private static String convertImageToBase64String(Bitmap imageBitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if (null != imageBitmap){
+        if (null != imageBitmap) {
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream);
             byte[] byteArray = stream.toByteArray();
             return Base64.encodeToString(byteArray, Base64.DEFAULT);
-        }else {
+        } else {
             return null;
         }
     }
 
+    private void resetDisplayContents () {
+        tvDetectResultTitle.setText("正在识别...");
+        tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+
+        tvDetectResultIdCard.setText("--");
+        tvDetectResultName.setText("--");
+        tvDetectResultMobile.setText("--");
+    }
 
 //    /**
 //     * 展示对话框
@@ -501,36 +544,42 @@ public class DetectActivity extends BaseActivity {
 //        dialogRegisteredSucceeded.show();
 //    }
 //
-//    /**
-//     * 展示对话框
-//     *
-//     * @param
-//     */
-//    private void showSearchResultDialog(String dialogContent) {
-//        final BaseDialog dialogRegisteredSucceeded = new BaseDialog(mContext);
-//        View view;
-//        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
-//
-//        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
-//        tvDialogContent.setText(dialogContent);
-//
-//        (view.findViewById(R.id.btn_dialog_retry)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialogRegisteredSucceeded.dismiss();
-//            }
-//        });
-//
-//        dialogRegisteredSucceeded.setContentView(view);
-//        dialogRegisteredSucceeded.setCancelable(false);
-//        dialogRegisteredSucceeded.show();
-//    }
+    /**
+     * 展示对话框
+     *
+     * @param
+     */
+    private void showMessageDialog(String dialogContent) {
+        final BaseDialog dialogMessage = new BaseDialog(mContext);
+        View view;
+        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
 
-    private void startRegisterActivity (String base64Image){
+        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
+        tvDialogContent.setText(dialogContent);
+
+        final TextView btnDialogOk = (TextView) view.findViewById(R.id.btn_dialog_retry);
+        btnDialogOk.setText("登录");
+        btnDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMessage.dismiss();
+                mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                Activity activity = (Activity) mContext;
+                activity.finish();
+
+            }
+        });
+
+        dialogMessage.setContentView(view);
+        dialogMessage.setCancelable(false);
+        dialogMessage.show();
+    }
+
+    private void startRegisterActivity(String base64Image) {
         Bundle bundle = new Bundle();
-        bundle.putString("new_user_image",base64Image);
+        bundle.putString("new_user_image", base64Image);
         Intent intent = new Intent(mContext, RegisterActivity.class);
-        intent.putExtra("data_from_detect_activity",bundle);
+        intent.putExtra("data_from_detect_activity", bundle);
         startActivity(intent);
     }
 

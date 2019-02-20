@@ -37,7 +37,8 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/detect_out"
             android:backgroundTint="@color/colorAccent"
-            android:src="@drawable/ic_arrow_forward_white_24dp"/>
+            android:src="@drawable/ic_arrow_forward_white_24dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_login_copyright"

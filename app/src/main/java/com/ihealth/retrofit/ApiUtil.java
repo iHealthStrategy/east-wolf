@@ -1,7 +1,13 @@
 package com.ihealth.retrofit;
 
-import com.ihealth.bean.ResponseMessageBean;
+import android.content.Context;
 
+import com.ihealth.bean.LoginBean;
+import com.ihealth.bean.ResponseMessageBean;
+import com.ihealth.utils.SharedPreferenceUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -37,11 +43,23 @@ public class ApiUtil {
         return ApiUtil.getApiRetrofit().create(PostRequestInterface.class);
     }
 
-    public static Call<ResponseMessageBean> searchFaceCall(RequestBody requestBody){
-        return ApiUtil.getApiService().searchFace(requestBody);
+    public static Call<LoginBean> loginCall(RequestBody requestBody){
+        return ApiUtil.getApiService().login(requestBody);
     }
 
-    public static Call<ResponseMessageBean> addUserCall(RequestBody requestBody){
-        return ApiUtil.getApiService().addUser(requestBody);
+    public static Call<ResponseMessageBean> searchFaceCall(Context context, RequestBody requestBody){
+        String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
+        Map<String, String> headerMap = new HashMap<>(2);
+        headerMap.put("Content-type","application/json;charset=UTF-8");
+        headerMap.put("authorization","Bearer "+token);
+        return ApiUtil.getApiService().searchFace(headerMap, requestBody);
+    }
+
+    public static Call<ResponseMessageBean> addUserCall(Context context, RequestBody requestBody){
+        String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
+        Map<String, String> headerMap = new HashMap<>(2);
+        headerMap.put("Content-type","application/json;charset=UTF-8");
+        headerMap.put("authorization","Bearer "+token);
+        return ApiUtil.getApiService().addUser(headerMap, requestBody);
     }
 }

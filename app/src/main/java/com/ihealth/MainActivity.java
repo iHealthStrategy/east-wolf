@@ -19,9 +19,9 @@ import com.ihealth.facecheckinapp.R;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button mTrackBtn;
-    private Button mAttrBtn;
-    private Button mDetectBtn;
+    private Button btnMainFacialCheckIn;
+    private Button btnMain2;
+    private Button btnMain3;
 
 
     @Override
@@ -34,15 +34,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
-        mTrackBtn = (Button) findViewById(R.id.track_btn);
-        mAttrBtn = (Button) findViewById(R.id.attr_btn);
-        mDetectBtn = (Button) findViewById(R.id.detect_btn);
+        btnMainFacialCheckIn = (Button) findViewById(R.id.btn_main_facial_check_in);
+        btnMain2 = (Button) findViewById(R.id.btn_main_2);
+        btnMain3 = (Button) findViewById(R.id.btn_main_3);
     }
 
     private void addListener() {
-        mTrackBtn.setOnClickListener(this);
-        mAttrBtn.setOnClickListener(this);
-        mDetectBtn.setOnClickListener(this);
+        btnMainFacialCheckIn.setOnClickListener(this);
+        btnMain2.setOnClickListener(this);
+        btnMain3.setOnClickListener(this);
     }
 
     @Override
@@ -54,18 +54,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
         switch (v.getId()) {
-            case R.id.track_btn:
-                Intent itTrack = new Intent(MainActivity.this, TrackActivity.class);
-                startActivity(itTrack);
-                break;
-            case R.id.attr_btn:
-                Intent itAttr = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(itAttr);
-                break;
-            case R.id.detect_btn:
+            case R.id.btn_main_facial_check_in:
                 // TODO 实时人脸检测
                 Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
                 startActivity(itDetect);
+                break;
+            case R.id.btn_main_2:
+                Intent itTrack = new Intent(MainActivity.this, TrackActivity.class);
+                startActivity(itTrack);
+                break;
+            case R.id.btn_main_3:
+                Intent itAttr = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(itAttr);
                 break;
             default:
                 break;

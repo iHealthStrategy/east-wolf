@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">人脸签到</string>
-    <string name="login_title">iHealth人脸签到系统</string>
-    <string name="login_copyright">Powered By iHealth</string>
+    <string name="login_title">iHealth\n人脸签到系统</string>
+    <string name="login_copyright">Copyright © iHealth 2019 </string>
     <string name="login_username">照护组</string>
     <string name="login_password">密码</string>
     <string name="detect_no_face">未检测到人脸</string>
