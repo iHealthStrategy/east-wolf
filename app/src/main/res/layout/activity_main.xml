@@ -12,9 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:gravity="center">
         <ImageView
             android:layout_width="@dimen/layout_size_48dp"
             android:layout_height="@dimen/layout_size_48dp"
@@ -24,13 +22,27 @@
             android:layout_width="@dimen/layout_size_1dp"
             android:layout_height="@dimen/layout_size_48dp"
             android:background="@android:color/darker_gray" />
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/layout_size_20dp"
-            android:text="北京朝阳医院"
-            android:textSize="@dimen/text_size_24sp"
-            android:textColor="@android:color/black"/>
+            android:orientation="vertical"
+            android:layout_margin="@dimen/layout_size_20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="北京朝阳医院"
+                android:textSize="@dimen/text_size_14sp"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_size_4dp"
+                android:text="内分泌科"
+                android:textSize="@dimen/text_size_24sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <View

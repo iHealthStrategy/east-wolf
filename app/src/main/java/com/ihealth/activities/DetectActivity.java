@@ -70,6 +70,7 @@ import retrofit2.Response;
 public class DetectActivity extends BaseActivity {
 
     private static final int MSG_INITVIEW = 1001;
+    private static final int MSG_REFRESH_TITLE = 1002;
     private Context mContext;
 
     private TextView tvDetectResultTitle;
@@ -103,39 +104,33 @@ public class DetectActivity extends BaseActivity {
 
     private int mSearchFailTimes = 0;
 
-    private enum detectState {
+    private DETECT_STATES detectStates;
+
+    private enum DETECT_STATES {
         /**
-         * 录入人脸
+         * 等待签到
          */
-        RECORDING_FACE,
+        WAITING_FOR_SIGNING,
         /**
-         * 录入人脸失败
+         * 正在签到
          */
-        RECORD_FACE_FAILED,
+        SIGNING,
         /**
-         * 录入人脸成功
+         * 签到失败：人脸识别失败-用户未找到（错误code: 1001）
          */
-        RECORD_FACE_SUCCEEDED,
+        SIGN_FAILED_USER_NOT_FOUND,
         /**
-         * 录入人脸失败重试
+         * 签到失败：人脸识别失败-用户找到不匹配（错误code: 1002）
          */
-        RECORD_FACE_FAILED_TRY_AGAIN,
+        SIGN_FAILED_USER_NOT_MATCH,
         /**
-         * 识别人脸
+         * 签到失败：人脸识别失败-其他错误（错误code: 1003）
          */
-        RECOGNISING_FACE,
+        SIGN_FAILED_OTHER_REASONS,
         /**
-         * 识别人脸成功
+         * 签到成功
          */
-        RECOGNIZE_FACE_SUCCEEDED,
-        /**
-         * 识别人脸失败重试
-         */
-        RECOGNIZE_FACE_FAILED_TRY_AGAIN,
-        /**
-         * 识别人脸失败新用户创建
-         */
-        RECOGNIZE_FACE_FAILED_NEW_USER,
+        SIGN_SUCCEEDED,
     }
 
     @Override
@@ -181,7 +176,7 @@ public class DetectActivity extends BaseActivity {
         btnDetectContinueSigning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvDetectNextSigningTimer.setText("<< 正在签到 >>");
+                tvDetectNextSigningTimer.setText("<< 等待签到 >>");
                 timer.cancel();
                 mList.clear();
                 resetDisplayContents();
@@ -201,7 +196,21 @@ public class DetectActivity extends BaseActivity {
         faceDetectManager.setOnFaceDetectListener(new FaceDetectManager.OnFaceDetectListener() {
             @Override
             public void onDetectFace(final int retCode, FaceInfo[] infos, ImageFrame frame) {
-
+                // Log.i("onDetectFace", "onDetectFace: retCode = "+ retCode+",infos = "+infos);
+                if (
+                        detectStates != DETECT_STATES.SIGN_SUCCEEDED
+                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH
+                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND
+                                && detectStates != DETECT_STATES.SIGN_FAILED_OTHER_REASONS
+                ) {
+                    if (retCode == 0) {
+                        detectStates = DETECT_STATES.SIGNING;
+                        mHandler.sendEmptyMessageDelayed(MSG_REFRESH_TITLE, 200);
+                    } else {
+                        detectStates = DETECT_STATES.WAITING_FOR_SIGNING;
+                        mHandler.sendEmptyMessageDelayed(MSG_REFRESH_TITLE, 200);
+                    }
+                }
             }
         });
         faceDetectManager.setOnTrackListener(new FaceFilter.OnTrackListener() {
@@ -315,7 +324,7 @@ public class DetectActivity extends BaseActivity {
         }
     }
 
-    private static class InnerHandler extends Handler {
+    private class InnerHandler extends Handler {
         private WeakReference<DetectActivity> mWeakReference;
 
         public InnerHandler(DetectActivity activity) {
@@ -339,6 +348,9 @@ public class DetectActivity extends BaseActivity {
             switch (msg.what) {
                 case MSG_INITVIEW:
                     activity.start();
+                    break;
+                case MSG_REFRESH_TITLE:
+                    setDisplayElements();
                     break;
                 default:
                     break;
@@ -417,11 +429,13 @@ public class DetectActivity extends BaseActivity {
                     public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
                         Log.i("searchFaceRunnable", "onResponse: response = " + response.body());
                         ResponseMessageBean responseMessage = response.body();
-                        if (responseMessage!=null){
+                        if (responseMessage != null) {
                             switch (responseMessage.getResultStatus()) {
                                 case Constants.FACE_RESPONSE_CODE_SUCCESS:
-                                    tvDetectResultTitle.setText("签到成功！谢谢！");
-                                    tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+
+                                    detectStates = DETECT_STATES.SIGN_SUCCEEDED;
+                                    setDisplayElements();
+
                                     ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
                                     String name = resultContent.getNickname();
                                     String originMobile = resultContent.getPhoneNumber();
@@ -432,40 +446,34 @@ public class DetectActivity extends BaseActivity {
                                     if (!originIdCard.isEmpty()) {
                                         String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
                                         tvDetectResultIdCard.setText(idCard);
-                                    }else {
+                                    } else {
                                         tvDetectResultIdCard.setText("--");
                                     }
-                                    timer = new CountDownTimer(3000, 1000) {
-                                        @Override
-                                        public void onTick(long millisUntilFinished) {
-                                            tvDetectNextSigningTimer.setText(("<< "+millisUntilFinished / 1000 + 1) + " 秒后继续签到 >>");
-                                        }
-
-                                        @Override
-                                        public void onFinish() {
-                                            tvDetectNextSigningTimer.setText("<< 正在签到 >>");
-                                            timer.cancel();
-                                            mList.clear();
-                                            resetDisplayContents();
-                                        }
-                                    }.start();
+                                    startCountDownTimer();
                                     break;
                                 case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
+                                    detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
+                                    setDisplayElements();
+
                                     startRegisterActivity(base64Image);
+                                    resetDisplayContents();
                                     break;
                                 case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
-                                    tvDetectResultTitle.setText("人脸匹配失败，请重试。\n(错误码:1002)");
-                                    tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-                                    mList.clear();
+                                    detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
+                                    setDisplayElements();
+
                                     mSearchFailTimes++;
+                                    startCountDownTimer();
                                     if (mSearchFailTimes == 3) {
                                         startRegisterActivity(base64Image);
                                         mSearchFailTimes = 0;
                                     }
                                     break;
                                 case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
-                                    tvDetectResultTitle.setText("人脸匹配失败，请重试。\n(错误码:2001)");
-                                    tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                    detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
+                                    setDisplayElements();
+
+                                    startCountDownTimer();
                                     break;
                                 default:
                                     break;
@@ -477,7 +485,7 @@ public class DetectActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                        Log.i("searchFaceRunnable", "onResponse: t = " + t);
+                        Log.i("searchFaceRunnable", "onFailure: t = " + t);
                     }
                 });
 
@@ -497,9 +505,26 @@ public class DetectActivity extends BaseActivity {
         }
     }
 
-    private void resetDisplayContents () {
-        tvDetectResultTitle.setText("正在识别...");
-        tvDetectResultTitle.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+    private void startCountDownTimer() {
+        timer = new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tvDetectNextSigningTimer.setText("<< " + (millisUntilFinished / 1000 + 1) + " 秒后继续签到 >>");
+            }
+
+            @Override
+            public void onFinish() {
+                tvDetectNextSigningTimer.setText("<< 等待签到 >>");
+                timer.cancel();
+                mList.clear();
+                resetDisplayContents();
+            }
+        }.start();
+    }
+
+    private void resetDisplayContents() {
+        detectStates = DETECT_STATES.WAITING_FOR_SIGNING;
+        setDisplayElements();
 
         tvDetectResultIdCard.setText("--");
         tvDetectResultName.setText("--");
@@ -544,6 +569,7 @@ public class DetectActivity extends BaseActivity {
 //        dialogRegisteredSucceeded.show();
 //    }
 //
+
     /**
      * 展示对话框
      *
@@ -609,5 +635,38 @@ public class DetectActivity extends BaseActivity {
         // TODO 选择使用后置摄像头
         // cameraImageSource.getCameraControl().setCameraFacing(ICameraControl.CAMERA_FACING_BACK);
         // previewView.getTextureView().setScaleX(-1);
+    }
+
+    private void setDisplayElements() {
+        int displayColor = getResources().getColor(android.R.color.darker_gray);
+        String titleText = "欢迎您";
+        String countDownTimerText = "<< 欢迎您 >>";
+        switch (detectStates) {
+            case WAITING_FOR_SIGNING:
+                displayColor = getResources().getColor(android.R.color.holo_orange_dark);
+                titleText = "等待签到...";
+                tvDetectNextSigningTimer.setText("<< 等待签到 >>");
+                break;
+            case SIGNING:
+                displayColor = getResources().getColor(android.R.color.holo_blue_light);
+                titleText = "正在签到...";
+                tvDetectNextSigningTimer.setText("<< 正在签到 >>");
+                break;
+            case SIGN_FAILED_USER_NOT_FOUND:
+            case SIGN_FAILED_USER_NOT_MATCH:
+            case SIGN_FAILED_OTHER_REASONS:
+                displayColor = getResources().getColor(android.R.color.holo_red_light);
+                titleText = "签到失败！请重试。";
+                break;
+            case SIGN_SUCCEEDED:
+                displayColor = getResources().getColor(android.R.color.holo_green_light);
+                titleText = "签到成功！谢谢！";
+                break;
+            default:
+                break;
+        }
+        tvDetectResultTitle.setTextColor(displayColor);
+        tvDetectResultTitle.setText(titleText);
+        tvDetectNextSigningTimer.setBackgroundColor(displayColor);
     }
 }

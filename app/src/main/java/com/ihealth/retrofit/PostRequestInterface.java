@@ -9,7 +9,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.HeaderMap;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
@@ -19,13 +18,16 @@ import retrofit2.http.POST;
  */
 public interface PostRequestInterface {
 
-    @Headers({"Content-type:application/json;charset=UTF-8"})
+    // @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST("/detectLogin")
-    Call<LoginBean> login(@Body RequestBody requestBody);
+    Call<LoginBean> login(@HeaderMap Map<String, String> headerMap, @Body RequestBody requestBody);
 
     // @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST("detectFace/searchFace")
     Call<ResponseMessageBean> searchFace(@HeaderMap Map<String, String> headerMap, @Body RequestBody requestBody);
+
+    @POST("detectFace/searchUserByPhoneNumber")
+    Call<ResponseMessageBean> searchUserByPhoneNumber(@HeaderMap Map<String, String> headerMap, @Body RequestBody requestBody);
 
     // @Headers({"Content-type:application/json;charset=UTF-8","authorization:Bearer "})
     @POST("detectFace/addUser")

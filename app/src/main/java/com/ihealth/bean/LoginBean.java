@@ -10,7 +10,7 @@ public class LoginBean {
     private String message;
     private String token;
     private User user;
-    private static class User{
+    public static class User{
         private String groupId;
         private String hospitalFullName;
         private String hospitalLogoImage;

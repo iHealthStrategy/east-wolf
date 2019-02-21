@@ -1,6 +1,7 @@
 package com.ihealth.retrofit;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ihealth.bean.LoginBean;
 import com.ihealth.bean.ResponseMessageBean;
@@ -44,22 +45,34 @@ public class ApiUtil {
     }
 
     public static Call<LoginBean> loginCall(RequestBody requestBody){
-        return ApiUtil.getApiService().login(requestBody);
+         Map<String, String> headerMap = new HashMap<>(2);
+         headerMap.put("Content-type","application/json;charset=UTF-8");
+        return ApiUtil.getApiService().login(headerMap, requestBody);
     }
 
     public static Call<ResponseMessageBean> searchFaceCall(Context context, RequestBody requestBody){
         String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
+        Log.i("searchFaceCall", "searchFaceCall: "+token);
         Map<String, String> headerMap = new HashMap<>(2);
         headerMap.put("Content-type","application/json;charset=UTF-8");
-        headerMap.put("authorization","Bearer "+token);
+        headerMap.put("Authorization","Bearer "+token);
         return ApiUtil.getApiService().searchFace(headerMap, requestBody);
+    }
+
+    public static Call<ResponseMessageBean> searchUserByPhoneNumberCall(Context context, RequestBody requestBody){
+        String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
+        Log.i("searchUserByPhoneNumberCall", "searchFaceCall: "+token);
+        Map<String, String> headerMap = new HashMap<>(2);
+        headerMap.put("Content-type","application/json;charset=UTF-8");
+        headerMap.put("Authorization","Bearer "+token);
+        return ApiUtil.getApiService().searchUserByPhoneNumber(headerMap, requestBody);
     }
 
     public static Call<ResponseMessageBean> addUserCall(Context context, RequestBody requestBody){
         String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
         Map<String, String> headerMap = new HashMap<>(2);
         headerMap.put("Content-type","application/json;charset=UTF-8");
-        headerMap.put("authorization","Bearer "+token);
+        headerMap.put("Authorization","Bearer "+token);
         return ApiUtil.getApiService().addUser(headerMap, requestBody);
     }
 }

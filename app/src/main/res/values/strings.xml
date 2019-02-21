@@ -35,4 +35,5 @@
     <string name="liveness_head_down">缓慢低头</string>
     <string name="liveness_good">非常好</string>
     <string name="track_tips">提示：仅实时检测画面内面积最大的人脸</string>
+    <string name="text_detect_waiting_for_signing"><![CDATA[<< 等待签到 >>]]></string>
 </resources>

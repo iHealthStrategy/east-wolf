@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.ihealth.BaseActivity;
+import com.ihealth.MainActivity;
 import com.ihealth.facecheckinapp.R;
+import com.ihealth.retrofit.Constants;
+import com.ihealth.utils.SharedPreferenceUtil;
 
 public class SplashStartActivity extends BaseActivity implements View.OnClickListener {
 
@@ -45,7 +49,13 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onFinish() {
-                Intent intent = new Intent(mContext,LoginActivity.class);
+                String token = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_AUTHORIZATION, Constants.SP_KEY_TOKEN);
+                Intent intent;
+                if (TextUtils.isEmpty(token)){
+                    intent = new Intent(mContext,LoginActivity.class);
+                } else {
+                    intent = new Intent(mContext, MainActivity.class);
+                }
                 startActivity(intent);
                 Activity activity = (Activity) mContext;
                 activity.finish();

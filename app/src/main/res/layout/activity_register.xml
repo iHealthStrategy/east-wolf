@@ -11,39 +11,65 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="@dimen/preview_margin">
-        <TextView
-            android:id="@+id/tv_register_header"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="start"
-            android:layout_marginStart="@dimen/layout_size_10dp"
-            android:layout_marginEnd="@dimen/layout_size_10dp"
-            android:layout_marginTop="@dimen/layout_size_20dp"
-            android:text="建立患者信息（1/3）"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_18sp"
-            android:textStyle="bold"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_register_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/layout_size_10dp"
+                android:gravity="start"
+                android:text="建立患者信息（1/3）"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginEnd="@dimen/layout_size_10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true">
+                <Button
+                    android:id="@+id/btn_register_home"
+                    android:layout_width="@dimen/layout_size_36dp"
+                    android:layout_height="@dimen/layout_size_36dp"
+                    android:background="@drawable/ic_exit_to_app_yellow_900_24dp"/>
+
+                <Button
+                    android:id="@+id/btn_register_exit"
+                    android:layout_width="@dimen/layout_size_36dp"
+                    android:layout_height="@dimen/layout_size_36dp"
+                    android:layout_marginStart="@dimen/layout_size_10dp"
+                    android:background="@drawable/button_round_shape_enabled"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_register_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_marginStart="@dimen/layout_size_10dp"
-            android:layout_marginEnd="@dimen/layout_size_10dp"
             android:layout_marginTop="@dimen/layout_size_10dp"
+            android:layout_marginEnd="@dimen/layout_size_10dp"
             android:layout_marginBottom="@dimen/layout_size_10dp"
-            android:text="请录入患者姓名"
+            android:gravity="center"
+            android:text="请录入患者手机号"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_24sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/layout_size_1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
 
         <ViewFlipper
             android:id="@+id/vf_register_new_user_infos"
@@ -51,138 +77,150 @@
             android:layout_height="match_parent">
 
             <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:layout_margin="@dimen/layout_size_10dp"-->
-                <!-->-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_margin="@dimen/layout_size_10dp"-->
+            <!-->-->
 
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="@dimen/layout_size_220dp"-->
-                    <!--android:layout_height="@dimen/layout_size_220dp">-->
-                    <!--<com.baidu.aip.face.TexturePreviewView-->
-                        <!--android:id="@+id/register_preview_view"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent" />-->
-                    <!--<TextureView-->
-                        <!--android:id="@+id/register_texture_view"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent" />-->
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_register_take_photo_tip"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:gravity="center"-->
-                        <!--android:layout_alignParentBottom="true"-->
-                        <!--android:text="请正视摄像头"-->
-                        <!--android:textColor="@android:color/white"-->
-                        <!--android:background="@android:color/holo_red_light"-->
-                        <!--android:textSize="@dimen/text_size_14sp"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:padding="@dimen/layout_size_4dp"/>-->
+            <!--<RelativeLayout-->
+            <!--android:layout_width="@dimen/layout_size_220dp"-->
+            <!--android:layout_height="@dimen/layout_size_220dp">-->
+            <!--<com.baidu.aip.face.TexturePreviewView-->
+            <!--android:id="@+id/register_preview_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <!--<TextureView-->
+            <!--android:id="@+id/register_texture_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <!--<TextView-->
+            <!--android:id="@+id/tv_register_take_photo_tip"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:text="请正视摄像头"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:background="@android:color/holo_red_light"-->
+            <!--android:textSize="@dimen/text_size_14sp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:padding="@dimen/layout_size_4dp"/>-->
 
-                <!--</RelativeLayout>-->
+            <!--</RelativeLayout>-->
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:layout_margin="@dimen/layout_size_10dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center">-->
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_margin="@dimen/layout_size_10dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center">-->
 
-                    <!--<ImageView-->
-                        <!--android:id="@+id/iv_user_photo_preview"-->
-                        <!--android:layout_width="@dimen/layout_size_120dp"-->
-                        <!--android:layout_height="@dimen/layout_size_120dp"-->
-                        <!--android:src="@drawable/ic_photo_null"/>-->
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_user_photo_preview"-->
+            <!--android:layout_width="@dimen/layout_size_120dp"-->
+            <!--android:layout_height="@dimen/layout_size_120dp"-->
+            <!--android:src="@drawable/ic_photo_null"/>-->
 
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="horizontal"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:gravity="center"-->
-                        <!--android:layout_marginTop="@dimen/layout_size_10dp">-->
-                        <!--<Button-->
-                            <!--android:id="@+id/btn_detect_new_user_step_1_take_photo"-->
-                            <!--android:layout_width="@dimen/layout_size_160dp"-->
-                            <!--android:layout_height="@dimen/layout_size_32dp"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:background="@drawable/button_round_shape_enabled"-->
-                            <!--android:text="拍照"-->
-                            <!--android:textColor="@android:color/white"-->
-                            <!--android:textSize="@dimen/text_size_16sp"-->
-                            <!--android:textStyle="bold"/>-->
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="@dimen/layout_size_10dp">-->
+            <!--<Button-->
+            <!--android:id="@+id/btn_detect_new_user_step_1_take_photo"-->
+            <!--android:layout_width="@dimen/layout_size_160dp"-->
+            <!--android:layout_height="@dimen/layout_size_32dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="@drawable/button_round_shape_enabled"-->
+            <!--android:text="拍照"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="@dimen/text_size_16sp"-->
+            <!--android:textStyle="bold"/>-->
 
-                    <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
-                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
             <!--</LinearLayout>-->
 
 
-            <LinearLayout
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/layout_size_10dp">
-                <EditText
-                    android:id="@+id/etv_register_name"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_size_10dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etv_register_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="请输入患者姓名"
-                    android:textSize="@dimen/text_size_14sp"
+                    android:hint="请录入患者手机号"
+                    android:inputType="phone"
                     android:singleLine="true"
-                    android:inputType="textPersonName"/>
+                    android:textSize="@dimen/text_size_14sp" />
 
-                <Button
-                    android:id="@+id/btn_detect_new_user_step_2_previous"
-                    android:layout_width="@dimen/layout_size_120dp"
-                    android:layout_height="@dimen/layout_size_32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/layout_size_10dp"
-                    android:background="@drawable/button_round_shape_disabled"
-                    android:text="上一步"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:visibility="gone"/>
-                <Button
-                    android:id="@+id/btn_detect_new_user_step_2_next"
-                    android:layout_width="@dimen/layout_size_120dp"
-                    android:layout_height="@dimen/layout_size_32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/layout_size_10dp"
-                    android:background="@drawable/button_round_shape_disabled"
-                    android:text="下一步"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:enabled="false"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/layout_size_10dp">
-
-                <EditText
-                    android:id="@+id/etv_register_id_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="请输入患者身份证号"
-                    android:textSize="@dimen/text_size_14sp"
-                    android:singleLine="true"
-                    android:inputType="number"
-                    android:maxLength="18"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_10dp"
                     android:gravity="center"
-                    android:layout_marginTop="@dimen/layout_size_10dp">
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_detect_new_user_step_2_previous"
+                        android:layout_width="@dimen/layout_size_120dp"
+                        android:layout_height="@dimen/layout_size_32dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_round_shape_enabled"
+                        android:text="上一步"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_detect_new_user_step_2_next"
+                        android:layout_width="@dimen/layout_size_120dp"
+                        android:layout_height="@dimen/layout_size_32dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/layout_size_10dp"
+                        android:background="@drawable/button_round_shape_disabled"
+                        android:enabled="false"
+                        android:text="下一步"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_16sp" />
+                </LinearLayout>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/layout_size_10dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etv_register_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="请录入患者姓名"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/btn_detect_new_user_step_3_previous"
                         android:layout_width="@dimen/layout_size_120dp"
@@ -191,53 +229,46 @@
                         android:background="@drawable/button_round_shape_enabled"
                         android:text="上一步"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"/>
+                        android:textSize="@dimen/text_size_16sp" />
+
                     <Button
                         android:id="@+id/btn_detect_new_user_step_3_next"
                         android:layout_width="@dimen/layout_size_120dp"
                         android:layout_height="@dimen/layout_size_32dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape_disabled"
                         android:layout_marginStart="@dimen/layout_size_10dp"
+                        android:background="@drawable/button_round_shape_disabled"
+                        android:enabled="false"
                         android:text="下一步"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"
-                        android:enabled="false"/>
+                        android:textSize="@dimen/text_size_16sp" />
                 </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
 
-                <Button
-                    android:id="@+id/btn_detect_new_user_step_3_skip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/layout_size_32dp"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:layout_marginTop="@dimen/layout_size_6dp"
-                    android:text="忘记身份证号码？跳过 >>"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_12sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/layout_size_10dp">
-                <EditText
-                    android:id="@+id/etv_register_mobile"
+                android:layout_margin="@dimen/layout_size_10dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etv_register_id_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="请输入患者联系电话"
-                    android:textSize="@dimen/text_size_14sp"
+                    android:hint="请录入患者身份证号"
+                    android:inputType="number"
+                    android:maxLength="18"
                     android:singleLine="true"
-                    android:inputType="phone"/>
+                    android:textSize="@dimen/text_size_14sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_10dp"
                     android:gravity="center"
-                    android:layout_marginTop="@dimen/layout_size_10dp">
+                    android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/btn_detect_new_user_step_4_previous"
                         android:layout_width="@dimen/layout_size_120dp"
@@ -246,21 +277,35 @@
                         android:background="@drawable/button_round_shape_enabled"
                         android:text="上一步"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"/>
+                        android:textSize="@dimen/text_size_16sp" />
+
                     <Button
                         android:id="@+id/btn_detect_new_user_step_4_done"
                         android:layout_width="@dimen/layout_size_120dp"
                         android:layout_height="@dimen/layout_size_32dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/button_round_shape_disabled"
                         android:layout_marginStart="@dimen/layout_size_10dp"
+                        android:background="@drawable/button_round_shape_disabled"
+                        android:enabled="false"
                         android:text="完成"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_16sp"
-                        android:enabled="false"/>
+                        android:textSize="@dimen/text_size_16sp" />
                 </LinearLayout>
 
-            </LinearLayout>
+                <Button
+                    android:id="@+id/btn_detect_new_user_step_3_skip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/layout_size_32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_6dp"
+                    android:background="@android:color/transparent"
+                    android:text="忘记身份证号码？跳过 >>"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
 
         </ViewFlipper>
 
