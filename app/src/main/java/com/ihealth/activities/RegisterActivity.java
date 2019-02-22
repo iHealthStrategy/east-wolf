@@ -29,6 +29,8 @@ import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -43,6 +45,7 @@ import retrofit2.Response;
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final String TAG = "RegisterActivity";
     private Handler mHandler = new Handler();
     private Context mContext;
 
@@ -296,8 +299,44 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 this.finish();
                 break;
             case R.id.btn_detect_new_user_step_2_next:
-                vfNewUserInfos.setDisplayedChild(1);
-                changeTitle();
+
+                Map<String, String> requestMap = new HashMap<>(2);
+                requestMap.put("phoneNumber",etvNewUserMobile.getText().toString());
+                Gson gson = new Gson();
+                String jsonStr = gson.toJson(requestMap, HashMap.class);
+                final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
+                ApiUtil.searchUserByPhoneNumberCall(mContext,requestBody).enqueue(new Callback<ResponseMessageBean>() {
+                    @Override
+                    public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
+                        Log.i(TAG, "onResponse: "+response.body());
+                        if (response.isSuccessful()) {
+                            ResponseMessageBean responseMessageBean = response.body();
+                            int resultStatus = responseMessageBean.getResultStatus();
+                            if (resultStatus == 0){
+                                ResponseMessageBean.resultContent resultContent = responseMessageBean.getResultContent();
+                                showCommonDialog(
+                                        "请确认如下信息是否正确：\n"
+                                                + "手机号："+ resultContent.getPhoneNumber() +"\n"
+                                                + "姓名："+ resultContent.getNickname()+"\n"
+                                                + "身份证号："+ resultContent.getIdCard(),
+                                        "正确无误",
+                                        "取消"
+                                );
+                            }else {
+
+                            }
+                        } else {
+                            showRegisteredResultDialog("很抱歉，签到失败。\n请返回重试。");
+                        }
+                        vfNewUserInfos.setDisplayedChild(1);
+                        changeTitle();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
+                        Log.i(TAG, "onFailure: "+t);
+                    }
+                });
                 break;
             case R.id.btn_detect_new_user_step_3_previous:
                 vfNewUserInfos.setDisplayedChild(0);
@@ -413,6 +452,50 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         dialogRegisteredSucceeded.setContentView(view);
         dialogRegisteredSucceeded.setCancelable(false);
         dialogRegisteredSucceeded.show();
+    }
+
+    /**
+     * 展示对话框
+     *
+     * @param
+     */
+    private void showCommonDialog(String dialogContent, String confirmString, String cancelString) {
+        final BaseDialog dialog = new BaseDialog(mContext);
+        View view;
+        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
+
+        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
+        tvDialogContent.setText(dialogContent);
+
+        final TextView tvDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
+        tvDialogOk.setText(confirmString);
+
+        final TextView tvDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
+        tvDialogCancel.setText(cancelString);
+
+        (view.findViewById(R.id.btn_dialog_ok)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Activity activity  = (Activity) mContext;
+                activity.finish();
+            }
+        });
+
+        (view.findViewById(R.id.btn_dialog_cancel)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Activity activity  = (Activity) mContext;
+                activity.finish();
+            }
+        });
+
+
+
+        dialog.setContentView(view);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
 }

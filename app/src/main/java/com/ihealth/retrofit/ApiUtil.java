@@ -3,6 +3,7 @@ package com.ihealth.retrofit;
 import android.content.Context;
 import android.util.Log;
 
+import com.ihealth.bean.HospitalBean;
 import com.ihealth.bean.LoginBean;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.utils.SharedPreferenceUtil;
@@ -40,14 +41,18 @@ public class ApiUtil {
         return retrofit;
     }
 
-    private static PostRequestInterface getApiService(){
+    private static PostRequestInterface getPostApiService(){
         return ApiUtil.getApiRetrofit().create(PostRequestInterface.class);
+    }
+
+    private static GetRequestInterface getGetApiService(){
+        return ApiUtil.getApiRetrofit().create(GetRequestInterface.class);
     }
 
     public static Call<LoginBean> loginCall(RequestBody requestBody){
          Map<String, String> headerMap = new HashMap<>(2);
          headerMap.put("Content-type","application/json;charset=UTF-8");
-        return ApiUtil.getApiService().login(headerMap, requestBody);
+        return ApiUtil.getPostApiService().login(headerMap, requestBody);
     }
 
     public static Call<ResponseMessageBean> searchFaceCall(Context context, RequestBody requestBody){
@@ -56,7 +61,7 @@ public class ApiUtil {
         Map<String, String> headerMap = new HashMap<>(2);
         headerMap.put("Content-type","application/json;charset=UTF-8");
         headerMap.put("Authorization","Bearer "+token);
-        return ApiUtil.getApiService().searchFace(headerMap, requestBody);
+        return ApiUtil.getPostApiService().searchFace(headerMap, requestBody);
     }
 
     public static Call<ResponseMessageBean> searchUserByPhoneNumberCall(Context context, RequestBody requestBody){
@@ -65,7 +70,7 @@ public class ApiUtil {
         Map<String, String> headerMap = new HashMap<>(2);
         headerMap.put("Content-type","application/json;charset=UTF-8");
         headerMap.put("Authorization","Bearer "+token);
-        return ApiUtil.getApiService().searchUserByPhoneNumber(headerMap, requestBody);
+        return ApiUtil.getPostApiService().searchUserByPhoneNumber(headerMap, requestBody);
     }
 
     public static Call<ResponseMessageBean> addUserCall(Context context, RequestBody requestBody){
@@ -73,6 +78,10 @@ public class ApiUtil {
         Map<String, String> headerMap = new HashMap<>(2);
         headerMap.put("Content-type","application/json;charset=UTF-8");
         headerMap.put("Authorization","Bearer "+token);
-        return ApiUtil.getApiService().addUser(headerMap, requestBody);
+        return ApiUtil.getPostApiService().addUser(headerMap, requestBody);
+    }
+
+    public static Call<HospitalBean> getHospitalsCall(){
+        return ApiUtil.getGetApiService().getHospitals();
     }
 }

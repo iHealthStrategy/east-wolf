@@ -18,7 +18,6 @@ import retrofit2.http.POST;
  */
 public interface PostRequestInterface {
 
-    // @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST("/detectLogin")
     Call<LoginBean> login(@HeaderMap Map<String, String> headerMap, @Body RequestBody requestBody);
 

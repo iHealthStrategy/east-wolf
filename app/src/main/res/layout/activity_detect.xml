@@ -181,10 +181,11 @@
                 android:layout_marginBottom="@dimen/layout_size_30dp"
                 android:layout_marginStart="@dimen/preview_land_margin"
                 android:layout_marginEnd="@dimen/preview_land_margin"
-                android:background="@drawable/button_round_shape_enabled"
+                android:background="@drawable/button_round_shape_disabled"
                 android:text="继续签到"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_16sp"/>
+                android:textSize="@dimen/text_size_16sp"
+                android:enabled="false"/>
 
         </RelativeLayout>
 

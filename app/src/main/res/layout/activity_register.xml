@@ -39,7 +39,7 @@
                     android:id="@+id/btn_register_home"
                     android:layout_width="@dimen/layout_size_36dp"
                     android:layout_height="@dimen/layout_size_36dp"
-                    android:background="@drawable/ic_exit_to_app_yellow_900_24dp"/>
+                    android:background="@drawable/ic_exit_to_app_black_48dp"/>
 
                 <Button
                     android:id="@+id/btn_register_exit"

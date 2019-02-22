@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/layout_size_40dp"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/layout_size_10dp"
+    android:padding="@dimen/layout_size_10dp"
+    android:layout_gravity="start"
+    android:gravity="start">
+
+    <ImageView
+        android:id="@+id/iv_login_spinner_hospital_logo"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/layout_size_22dp"
+        android:layout_height="@dimen/layout_size_22dp"
+        android:src="@drawable/workwechat1546494739475"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/tv_login_spinner_hospital_name"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16sp"
+        android:text="北京朝阳医院"
+        android:textColor="@android:color/black" />
+
+</LinearLayout>

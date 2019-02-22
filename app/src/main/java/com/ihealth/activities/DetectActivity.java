@@ -583,7 +583,7 @@ public class DetectActivity extends BaseActivity {
         final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
         tvDialogContent.setText(dialogContent);
 
-        final TextView btnDialogOk = (TextView) view.findViewById(R.id.btn_dialog_retry);
+        final TextView btnDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
         btnDialogOk.setText("登录");
         btnDialogOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -646,21 +646,25 @@ public class DetectActivity extends BaseActivity {
                 displayColor = getResources().getColor(android.R.color.holo_orange_dark);
                 titleText = "等待签到...";
                 tvDetectNextSigningTimer.setText("<< 等待签到 >>");
+                setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGNING:
                 displayColor = getResources().getColor(android.R.color.holo_blue_light);
                 titleText = "正在签到...";
                 tvDetectNextSigningTimer.setText("<< 正在签到 >>");
+                setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGN_FAILED_USER_NOT_FOUND:
             case SIGN_FAILED_USER_NOT_MATCH:
             case SIGN_FAILED_OTHER_REASONS:
                 displayColor = getResources().getColor(android.R.color.holo_red_light);
                 titleText = "签到失败！请重试。";
+                setButtonState(btnDetectContinueSigning, true);
                 break;
             case SIGN_SUCCEEDED:
                 displayColor = getResources().getColor(android.R.color.holo_green_light);
                 titleText = "签到成功！谢谢！";
+                setButtonState(btnDetectContinueSigning, true);
                 break;
             default:
                 break;
@@ -668,5 +672,14 @@ public class DetectActivity extends BaseActivity {
         tvDetectResultTitle.setTextColor(displayColor);
         tvDetectResultTitle.setText(titleText);
         tvDetectNextSigningTimer.setBackgroundColor(displayColor);
+    }
+
+    private void setButtonState(Button button, boolean isEnabled){
+        button.setEnabled(isEnabled);
+        if (isEnabled){
+            button.setBackground(getResources().getDrawable(R.drawable.button_round_shape_enabled));
+        } else {
+            button.setBackground(getResources().getDrawable(R.drawable.button_round_shape_disabled));
+        }
     }
 }
