@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -26,6 +28,8 @@ import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.bean.UserInfo;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
+import com.ihealth.retrofit.Constants;
+import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
 
 import java.lang.ref.WeakReference;
@@ -46,14 +50,17 @@ import retrofit2.Response;
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "RegisterActivity";
+    private static final String MSG_UPDATE = "RegisterActivity";
+
     private Handler mHandler = new Handler();
     private Context mContext;
 
+    TextView tvRegisterHospitalTitle;
     TextView tvRegisterHeader;
     TextView tvRegisterTitle;
     ViewFlipper vfNewUserInfos;
 
-    Button btnRegisterHome;
+    ImageView ivRegisterHome;
 
     Button btnNewUserStep2Previous;
     Button btnNewUserStep2Next;
@@ -68,6 +75,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     TextInputEditText etvNewUserName;
     TextInputEditText etvNewUserIdCard;
     TextInputEditText etvNewUserMobile;
+
+    TextInputLayout layoutNewUserName;
+    TextInputLayout layoutNewUserIdCard;
+    TextInputLayout layoutNewUserMobile;
 
     String mFaceBase64Image = "";
 
@@ -120,23 +131,31 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void initData(){
+    private void initData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
-        mFaceBase64Image = bundle.getString("new_user_image","");
-        Log.i("initData", "initData: " + mFaceBase64Image);
+        mFaceBase64Image = bundle.getString("new_user_image", "");
+        // Log.i("initData", "initData: " + mFaceBase64Image);
     }
 
     private void initView() {
+
+        tvRegisterHospitalTitle = (TextView) findViewById(R.id.tv_register_hospital_title);
+        tvRegisterHospitalTitle.setText(
+                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_FULL_NAME)
+                        + "-内分泌科"
+        );
 
         tvRegisterHeader = (TextView) findViewById(R.id.tv_register_header);
         tvRegisterTitle = (TextView) findViewById(R.id.tv_register_title);
 
         vfNewUserInfos = (ViewFlipper) findViewById(R.id.vf_register_new_user_infos);
+        vfNewUserInfos.setInAnimation(this, R.anim.bottom_in);
+        vfNewUserInfos.setOutAnimation(this, R.anim.bottom_out);
         vfNewUserInfos.setAutoStart(false);
         vfNewUserInfos.setDisplayedChild(0);
 
-        btnRegisterHome = (Button) findViewById(R.id.btn_register_home);
+        ivRegisterHome = (ImageView) findViewById(R.id.iv_register_exit);
 
         btnNewUserStep2Previous = (Button) findViewById(R.id.btn_detect_new_user_step_2_previous);
         btnNewUserStep2Next = (Button) findViewById(R.id.btn_detect_new_user_step_2_next);
@@ -152,10 +171,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         etvNewUserIdCard = (TextInputEditText) findViewById(R.id.etv_register_id_card);
         etvNewUserMobile = (TextInputEditText) findViewById(R.id.etv_register_mobile);
 
+        layoutNewUserName = (TextInputLayout) findViewById(R.id.layout_register_name);
+        layoutNewUserIdCard = (TextInputLayout) findViewById(R.id.layout_register_id_card);
+        layoutNewUserMobile = (TextInputLayout) findViewById(R.id.layout_register_mobile);
     }
 
     private void initListeners() {
-        btnRegisterHome.setOnClickListener(this);
+        ivRegisterHome.setOnClickListener(this);
         btnNewUserStep2Next.setOnClickListener(this);
         btnNewUserStep2Previous.setOnClickListener(this);
         btnNewUserStep2Next.setOnClickListener(this);
@@ -173,17 +195,22 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s)){
-                    if (TextInfosCheckUtil.checkMobile(s.toString())){
+                if (!TextUtils.isEmpty(s)) {
+                    if (TextInfosCheckUtil.checkMobile(s.toString())) {
                         isUserMobileValid = true;
                         setButtonState(btnNewUserStep2Next, true);
+                        layoutNewUserMobile.setErrorEnabled(false);
                     } else {
                         isUserMobileValid = false;
                         setButtonState(btnNewUserStep2Next, false);
+                        layoutNewUserMobile.setError("手机号格式不正确！");
+                        layoutNewUserMobile.setErrorEnabled(true);
                     }
-                }else {
+                } else {
                     isUserMobileValid = false;
                     setButtonState(btnNewUserStep2Next, false);
+                    layoutNewUserMobile.setError("手机号不能为空！");
+                    layoutNewUserMobile.setErrorEnabled(true);
                 }
             }
 
@@ -201,12 +228,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s)){
+                if (!TextUtils.isEmpty(s)) {
                     isUserNameValid = true;
                     setButtonState(btnNewUserStep3Next, true);
+                    layoutNewUserName.setErrorEnabled(false);
                 } else {
                     isUserNameValid = false;
                     setButtonState(btnNewUserStep3Next, false);
+                    layoutNewUserName.setError("姓名不能为空！");
+                    layoutNewUserName.setErrorEnabled(true);
                 }
             }
 
@@ -224,17 +254,22 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s)){
-                    if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))){
+                if (!TextUtils.isEmpty(s)) {
+                    if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
                         isUserIdCardValid = true;
                         setButtonState(btnNewUserStep4Done, true);
-                    }else {
+                        layoutNewUserIdCard.setErrorEnabled(false);
+                    } else {
                         isUserIdCardValid = false;
                         setButtonState(btnNewUserStep4Done, false);
+                        layoutNewUserIdCard.setError("身份证号无效！请核对！");
+                        layoutNewUserIdCard.setErrorEnabled(true);
                     }
                 } else {
                     isUserIdCardValid = true;
                     setButtonState(btnNewUserStep4Done, false);
+                    layoutNewUserIdCard.setError("身份证号不能为空！");
+                    layoutNewUserIdCard.setErrorEnabled(true);
                 }
             }
 
@@ -244,12 +279,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-
     }
 
-    private void setButtonState(Button button, boolean isEnabled){
+    private void setButtonState(Button button, boolean isEnabled) {
         button.setEnabled(isEnabled);
-        if (isEnabled){
+        if (isEnabled) {
             button.setBackground(getResources().getDrawable(R.drawable.button_round_shape_enabled));
         } else {
             button.setBackground(getResources().getDrawable(R.drawable.button_round_shape_disabled));
@@ -264,7 +298,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null!= timer){
+        if (null != timer) {
             timer.cancel();
             timer = null;
         }
@@ -275,19 +309,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         switch (index) {
             case 0:
                 tvRegisterHeader.setText("建立患者信息（1/3）");
-                tvRegisterTitle.setText("请录入患者手机号");
+                tvRegisterTitle.setText("患者手机号");
                 break;
             case 1:
                 tvRegisterHeader.setText("建立患者信息（2/3）");
-                tvRegisterTitle.setText("请录入患者姓名");
+                tvRegisterTitle.setText("患者姓名");
                 break;
             case 2:
                 tvRegisterHeader.setText("建立患者信息（3/3）");
-                tvRegisterTitle.setText("请录入患者身份证号");
+                tvRegisterTitle.setText("患者身份证号");
                 break;
             default:
                 tvRegisterHeader.setText("建立患者信息");
-                tvRegisterTitle.setText("请录入患者信息");
+                tvRegisterTitle.setText("患者信息");
                 break;
         }
     }
@@ -295,46 +329,42 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_register_home:
+            case R.id.iv_register_exit:
                 this.finish();
                 break;
             case R.id.btn_detect_new_user_step_2_next:
 
                 Map<String, String> requestMap = new HashMap<>(2);
-                requestMap.put("phoneNumber",etvNewUserMobile.getText().toString());
+                requestMap.put("phoneNumber", etvNewUserMobile.getText().toString());
                 Gson gson = new Gson();
                 String jsonStr = gson.toJson(requestMap, HashMap.class);
                 final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
-                ApiUtil.searchUserByPhoneNumberCall(mContext,requestBody).enqueue(new Callback<ResponseMessageBean>() {
+                ApiUtil.searchUserByPhoneNumberCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
                     @Override
                     public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                        Log.i(TAG, "onResponse: "+response.body());
+                        // Log.i(TAG, "onResponse: "+response.body());
                         if (response.isSuccessful()) {
                             ResponseMessageBean responseMessageBean = response.body();
                             int resultStatus = responseMessageBean.getResultStatus();
-                            if (resultStatus == 0){
+                            if (resultStatus == 0) {
                                 ResponseMessageBean.resultContent resultContent = responseMessageBean.getResultContent();
-                                showCommonDialog(
-                                        "请确认如下信息是否正确：\n"
-                                                + "手机号："+ resultContent.getPhoneNumber() +"\n"
-                                                + "姓名："+ resultContent.getNickname()+"\n"
-                                                + "身份证号："+ resultContent.getIdCard(),
-                                        "正确无误",
-                                        "取消"
-                                );
-                            }else {
-
+                                String phoneNumber = resultContent.getPhoneNumber();
+                                String nickname = resultContent.getNickname();
+                                String idCard = resultContent.getIdCard();
+                                showCommonDialog(phoneNumber, nickname, idCard);
+                            } else {
+                                // 说明是新患者，直接下一步，建立患者信息
+                                vfNewUserInfos.setDisplayedChild(1);
+                                changeTitle();
                             }
                         } else {
                             showRegisteredResultDialog("很抱歉，签到失败。\n请返回重试。");
                         }
-                        vfNewUserInfos.setDisplayedChild(1);
-                        changeTitle();
                     }
 
                     @Override
                     public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                        Log.i(TAG, "onFailure: "+t);
+                        // Log.i(TAG, "onFailure: "+t);
                     }
                 });
                 break;
@@ -371,7 +401,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     Runnable addUserRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.i("addUserRunnable", "run: base64Image = " + mFaceBase64Image);
+            // Log.i("addUserRunnable", "run: base64Image = " + mFaceBase64Image);
 
             String nickname = etvNewUserName.getText().toString();
             String phoneNumber = etvNewUserMobile.getText().toString();
@@ -380,7 +410,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             AddUserRequestBean addUserRequestBean = new AddUserRequestBean();
             addUserRequestBean.setBase64Image(mFaceBase64Image);
             addUserRequestBean.setUserInfo(new UserInfo(phoneNumber, nickname, idCard));
-            addUserRequestBean.setHospitalId("chaoyang");
+            addUserRequestBean.setHospitalId(
+                    SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
+            );
 
             Gson gson = new Gson();
             String jsonStr = gson.toJson(addUserRequestBean, AddUserRequestBean.class);
@@ -390,13 +422,33 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             ApiUtil.addUserCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
                 @Override
                 public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                    Log.i("addUserRunnable", "onResponse: "+ response.body());
+                    // Log.i("addUserRunnable", "onResponse: "+ response.body());
                     if (response.isSuccessful()) {
                         ResponseMessageBean responseMessageBean = response.body();
                         int resultStatus = responseMessageBean.getResultStatus();
-                        if (resultStatus == 0){
-                            showRegisteredResultDialog("恭喜您！签到成功！");
+                        String resultMessage = responseMessageBean.getResultMessage();
+                        String dialogContents = "";
+                        switch (resultStatus) {
+                            case Constants.FACE_RESPONSE_CODE_SUCCESS:
+                                dialogContents = "恭喜您！签到成功！";
+                                break;
+
+                            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
+                                dialogContents = "您已签到，无需重复签到。请就诊，谢谢。";
+                                break;
+
+                            case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
+                                dialogContents = "签到失败：" + resultMessage + "。\n请联系照护师，谢谢。";
+                                break;
+
+                            case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:
+                                dialogContents = resultMessage + "。\n请联系照护师，谢谢。";
+                                break;
+
+                            default:
+                                break;
                         }
+                        showRegisteredResultDialog(dialogContents);
                     } else {
                         showRegisteredResultDialog("很抱歉，签到失败。\n请返回重试。");
                     }
@@ -404,7 +456,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                 @Override
                 public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                    Log.i("addUserRunnable", "onFailure: " + t.toString());
+                    // Log.i("addUserRunnable", "onFailure: " + t.toString());
                     showRegisteredResultDialog("很抱歉，签到失败。\n请返回重试。");
                 }
             });
@@ -429,22 +481,22 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 dialogRegisteredSucceeded.dismiss();
-                Activity activity  = (Activity) mContext;
+                Activity activity = (Activity) mContext;
                 activity.finish();
             }
         });
 
         final TextView tvDialogBackCounter = (TextView) view.findViewById(R.id.btn_dialog_counter_back);
-        timer = new CountDownTimer(5000,1000) {
+        timer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                tvDialogBackCounter.setText(( millisUntilFinished/1000 +1)  + " 秒后自动返回");
+                tvDialogBackCounter.setText((millisUntilFinished / 1000 + 1) + " 秒后自动返回");
             }
 
             @Override
             public void onFinish() {
                 dialogRegisteredSucceeded.dismiss();
-                Activity activity  = (Activity) mContext;
+                Activity activity = (Activity) mContext;
                 activity.finish();
             }
         }.start();
@@ -459,39 +511,63 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      *
      * @param
      */
-    private void showCommonDialog(String dialogContent, String confirmString, String cancelString) {
+    private void showCommonDialog(final String phoneNumber, final String nickname, final String idCard) {
         final BaseDialog dialog = new BaseDialog(mContext);
         View view;
         view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
 
+        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
+        ivCloseDialog.setVisibility(View.VISIBLE);
+        ivCloseDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
-        tvDialogContent.setText(dialogContent);
+        tvDialogContent.setText(
+                "请确认如下信息是否正确：\n"
+                        + "手机号：" + (TextUtils.isEmpty(phoneNumber) ? "--" : phoneNumber) + "\n"
+                        + "姓名：" + (TextUtils.isEmpty(nickname) ? "--" : nickname) + "\n"
+                        + "身份证号：" + (TextUtils.isEmpty(idCard) ? "--" : idCard)
+        );
 
         final TextView tvDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
-        tvDialogOk.setText(confirmString);
+        tvDialogOk.setText("正确无误");
+        tvDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+                // 先把已有信息设定到对应控件上
+                etvNewUserName.setText(TextUtils.isEmpty(nickname) ? "" : nickname);
+                etvNewUserIdCard.setText(TextUtils.isEmpty(idCard) ? "" : idCard);
+
+                // 如果信息全部完整，那么进行签到
+                // 否则需要填写缺失信息
+                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(nickname) && !TextUtils.isEmpty(idCard)) {
+                    mHandler.postDelayed(addUserRunnable, 100);
+                } else if (TextUtils.isEmpty(nickname)) {
+                    vfNewUserInfos.setDisplayedChild(1);
+                    changeTitle();
+                } else {
+                    vfNewUserInfos.setDisplayedChild(2);
+                    changeTitle();
+                }
+            }
+        });
 
         final TextView tvDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
-        tvDialogCancel.setText(cancelString);
-
-        (view.findViewById(R.id.btn_dialog_ok)).setOnClickListener(new View.OnClickListener() {
+        tvDialogCancel.setText("不是我");
+        tvDialogCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Activity activity  = (Activity) mContext;
-                activity.finish();
+                layoutNewUserMobile.setError("请输入您的手机号!");
+                layoutNewUserMobile.setErrorEnabled(true);
             }
         });
-
-        (view.findViewById(R.id.btn_dialog_cancel)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Activity activity  = (Activity) mContext;
-                activity.finish();
-            }
-        });
-
-
 
         dialog.setContentView(view);
         dialog.setCancelable(false);

@@ -17,6 +17,7 @@ import com.ihealth.utils.SharedPreferenceUtil;
 
 public class SplashStartActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final String TAG = "SplashStartActivity";
     Context mContext;
     FloatingActionButton floatingActionButton;
     CountDownTimer timer;
@@ -51,6 +52,7 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
             public void onFinish() {
                 String token = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_AUTHORIZATION, Constants.SP_KEY_TOKEN);
                 Intent intent;
+                // Log.i(TAG, "onFinish: token = "+token);
                 if (TextUtils.isEmpty(token)){
                     intent = new Intent(mContext,LoginActivity.class);
                 } else {

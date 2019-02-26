@@ -36,7 +36,7 @@ public class FaceCheckApplication extends Application {
         APIService.getInstance().initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
             @Override
             public void onResult(AccessToken result) {
-                Log.i("wtf", "AccessToken->" + result.getAccessToken());
+                // Log.i("AccessToken", "AccessToken->" + result.getAccessToken());
 
                 handler.post(new Runnable() {
                     @Override

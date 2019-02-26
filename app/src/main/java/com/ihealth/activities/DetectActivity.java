@@ -22,12 +22,12 @@ import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +48,7 @@ import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
+import com.ihealth.utils.SharedPreferenceUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
@@ -71,8 +72,12 @@ public class DetectActivity extends BaseActivity {
 
     private static final int MSG_INITVIEW = 1001;
     private static final int MSG_REFRESH_TITLE = 1002;
+
+    private static final int REQUEST_CODE_INIT_STATE = 2001;
+
     private Context mContext;
 
+    private TextView tvDetectHospitalTitle;
     private TextView tvDetectResultTitle;
     private TextView tvDetectResultName;
     private TextView tvDetectResultMobile;
@@ -102,7 +107,7 @@ public class DetectActivity extends BaseActivity {
 
     private CountDownTimer timer;
 
-    private int mSearchFailTimes = 0;
+    // private int mSearchFailTimes = 0;
 
     private DETECT_STATES detectStates;
 
@@ -127,6 +132,10 @@ public class DetectActivity extends BaseActivity {
          * 签到失败：人脸识别失败-其他错误（错误code: 1003）
          */
         SIGN_FAILED_OTHER_REASONS,
+        /**
+         * 签到失败：已经签到过，重复签到（错误code: 4001）
+         */
+        SIGN_FAILED_ALREADY_SIGNED_IN,
         /**
          * 签到成功
          */
@@ -165,6 +174,12 @@ public class DetectActivity extends BaseActivity {
         previewView = (PreviewView) findViewById(R.id.preview_view);
         mTextureView = (TextureView) findViewById(R.id.texture_view);
 
+        tvDetectHospitalTitle = (TextView) findViewById(R.id.tv_detect_hospital_title);
+        tvDetectHospitalTitle.setText(
+                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_FULL_NAME)
+                +"-内分泌科"
+        );
+
         tvDetectResultTitle = (TextView) findViewById(R.id.tv_detect_title);
         tvDetectResultName = (TextView) findViewById(R.id.tv_detect_result_name_content);
         tvDetectResultMobile = (TextView) findViewById(R.id.tv_detect_result_mobile_content);
@@ -176,7 +191,7 @@ public class DetectActivity extends BaseActivity {
         btnDetectContinueSigning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvDetectNextSigningTimer.setText("<< 等待签到 >>");
+                tvDetectNextSigningTimer.setText("【 等待签到 】");
                 timer.cancel();
                 mList.clear();
                 resetDisplayContents();
@@ -198,10 +213,13 @@ public class DetectActivity extends BaseActivity {
             public void onDetectFace(final int retCode, FaceInfo[] infos, ImageFrame frame) {
                 // Log.i("onDetectFace", "onDetectFace: retCode = "+ retCode+",infos = "+infos);
                 if (
-                        detectStates != DETECT_STATES.SIGN_SUCCEEDED
-                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH
-                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND
-                                && detectStates != DETECT_STATES.SIGN_FAILED_OTHER_REASONS
+//                        detectStates != DETECT_STATES.SIGN_SUCCEEDED
+//                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND
+//                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH
+//                                && detectStates != DETECT_STATES.SIGN_FAILED_ALREADY_SIGNED_IN
+//                                && detectStates != DETECT_STATES.SIGN_FAILED_OTHER_REASONS
+                        detectStates == DETECT_STATES.SIGNING
+                        || detectStates == DETECT_STATES.WAITING_FOR_SIGNING
                 ) {
                     if (retCode == 0) {
                         detectStates = DETECT_STATES.SIGNING;
@@ -312,7 +330,6 @@ public class DetectActivity extends BaseActivity {
             mDetectStopped = false;
         }
         mHandler.postDelayed(searchFaceRunnable, 10);
-
     }
 
     @Override
@@ -382,10 +399,10 @@ public class DetectActivity extends BaseActivity {
         if (model != null) {
             FaceInfo info = model.getInfo();
             model.getImageFrame().retain();
-            RectF rectCenter = new RectF(info.mCenter_x - 2 - info.mWidth * 1 / 2,
-                    info.mCenter_y - 2 - info.mWidth * 1 / 2,
-                    info.mCenter_x + 2 + info.mWidth * 1 / 2,
-                    info.mCenter_y + 2 + info.mWidth * 1 / 2);
+            RectF rectCenter = new RectF(1.8f*info.mCenter_x - 2 - info.mWidth*7/10,
+                    9* info.mCenter_y/10 -2 -info.mWidth*7/10,
+                    1.8f*info.mCenter_x + 2 + info.mWidth*7/10,
+                    9*info.mCenter_y/10 +2 + info.mWidth*7/10);
             previewView.mapFromOriginalRect(rectCenter);
             // 绘制框
             paint.setStrokeWidth(mRound);
@@ -417,7 +434,9 @@ public class DetectActivity extends BaseActivity {
                 Map<String, String> requestMap = new HashMap<>();
 
                 requestMap.put("base64Image", base64Image);
-                requestMap.put("hospitalId", "chaoyang");
+                requestMap.put("hospitalId",
+                        SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
+                );
 
                 Gson gson = new Gson();
                 String jsonStr = gson.toJson(requestMap, HashMap.class);
@@ -427,12 +446,11 @@ public class DetectActivity extends BaseActivity {
                 ApiUtil.searchFaceCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
                     @Override
                     public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                        Log.i("searchFaceRunnable", "onResponse: response = " + response.body());
+                        // Log.i("searchFaceRunnable", "onResponse: response = " + response.body());
                         ResponseMessageBean responseMessage = response.body();
                         if (responseMessage != null) {
                             switch (responseMessage.getResultStatus()) {
                                 case Constants.FACE_RESPONSE_CODE_SUCCESS:
-
                                     detectStates = DETECT_STATES.SIGN_SUCCEEDED;
                                     setDisplayElements();
 
@@ -451,6 +469,7 @@ public class DetectActivity extends BaseActivity {
                                     }
                                     startCountDownTimer();
                                     break;
+
                                 case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
                                     detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
                                     setDisplayElements();
@@ -458,34 +477,51 @@ public class DetectActivity extends BaseActivity {
                                     startRegisterActivity(base64Image);
                                     resetDisplayContents();
                                     break;
+
                                 case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
                                     detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
                                     setDisplayElements();
 
-                                    mSearchFailTimes++;
-                                    startCountDownTimer();
-                                    if (mSearchFailTimes == 3) {
-                                        startRegisterActivity(base64Image);
-                                        mSearchFailTimes = 0;
-                                    }
+//                                    mSearchFailTimes++;
+//                                    if (mSearchFailTimes == 1) {
+//                                        // startRegisterActivity(base64Image);
+//                                        showChooseRoleDialog();
+//                                        mSearchFailTimes = 0;
+//                                    }
+
+                                    showChooseRoleDialog();
                                     break;
+
                                 case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
                                     detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
                                     setDisplayElements();
 
                                     startCountDownTimer();
                                     break;
+
+                                case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
+                                    showCommonMessageDialog("您已签到，无需重复签到。请就诊，谢谢。");
+                                    break;
+
+                                case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
+                                    showCommonMessageDialog("签到失败："+responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                                    break;
+
+                                case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:
+                                    showCommonMessageDialog(responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                                    break;
+
                                 default:
                                     break;
                             }
                         } else {
-                            showMessageDialog("系统认证失败，请重新登录。");
+                            showReLoginDialog("系统认证失败，请重新登录。");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                        Log.i("searchFaceRunnable", "onFailure: t = " + t);
+                        // Log.i("searchFaceRunnable", "onFailure: t = " + t);
                     }
                 });
 
@@ -509,12 +545,12 @@ public class DetectActivity extends BaseActivity {
         timer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                tvDetectNextSigningTimer.setText("<< " + (millisUntilFinished / 1000 + 1) + " 秒后继续签到 >>");
+                tvDetectNextSigningTimer.setText("【 " + (millisUntilFinished / 1000 + 1) + " 秒后继续签到 】");
             }
 
             @Override
             public void onFinish() {
-                tvDetectNextSigningTimer.setText("<< 等待签到 >>");
+                tvDetectNextSigningTimer.setText("【 等待签到 】");
                 timer.cancel();
                 mList.clear();
                 resetDisplayContents();
@@ -531,54 +567,18 @@ public class DetectActivity extends BaseActivity {
         tvDetectResultMobile.setText("--");
     }
 
-//    /**
-//     * 展示对话框
-//     *
-//     * @param
-//     */
-//    private void showRegisteredResultDialog(String dialogContent) {
-//        final BaseDialog dialogRegisteredSucceeded = new BaseDialog(mContext);
-//        View view;
-//        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_register_success, null);
-//
-//        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_dialog_content);
-//        tvDialogContent.setText(dialogContent);
-//
-//        (view.findViewById(R.id.btn_dialog_back_immediately)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialogRegisteredSucceeded.dismiss();
-//            }
-//        });
-//
-//        final TextView tvDialogBackCounter = (TextView) view.findViewById(R.id.btn_dialog_counter_back);
-//        timer = new CountDownTimer(3000,1000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//                tvDialogBackCounter.setText(( millisUntilFinished/1000 +1)  + " 秒后关闭");
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                dialogRegisteredSucceeded.dismiss();
-//            }
-//        }.start();
-//
-//        dialogRegisteredSucceeded.setContentView(view);
-//        dialogRegisteredSucceeded.setCancelable(true);
-//        dialogRegisteredSucceeded.show();
-//    }
-//
-
     /**
      * 展示对话框
      *
      * @param
      */
-    private void showMessageDialog(String dialogContent) {
+    private void showReLoginDialog(String dialogContent) {
         final BaseDialog dialogMessage = new BaseDialog(mContext);
-        View view;
-        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
+
+        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
+        ivCloseDialog.setVisibility(View.GONE);
 
         final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
         tvDialogContent.setText(dialogContent);
@@ -606,21 +606,7 @@ public class DetectActivity extends BaseActivity {
         bundle.putString("new_user_image", base64Image);
         Intent intent = new Intent(mContext, RegisterActivity.class);
         intent.putExtra("data_from_detect_activity", bundle);
-        startActivity(intent);
-    }
-
-
-    /**
-     * 初始化recycleView画截图得到的人脸图像
-     */
-    private void initRecy() {
-//        mRecyAdapter = new RecyAdapter(this);
-//
-//        mLayoutManager = new LinearLayoutManager(DetectActivity.this,
-//                LinearLayoutManager.HORIZONTAL, true);
-//        // mRecyclerview.setLayoutManager(mLayoutManager);
-//        mLayoutManager.setStackFromEnd(true);
-//        // mRecyclerview.setAdapter(mRecyAdapter);
+        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
     }
 
     private void setCameraType(CameraImageSource cameraImageSource) {
@@ -640,18 +626,18 @@ public class DetectActivity extends BaseActivity {
     private void setDisplayElements() {
         int displayColor = getResources().getColor(android.R.color.darker_gray);
         String titleText = "欢迎您";
-        String countDownTimerText = "<< 欢迎您 >>";
+        String countDownTimerText = "【 欢迎您 】";
         switch (detectStates) {
             case WAITING_FOR_SIGNING:
                 displayColor = getResources().getColor(android.R.color.holo_orange_dark);
                 titleText = "等待签到...";
-                tvDetectNextSigningTimer.setText("<< 等待签到 >>");
+                tvDetectNextSigningTimer.setText("【 等待签到 】");
                 setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGNING:
                 displayColor = getResources().getColor(android.R.color.holo_blue_light);
                 titleText = "正在签到...";
-                tvDetectNextSigningTimer.setText("<< 正在签到 >>");
+                tvDetectNextSigningTimer.setText("【 正在签到 】");
                 setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGN_FAILED_USER_NOT_FOUND:
@@ -659,6 +645,11 @@ public class DetectActivity extends BaseActivity {
             case SIGN_FAILED_OTHER_REASONS:
                 displayColor = getResources().getColor(android.R.color.holo_red_light);
                 titleText = "签到失败！请重试。";
+                setButtonState(btnDetectContinueSigning, true);
+                break;
+            case SIGN_FAILED_ALREADY_SIGNED_IN:
+                displayColor = getResources().getColor(android.R.color.holo_red_light);
+                titleText = "您已经签到，请就诊。";
                 setButtonState(btnDetectContinueSigning, true);
                 break;
             case SIGN_SUCCEEDED:
@@ -681,5 +672,95 @@ public class DetectActivity extends BaseActivity {
         } else {
             button.setBackground(getResources().getDrawable(R.drawable.button_round_shape_disabled));
         }
+    }
+
+    /**
+     * 展示对话框
+     *
+     * @param
+     */
+    private void showChooseRoleDialog() {
+        final BaseDialog dialogChooseRole = new BaseDialog(mContext);
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_role, null);
+
+        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
+        ivCloseDialog.setVisibility(View.GONE);
+
+        final ImageButton btnChooseNewUser = (ImageButton) view.findViewById(R.id.btn_choose_new_user);
+        final ImageButton btnChooseOldUser = (ImageButton) view.findViewById(R.id.btn_choose_old_user);
+        btnChooseNewUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogChooseRole.dismiss();
+                // mSearchFailTimes = 0;
+                Bitmap uploadedFace = mList.get(mList.size() - 1);
+                final String base64Image = convertImageToBase64String(uploadedFace);
+                startRegisterActivity(base64Image);
+            }
+        });
+
+        btnChooseOldUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogChooseRole.dismiss();
+                // mSearchFailTimes = 0;
+                mList.clear();
+                resetDisplayContents();
+            }
+        });
+
+        dialogChooseRole.setContentView(view);
+        dialogChooseRole.setCancelable(false);
+        dialogChooseRole.show();
+    }
+
+    /**
+     * 展示对话框
+     *
+     * @param
+     */
+    private void showCommonMessageDialog(String dialogContent) {
+        final BaseDialog dialogMessage = new BaseDialog(mContext);
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
+
+        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
+        ivCloseDialog.setVisibility(View.GONE);
+
+        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
+        tvDialogContent.setText(dialogContent);
+
+        final TextView btnDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
+        btnDialogOk.setText("知道了");
+        btnDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMessage.dismiss();
+                mList.clear();
+                resetDisplayContents();
+            }
+        });
+
+        final TextView btnDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
+        btnDialogCancel.setVisibility(View.GONE);
+
+        dialogMessage.setContentView(view);
+        dialogMessage.setCancelable(false);
+        dialogMessage.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQUEST_CODE_INIT_STATE:
+                mList.clear();
+                resetDisplayContents();
+                break;
+                default:
+                    break;
+        }
+
     }
 }

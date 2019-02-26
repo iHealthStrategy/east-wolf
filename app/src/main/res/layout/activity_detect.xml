@@ -8,208 +8,230 @@
     android:layout_height="match_parent"
     android:layout_centerInParent="true">
 
-    <LinearLayout
-        android:id="@+id/ll_preview_view"
-        android:layout_width="@dimen/preview_image_height"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="@dimen/preview_margin">
-        <RelativeLayout
-            android:layout_width="@dimen/preview_image_height"
-            android:layout_height="@dimen/preview_image_height">
-            <com.baidu.aip.face.TexturePreviewView
-                android:id="@+id/preview_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <TextureView
-                android:id="@+id/texture_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <TextView
-                android:id="@+id/tv_detect_next_signing_timer"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_size_30dp"
-                android:background="@android:color/holo_orange_dark"
-                android:layout_alignParentBottom="true"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:text="@string/text_detect_waiting_for_signing"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_14sp" />
-        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_40dp"
+        android:background="@color/colorPrimary">
 
-        <!--<android.support.v7.widget.RecyclerView-->
+        <TextView
+            android:id="@+id/tv_detect_hospital_title"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/layout_size_30dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:text="北京朝阳医院-内分泌科"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16sp"
+            android:layout_margin="@dimen/layout_size_10dp"/>
+
+        <TextClock
+            android:id="@+id/clock_detect_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:format24Hour="HH:mm:ss"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_16sp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:id="@+id/closeIv"
+            android:layout_width="@dimen/layout_size_32dp"
+            android:layout_height="@dimen/layout_size_32dp"
+            android:layout_marginEnd="@dimen/layout_size_10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_close_white_48dp"
+            android:background="@drawable/button_round_shape_enabled"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@+id/rl_1">
+        <LinearLayout
+            android:id="@+id/ll_preview_view"
+            android:layout_width="@dimen/preview_image_height"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/preview_margin">
+            <RelativeLayout
+                android:layout_width="@dimen/preview_image_height"
+                android:layout_height="@dimen/preview_image_height">
+                <com.baidu.aip.face.TexturePreviewView
+                    android:id="@+id/preview_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextureView
+                    android:id="@+id/texture_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/tv_detect_next_signing_timer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_size_30dp"
+                    android:background="@android:color/holo_orange_dark"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:text="@string/text_detect_waiting_for_signing"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_14sp" />
+            </RelativeLayout>
+
+            <!--<android.support.v7.widget.RecyclerView-->
             <!--android:id="@+id/recyclerview"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="80dp"-->
             <!--android:layout_marginBottom="10dp" />-->
 
-    </LinearLayout>
-
-    <View
-        android:layout_toEndOf="@+id/ll_preview_view"
-        android:layout_width="@dimen/layout_size_1dp"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:layout_marginTop="@dimen/layout_size_10dp"
-        android:layout_marginBottom="@dimen/layout_size_10dp"/>
-
-    <LinearLayout
-        android:id="@+id/ll_detect_result_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/ll_preview_view"
-        android:orientation="vertical"
-        android:padding="@dimen/preview_margin">
-        <TextView
-            android:id="@+id/tv_detect_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginStart="@dimen/layout_size_10dp"
-            android:layout_marginEnd="@dimen/layout_size_10dp"
-            android:layout_marginTop="@dimen/layout_size_40dp"
-            android:layout_marginBottom="@dimen/layout_size_20dp"
-            android:text="等待签到..."
-            android:textColor="@android:color/holo_orange_dark"
-            android:textSize="@dimen/text_size_28sp"
-            android:textStyle="bold"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_size_1dp"
-            android:background="@color/colorPrimary"
-            android:layout_marginRight="@dimen/layout_size_10dp"/>
-
-        <RelativeLayout
-            android:id="@+id/ll_detect_old_user"
+        </LinearLayout>
+        <!--<View-->
+            <!--android:layout_toEndOf="@+id/ll_preview_view"-->
+            <!--android:layout_width="@dimen/layout_size_1dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:layout_marginTop="@dimen/layout_size_10dp"-->
+            <!--android:layout_marginBottom="@dimen/layout_size_10dp"/>-->
+        <LinearLayout
+            android:id="@+id/ll_detect_result_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/ll_preview_view"
             android:orientation="vertical"
-            android:visibility="visible">
-
-            <LinearLayout
-                android:id="@+id/ll_detect_user_name"
+            android:padding="@dimen/preview_margin">
+            <TextView
+                android:id="@+id/tv_detect_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/preview_land_margin"
-                android:layout_marginStart="@dimen/preview_land_margin"
-                android:layout_marginEnd="@dimen/preview_land_margin"
-                android:layout_marginBottom="0dp">
-                <TextView
-                    android:id="@+id/tv_detect_result_name_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="患者姓名："
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/tv_detect_result_name_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_detect_user_mobile"
-                android:layout_below="@+id/ll_detect_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/preview_land_margin"
-                android:layout_marginStart="@dimen/preview_land_margin"
-                android:layout_marginEnd="@dimen/preview_land_margin"
-                android:layout_marginBottom="0dp">
-                <TextView
-                    android:id="@+id/tv_detect_result_mobile_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="手机号码："
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/tv_detect_result_mobile_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_detect_user_id_card"
-                android:layout_below="@+id/ll_detect_user_mobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/preview_land_margin"
-                android:layout_marginStart="@dimen/preview_land_margin"
-                android:layout_marginEnd="@dimen/preview_land_margin"
-                android:layout_marginBottom="0dp">
-                <TextView
-                    android:id="@+id/tv_detect_result_id_card_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="身份证号："
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_16sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/tv_detect_result_id_card_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_16sp" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_detect_continue_signing"
-                android:layout_width="@dimen/layout_size_120dp"
-                android:layout_height="@dimen/layout_size_32dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/layout_size_30dp"
-                android:layout_marginStart="@dimen/preview_land_margin"
-                android:layout_marginEnd="@dimen/preview_land_margin"
-                android:background="@drawable/button_round_shape_disabled"
-                android:text="继续签到"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_16sp"
-                android:enabled="false"/>
+                android:layout_marginStart="@dimen/layout_size_10dp"
+                android:layout_marginEnd="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_40dp"
+                android:layout_marginBottom="@dimen/layout_size_20dp"
+                android:text="等待签到..."
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="@dimen/text_size_28sp"
+                android:textStyle="bold"/>
 
-        </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_size_1dp"
+                android:background="@color/colorPrimary"
+                android:layout_marginRight="@dimen/layout_size_10dp"/>
 
+            <RelativeLayout
+                android:id="@+id/ll_detect_old_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/ll_detect_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/preview_land_margin"
+                    android:layout_marginStart="@dimen/preview_land_margin"
+                    android:layout_marginEnd="@dimen/preview_land_margin"
+                    android:layout_marginBottom="0dp">
+                    <TextView
+                        android:id="@+id/tv_detect_result_name_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="患者姓名："
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_detect_result_name_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_detect_user_mobile"
+                    android:layout_below="@+id/ll_detect_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/preview_land_margin"
+                    android:layout_marginStart="@dimen/preview_land_margin"
+                    android:layout_marginEnd="@dimen/preview_land_margin"
+                    android:layout_marginBottom="0dp">
+                    <TextView
+                        android:id="@+id/tv_detect_result_mobile_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="手机号码："
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_detect_result_mobile_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_detect_user_id_card"
+                    android:layout_below="@+id/ll_detect_user_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/preview_land_margin"
+                    android:layout_marginStart="@dimen/preview_land_margin"
+                    android:layout_marginEnd="@dimen/preview_land_margin"
+                    android:layout_marginBottom="0dp">
+                    <TextView
+                        android:id="@+id/tv_detect_result_id_card_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="身份证号："
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_detect_result_id_card_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_16sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_detect_continue_signing"
+                    android:layout_width="@dimen/layout_size_120dp"
+                    android:layout_height="@dimen/layout_size_32dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/layout_size_30dp"
+                    android:layout_marginStart="@dimen/preview_land_margin"
+                    android:layout_marginEnd="@dimen/preview_land_margin"
+                    android:background="@drawable/button_round_shape_disabled"
+                    android:text="继续签到"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:enabled="false"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
     </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/closeIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:src="@mipmap/detect_close" />
-
-    <!--<TextView-->
-        <!--android:id="@+id/tips_view"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:text="@string/track_tips"-->
-        <!--android:textColor="@android:color/holo_orange_light"-->
-        <!--android:textSize="18sp" />-->
-
 </RelativeLayout>

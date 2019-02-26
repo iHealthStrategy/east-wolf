@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ihealth.activities.DetectActivity;
+import com.ihealth.activities.LoginActivity;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
@@ -30,7 +31,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btnMainFacialCheckIn;
     private Button btnMain2;
-    private Button btnMain3;
+    private Button btnMainLogout;
 
 
     @Override
@@ -52,7 +53,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         btnMainFacialCheckIn = (Button) findViewById(R.id.btn_main_facial_check_in);
         btnMain2 = (Button) findViewById(R.id.btn_main_2);
-        btnMain3 = (Button) findViewById(R.id.btn_main_3);
+        btnMainLogout = (Button) findViewById(R.id.btn_main_log_out);
     }
 
     private void initData(){
@@ -78,7 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void addListener() {
         btnMainFacialCheckIn.setOnClickListener(this);
         btnMain2.setOnClickListener(this);
-        btnMain3.setOnClickListener(this);
+        btnMainLogout.setOnClickListener(this);
     }
 
     @Override
@@ -99,9 +100,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                Intent itTrack = new Intent(MainActivity.this, TrackActivity.class);
 //                startActivity(itTrack);
                 break;
-            case R.id.btn_main_3:
-//                Intent itAttr = new Intent(MainActivity.this, RegisterActivity.class);
-//                startActivity(itAttr);
+            case R.id.btn_main_log_out:
+                SharedPreferenceUtil.clearSharedPreference(mContext, Constants.SP_NAME_AUTHORIZATION);
+                SharedPreferenceUtil.clearSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS);
+                Intent itLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(itLogin);
+                this.finish();
                 break;
             default:
                 break;

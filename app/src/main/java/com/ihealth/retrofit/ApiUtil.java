@@ -57,7 +57,7 @@ public class ApiUtil {
 
     public static Call<ResponseMessageBean> searchFaceCall(Context context, RequestBody requestBody){
         String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
-        Log.i("searchFaceCall", "searchFaceCall: "+token);
+        // Log.i("searchFaceCall", "searchFaceCall: "+token);
         Map<String, String> headerMap = new HashMap<>(2);
         headerMap.put("Content-type","application/json;charset=UTF-8");
         headerMap.put("Authorization","Bearer "+token);
@@ -66,7 +66,7 @@ public class ApiUtil {
 
     public static Call<ResponseMessageBean> searchUserByPhoneNumberCall(Context context, RequestBody requestBody){
         String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
-        Log.i("searchUserByPhoneNumberCall", "searchFaceCall: "+token);
+        // Log.i("searchUserByPhoneNumberCall", "searchFaceCall: "+token);
         Map<String, String> headerMap = new HashMap<>(2);
         headerMap.put("Content-type","application/json;charset=UTF-8");
         headerMap.put("Authorization","Bearer "+token);

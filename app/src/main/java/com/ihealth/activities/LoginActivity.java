@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -70,7 +69,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         ApiUtil.getHospitalsCall().enqueue(new Callback<HospitalBean>() {
             @Override
             public void onResponse(Call<HospitalBean> call, Response<HospitalBean> response) {
-                Log.i("getHospitalsCall", "onResponse: " + response.body().getResultMessage() +"," + response.body().getResultContent()+","+ response.body().getResultStatus());
+                // Log.i("getHospitalsCall", "onResponse: " + response.body().getResultMessage() +"," + response.body().getResultContent()+","+ response.body().getResultStatus());
                 if (response.body().getResultContent() !=null){
                     int respondCode = response.body().getResultStatus();
                     String respondMsg = response.body().getResultMessage();
@@ -91,7 +90,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFailure(Call<HospitalBean> call, Throwable t) {
-                Log.i("getHospitalsCall", "onFailure: " + t);
+                // Log.i("getHospitalsCall", "onFailure: " + t);
                 Toast.makeText(mContext, "请求数据失败，请检查网络连接后重试。", Toast.LENGTH_LONG).show();
             }
         });
@@ -122,8 +121,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void healthCareTeamLogin(){
         HospitalBean.resultContent hospital = (HospitalBean.resultContent)spinnerLoginSelectHospitals.getSelectedItem();
         String hospitalId = hospital.getHospitalId();
-        Log.i(TAG, "healthCareTeamLogin: hospitalId = "+ hospitalId);
+        // Log.i(TAG, "healthCareTeamLogin: hospitalId = "+ hospitalId);
         String password = etvLoginPassword.getText().toString();
+
+        if ("--".equals(hospitalId)){
+            Toast.makeText(mContext, "请选择照护组！",Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (TextUtils.isEmpty(hospitalId) || TextUtils.isEmpty(password)){
             Toast.makeText(mContext, "照护组名和密码不能为空！",Toast.LENGTH_SHORT).show();
@@ -142,7 +146,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         ApiUtil.loginCall(requestBody).enqueue(new Callback<LoginBean>() {
             @Override
             public void onResponse(Call<LoginBean> call, Response<LoginBean> response) {
-                Log.i("loginCall", "onResponse: "+response.body());
+                // Log.i("loginCall", "onResponse: "+response.body());
                 LoginBean loginBean = response.body();
                 if (null!=loginBean){
                     Toast.makeText(mContext, "登录成功！",Toast.LENGTH_SHORT).show();
@@ -168,7 +172,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFailure(Call<LoginBean> call, Throwable t) {
-                Log.i("loginCall", "onFailure: "+t);
+                // Log.i("loginCall", "onFailure: "+t);
                 Toast.makeText(mContext, "登录失败。请检查用户名和密码后重试。",Toast.LENGTH_LONG).show();
             }
         });
@@ -178,14 +182,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_REFRESH_SPINNER){
-                Log.i(TAG, "initView: hospitalList.size() = "+ hospitalList.size());
+                // Log.i(TAG, "initView: hospitalList.size() = "+ hospitalList.size());
                 spinnerAdapter = new LoginSpinnerAdapter(mContext, hospitalList);
                 spinnerLoginSelectHospitals.setAdapter(spinnerAdapter);
                 spinnerLoginSelectHospitals.setSelection(0);
                 spinnerLoginSelectHospitals.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Log.i(TAG, "onItemSelected called: " + position);
+                        // Log.i(TAG, "onItemSelected called: " + position);
                     }
 
                     @Override

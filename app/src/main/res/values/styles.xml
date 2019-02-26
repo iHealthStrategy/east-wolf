@@ -15,7 +15,7 @@
     </style>
 
     <style name="hintAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">@dimen/text_size_18sp</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
@@ -44,4 +44,13 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+
+    <style name="CustomPrimaryTextInputLayout" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">#3498db</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 </resources>
