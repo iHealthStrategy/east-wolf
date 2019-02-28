@@ -1,6 +1,13 @@
 package com.ihealth.retrofit;
 
+/**
+ * 常量值
+ * @author liyanwen
+ */
 public class Constants {
+    public static final String BACKEND_URL_PRODUCTION = "https://pigeon.ihealthlabs.com.cn";
+    public static final String BACKEND_URL_STAGING = "https://pigeon.gtzh-stg.ihealthcn.com";
+
     public static final int FACE_RESPONSE_CODE_SUCCESS = 0;
     public static final int FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND = 1001;
     public static final int FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH = 1002;

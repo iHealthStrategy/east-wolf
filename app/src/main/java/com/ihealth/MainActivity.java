@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -59,19 +60,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnMainLogout = (Button) findViewById(R.id.btn_main_log_out);
     }
 
-    private void initData(){
+    private void initData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("login_bundle");
-        if (null != bundle){
+        if (null != bundle) {
             String logoUrl = bundle.getString("login_info_hospitalLogoImage");
-            if (!TextUtils.isEmpty(logoUrl)){
+            if (!TextUtils.isEmpty(logoUrl)) {
                 Glide.with(mContext).load(logoUrl).into(ivMainHospitalLogo);
             }
             String hospitalDepartmentName = "内分泌科";
             tvMainHospitalDepartmentName.setText(hospitalDepartmentName);
         } else {
             String logoUrl = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_LOGO_URL);
-            if (!TextUtils.isEmpty(logoUrl)){
+            if (!TextUtils.isEmpty(logoUrl)) {
                 Glide.with(mContext).load(logoUrl).into(ivMainHospitalLogo);
             }
             String hospitalDepartmentName = "内分泌科";
@@ -90,20 +91,43 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-            return;
+        } else {
+            switch (v.getId()) {
+                case R.id.btn_main_facial_check_in:
+                    // TODO 实时人脸检测
+                    Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
+                    startActivity(itDetect);
+                    break;
+                case R.id.btn_main_2:
+                    Toast.makeText(mContext, "敬请期待!", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.btn_main_log_out:
+                    showCommonDialog();
+                    break;
+                default:
+                    break;
+            }
         }
+    }
 
-        switch (v.getId()) {
-            case R.id.btn_main_facial_check_in:
-                // TODO 实时人脸检测
-                Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
-                startActivity(itDetect);
-                break;
-            case R.id.btn_main_2:
-                Toast.makeText(mContext, "敬请期待!", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.btn_main_log_out:
-                showCommonDialog();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 100:
+                switch (permissions[0]) {
+                    case Manifest.permission.CAMERA:
+                        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                            Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
+                            startActivity(itDetect);
+                        } else {
+                            Toast.makeText(this, "您需要授予拍照权限才可使用人脸签到APP，谢谢！", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;

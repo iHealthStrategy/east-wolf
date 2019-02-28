@@ -17,8 +17,13 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Retrofit API Utilities
+ * @author liyanwen
+ */
 public class ApiUtil {
-    private static final String HOST = "http://172.16.1.248:3080";
+    // 上线最终打包前，注意修改此地址！
+    private static final String HOST = Constants.BACKEND_URL_STAGING;
     private static Retrofit retrofit;
     private static final int DEFAULT_TIMEOUT = 10;
 
