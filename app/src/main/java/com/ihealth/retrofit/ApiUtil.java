@@ -1,7 +1,6 @@
 package com.ihealth.retrofit;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ihealth.bean.HospitalBean;
 import com.ihealth.bean.LoginBean;
@@ -71,6 +70,15 @@ public class ApiUtil {
         headerMap.put("Content-type","application/json;charset=UTF-8");
         headerMap.put("Authorization","Bearer "+token);
         return ApiUtil.getPostApiService().searchUserByPhoneNumber(headerMap, requestBody);
+    }
+
+    public static Call<ResponseMessageBean> checkInWithConditionCall(Context context, RequestBody requestBody){
+        String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
+        // Log.i("searchUserByPhoneNumberCall", "searchFaceCall: "+token);
+        Map<String, String> headerMap = new HashMap<>(2);
+        headerMap.put("Content-type","application/json;charset=UTF-8");
+        headerMap.put("Authorization","Bearer "+token);
+        return ApiUtil.getPostApiService().checkInWithCondition(headerMap, requestBody);
     }
 
     public static Call<ResponseMessageBean> addUserCall(Context context, RequestBody requestBody){

@@ -76,11 +76,11 @@
                 android:textSize="@dimen/text_size_18sp"
                 android:textStyle="bold" />
 
-            <View
-                android:layout_width="@dimen/layout_size_8dp"
-                android:layout_height="@dimen/layout_size_32dp"
-                android:background="@color/colorPrimary"
-                android:layout_gravity="center" />
+
+            <ImageView
+                android:layout_width="@dimen/layout_size_36dp"
+                android:layout_height="@dimen/layout_size_36dp"
+                android:src="@drawable/ic_play_arrow_black_48dp"/>
 
             <TextView
                 android:id="@+id/tv_register_title"

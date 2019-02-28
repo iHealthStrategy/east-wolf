@@ -29,6 +29,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.aip.ImageFrame;
@@ -416,7 +418,7 @@ public class DetectActivity extends BaseActivity {
             final Bitmap face = model.cropFace();
             if (face != null) {
                 mList.add(face);
-                if (mList.size() == 5) {
+                if (mList.size() == 10) {
                     mHandler.postDelayed(searchFaceRunnable, 100);
                 }
             }
@@ -449,71 +451,7 @@ public class DetectActivity extends BaseActivity {
                         // Log.i("searchFaceRunnable", "onResponse: response = " + response.body());
                         ResponseMessageBean responseMessage = response.body();
                         if (responseMessage != null) {
-                            switch (responseMessage.getResultStatus()) {
-                                case Constants.FACE_RESPONSE_CODE_SUCCESS:
-                                    detectStates = DETECT_STATES.SIGN_SUCCEEDED;
-                                    setDisplayElements();
-
-                                    ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
-                                    String name = resultContent.getNickname();
-                                    String originMobile = resultContent.getPhoneNumber();
-                                    String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
-                                    tvDetectResultName.setText(name);
-                                    tvDetectResultMobile.setText(mobile);
-                                    String originIdCard = resultContent.getIdCard();
-                                    if (!originIdCard.isEmpty()) {
-                                        String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
-                                        tvDetectResultIdCard.setText(idCard);
-                                    } else {
-                                        tvDetectResultIdCard.setText("--");
-                                    }
-                                    startCountDownTimer();
-                                    break;
-
-                                case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
-                                    detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
-                                    setDisplayElements();
-
-                                    startRegisterActivity(base64Image);
-                                    resetDisplayContents();
-                                    break;
-
-                                case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
-                                    detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
-                                    setDisplayElements();
-
-//                                    mSearchFailTimes++;
-//                                    if (mSearchFailTimes == 1) {
-//                                        // startRegisterActivity(base64Image);
-//                                        showChooseRoleDialog();
-//                                        mSearchFailTimes = 0;
-//                                    }
-
-                                    showChooseRoleDialog();
-                                    break;
-
-                                case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
-                                    detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
-                                    setDisplayElements();
-
-                                    startCountDownTimer();
-                                    break;
-
-                                case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
-                                    showCommonMessageDialog("您已签到，无需重复签到。请就诊，谢谢。");
-                                    break;
-
-                                case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
-                                    showCommonMessageDialog("签到失败："+responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
-                                    break;
-
-                                case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:
-                                    showCommonMessageDialog(responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
-                                    break;
-
-                                default:
-                                    break;
-                            }
+                            tackleWithResponds(responseMessage, base64Image);
                         } else {
                             showReLoginDialog("系统认证失败，请重新登录。");
                         }
@@ -568,7 +506,7 @@ public class DetectActivity extends BaseActivity {
     }
 
     /**
-     * 展示对话框
+     * 展示重新登录对话框
      *
      * @param
      */
@@ -675,7 +613,7 @@ public class DetectActivity extends BaseActivity {
     }
 
     /**
-     * 展示对话框
+     * 展示选择患者类型对话框
      *
      * @param
      */
@@ -716,7 +654,56 @@ public class DetectActivity extends BaseActivity {
     }
 
     /**
-     * 展示对话框
+     * 展示共同照护患者选择看诊门诊类型对话框
+     *
+     * @param
+     */
+    private void showChooseOutpatientDialog(final String patientId) {
+        final BaseDialog dialogChooseRole = new BaseDialog(mContext);
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_outpatient, null);
+
+        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
+        ivCloseDialog.setVisibility(View.GONE);
+
+        final LinearLayout llChooseHealthCareTeam = (LinearLayout) view.findViewById(R.id.ll_dialog_health_care_team);
+        final LinearLayout llChooseOrdinaryOutpatient = (LinearLayout) view.findViewById(R.id.ll_dialog_ordinary_outpatients);
+        final RelativeLayout rlChooseHealthCareTeam = (RelativeLayout) view.findViewById(R.id.rl_dialog_health_care_team);
+        final RelativeLayout rlChooseOrdinaryOutpatient = (RelativeLayout) view.findViewById(R.id.rl_dialog_ordinary_outpatients);
+        final ImageButton ibtChooseHealthCareTeam = (ImageButton) view.findViewById(R.id.ibt_dialog_health_care_team);
+        final ImageButton ibtChooseOrdinaryOutpatient = (ImageButton) view.findViewById(R.id.ibt_dialog_ordinary_outpatients);
+
+        View.OnClickListener onChooseHealthCareTeamClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogChooseRole.dismiss();
+                // checkInOnHealthCareTeamAttendanceState(patientId, true);
+                showCommonMessageDialog("签到失败。请您联系照护师改期或进行其他操作，谢谢。");
+            }
+        };
+
+        View.OnClickListener onChooseOrdinaryOutpatientClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogChooseRole.dismiss();
+                checkInOnHealthCareTeamAttendanceState(patientId, false);
+            }
+        };
+
+        llChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
+        rlChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
+        ibtChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
+        llChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
+        rlChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
+        ibtChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
+
+        dialogChooseRole.setContentView(view);
+        dialogChooseRole.setCancelable(false);
+        dialogChooseRole.show();
+    }
+
+    /**
+     * 展示一般对话框
      *
      * @param
      */
@@ -748,6 +735,107 @@ public class DetectActivity extends BaseActivity {
         dialogMessage.setContentView(view);
         dialogMessage.setCancelable(false);
         dialogMessage.show();
+    }
+
+    private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam){
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("patientId", patientId);
+        requestMap.put("hospitalId",
+                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
+        );
+        requestMap.put("hasHealthCare", hasAttendedHealthCareTeam);
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(requestMap, HashMap.class);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
+        ApiUtil.checkInWithConditionCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
+            @Override
+            public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
+                // Log.i("checkInWithConditionCall", "onResponse: "+response.body());
+                ResponseMessageBean responseMessage = response.body();
+                if (responseMessage != null) {
+                    tackleWithResponds(responseMessage, "");
+                } else {
+                    showReLoginDialog("系统认证失败，请重新登录。");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
+                // Log.i("checkInWithConditionCall", "onFailure: "+t);
+            }
+        });
+    }
+
+    private void tackleWithResponds(ResponseMessageBean responseMessage, String base64Image){
+        switch (responseMessage.getResultStatus()) {
+            case Constants.FACE_RESPONSE_CODE_SUCCESS:
+                detectStates = DETECT_STATES.SIGN_SUCCEEDED;
+                setDisplayElements();
+
+                ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
+                String name = resultContent.getNickname();
+                String originMobile = resultContent.getPhoneNumber();
+                String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
+                tvDetectResultName.setText(name);
+                tvDetectResultMobile.setText(mobile);
+                String originIdCard = resultContent.getIdCard();
+                if (!originIdCard.isEmpty()) {
+                    String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
+                    tvDetectResultIdCard.setText(idCard);
+                } else {
+                    tvDetectResultIdCard.setText("--");
+                }
+                startCountDownTimer();
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
+                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
+                setDisplayElements();
+
+                startRegisterActivity(base64Image);
+                resetDisplayContents();
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
+                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
+                setDisplayElements();
+
+//                                    mSearchFailTimes++;
+//                                    if (mSearchFailTimes == 1) {
+//                                        // startRegisterActivity(base64Image);
+//                                        showChooseRoleDialog();
+//                                        mSearchFailTimes = 0;
+//                                    }
+
+                showChooseRoleDialog();
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
+                detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
+                setDisplayElements();
+
+                startCountDownTimer();
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
+                showCommonMessageDialog("您已签到，无需重复签到。请就诊，谢谢。");
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
+                showCommonMessageDialog("签到失败："+responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY:
+                showChooseOutpatientDialog(responseMessage.getResultContent().getUserId());
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:
+                showCommonMessageDialog(responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override

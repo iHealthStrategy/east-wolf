@@ -8,7 +8,6 @@ import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.baidu.aip.FaceEnvironment;
 import com.baidu.aip.FaceSDKManager;
@@ -41,7 +40,7 @@ public class FaceCheckApplication extends Application {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(FaceCheckApplication.this, "启动成功", Toast.LENGTH_LONG).show();
+                        // Toast.makeText(FaceCheckApplication.this, "启动成功", Toast.LENGTH_LONG).show();
                     }
                 });
             }

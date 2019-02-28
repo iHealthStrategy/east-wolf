@@ -5,16 +5,19 @@ package com.ihealth;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ihealth.activities.DetectActivity;
@@ -97,19 +100,66 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(itDetect);
                 break;
             case R.id.btn_main_2:
-//                Intent itTrack = new Intent(MainActivity.this, TrackActivity.class);
-//                startActivity(itTrack);
+                Toast.makeText(mContext, "敬请期待!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_main_log_out:
-                SharedPreferenceUtil.clearSharedPreference(mContext, Constants.SP_NAME_AUTHORIZATION);
-                SharedPreferenceUtil.clearSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS);
-                Intent itLogin = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(itLogin);
-                this.finish();
+                showCommonDialog();
                 break;
             default:
                 break;
         }
 
     }
+
+    /**
+     * 展示对话框
+     *
+     * @param
+     */
+    private void showCommonDialog() {
+        final BaseDialog dialog = new BaseDialog(mContext);
+        View view;
+        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
+
+        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
+        ivCloseDialog.setVisibility(View.VISIBLE);
+        ivCloseDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
+        tvDialogContent.setText("确认退出登录吗？");
+
+        final TextView tvDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
+        tvDialogOk.setText("是的");
+        tvDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                SharedPreferenceUtil.clearSharedPreference(mContext, Constants.SP_NAME_AUTHORIZATION);
+                SharedPreferenceUtil.clearSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS);
+                Intent itLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(itLogin);
+                Activity activity = (Activity) mContext;
+                activity.finish();
+            }
+        });
+
+        final TextView tvDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
+        tvDialogCancel.setText("取消");
+        tvDialogCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setContentView(view);
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
 }

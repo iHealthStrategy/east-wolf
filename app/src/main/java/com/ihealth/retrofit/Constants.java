@@ -9,7 +9,8 @@ public class Constants {
     public static final int FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS = 2002;
     public static final int FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN = 4001;
     public static final int FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE = 4002;
-    public static final int FACE_RESPONSE_CODE_ERROR_OTHER_REASONS = 4003;
+    public static final int FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY = 4003;
+    public static final int FACE_RESPONSE_CODE_ERROR_OTHER_REASONS = 4004;
 
     public static final String SP_NAME_AUTHORIZATION="sp_name_authorization";
     public static final String SP_KEY_TOKEN="sp_key_token";

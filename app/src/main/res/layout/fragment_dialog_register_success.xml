@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:gravity="start"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/layout_size_10dp"
             android:text="恭喜您，签到成功！谢谢！"
@@ -77,7 +77,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:background="@drawable/button_round_shape_white"
-            android:text="5 秒后自动返回"
+            android:text="3 秒后自动返回"
             android:textSize="@dimen/text_size_14sp"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"/>
