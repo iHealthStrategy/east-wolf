@@ -318,7 +318,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="请录入患者身份证号"
-                        android:inputType="number"
                         android:maxLength="18"
                         android:singleLine="true"
                         android:textSize="@dimen/text_size_14sp"

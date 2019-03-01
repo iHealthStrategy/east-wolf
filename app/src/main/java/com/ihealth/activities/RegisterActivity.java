@@ -91,6 +91,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     CountDownTimer timer;
 
+    private BaseDialog dialogRegisteredSucceeded;
+    private BaseDialog dialogMessage;
+    private BaseDialog dialogChooseOutpatient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +102,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         mContext = this;
 
+        initComponents();
         initData();
         initView();
         initListeners();
@@ -132,6 +137,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             }
         }
+    }
+
+    private void initComponents(){
+        dialogChooseOutpatient = new BaseDialog(mContext);
+        dialogMessage = new BaseDialog(mContext);
+        dialogRegisteredSucceeded = new BaseDialog(mContext);
     }
 
     private void initData() {
@@ -301,6 +312,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dialogChooseOutpatient = null;
+        dialogMessage = null;
+        dialogRegisteredSucceeded = null;
         if (null != timer) {
             timer.cancel();
             timer = null;
@@ -450,9 +464,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * @param
      */
     private void showRegisteredResultDialog(String dialogContent) {
-        final BaseDialog dialogRegisteredSucceeded = new BaseDialog(mContext);
-        View view;
-        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_register_success, null);
+        if(null==dialogRegisteredSucceeded){
+            return;
+        }
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_register_success, null);
 
         final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_dialog_content);
         tvDialogContent.setText(dialogContent);
@@ -483,7 +498,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         dialogRegisteredSucceeded.setContentView(view);
         dialogRegisteredSucceeded.setCancelable(false);
-        dialogRegisteredSucceeded.show();
+        if (null!=dialogRegisteredSucceeded && !dialogRegisteredSucceeded.isShowing()){
+            dialogRegisteredSucceeded.show();
+        }
     }
 
     /**
@@ -492,16 +509,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * @param
      */
     private void showCommonDialog(final String phoneNumber, final String nickname, final String idCard) {
-        final BaseDialog dialog = new BaseDialog(mContext);
-        View view;
-        view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
+        if(null==dialogMessage){
+            return;
+        }
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
 
         final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
         ivCloseDialog.setVisibility(View.VISIBLE);
         ivCloseDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialogMessage.dismiss();
             }
         });
 
@@ -518,7 +536,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         tvDialogOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialogMessage.dismiss();
 
                 // 先把已有信息设定到对应控件上
                 etvNewUserName.setText(TextUtils.isEmpty(nickname) ? "" : nickname);
@@ -543,15 +561,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         tvDialogCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialogMessage.dismiss();
                 layoutNewUserMobile.setError("请输入您的手机号!");
                 layoutNewUserMobile.setErrorEnabled(true);
             }
         });
 
-        dialog.setContentView(view);
-        dialog.setCancelable(false);
-        dialog.show();
+        dialogMessage.setContentView(view);
+        dialogMessage.setCancelable(false);
+        if ( null!=dialogMessage && !dialogMessage.isShowing()){
+            dialogMessage.show();
+        }
     }
 
     /**
@@ -560,8 +580,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * @param
      */
     private void showChooseOutpatientDialog(final String patientId) {
-        final BaseDialog dialogChooseRole = new BaseDialog(mContext);
-
+        if(null==dialogChooseOutpatient){
+            return;
+        }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_outpatient, null);
 
         final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
@@ -577,7 +598,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         View.OnClickListener onChooseHealthCareTeamClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogChooseRole.dismiss();
+                dialogChooseOutpatient.dismiss();
                 // checkInOnHealthCareTeamAttendanceState(patientId, true);
                 showRegisteredResultDialog("签到失败。请您联系照护师改期或进行其他操作，谢谢。");
             }
@@ -586,7 +607,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         View.OnClickListener onChooseOrdinaryOutpatientClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogChooseRole.dismiss();
+                dialogChooseOutpatient.dismiss();
                 checkInOnHealthCareTeamAttendanceState(patientId, false);
             }
         };
@@ -598,9 +619,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         rlChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
         ibtChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
 
-        dialogChooseRole.setContentView(view);
-        dialogChooseRole.setCancelable(false);
-        dialogChooseRole.show();
+        dialogChooseOutpatient.setContentView(view);
+        dialogChooseOutpatient.setCancelable(false);
+        if (null!=dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()){
+            dialogChooseOutpatient.show();
+        }
     }
 
     private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam){

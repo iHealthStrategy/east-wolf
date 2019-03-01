@@ -20,6 +20,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -104,6 +105,11 @@ public class DetectActivity extends BaseActivity {
     private Handler mHandler = new Handler();
     // private LinearLayoutManager mLayoutManager;
 
+    private BaseDialog dialogReLogin;
+    private BaseDialog dialogMessage;
+    private BaseDialog dialogChooseRole;
+    private BaseDialog dialogChooseOutpatient;
+
     private int mFrameIndex = 0;
     private int mRound = 2;
 
@@ -149,12 +155,17 @@ public class DetectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detect);
         mContext = this;
+        initComponents();
         faceDetectManager = new FaceDetectManager(this);
         initScreen();
         initView();
-        mHandler = new InnerHandler(this);
-        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
-        // initRecy();
+    }
+
+    private void initComponents(){
+        dialogReLogin = new BaseDialog(mContext);
+        dialogMessage = new BaseDialog(mContext);
+        dialogChooseOutpatient = new BaseDialog(mContext);
+        dialogChooseRole = new BaseDialog(mContext);
     }
 
     /**
@@ -284,6 +295,11 @@ public class DetectActivity extends BaseActivity {
         initPaint();
     }
 
+    private void initCameraView(){
+        mHandler = new InnerHandler(this);
+        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+    }
+
     /**
      * 设置相机亮度，不够200自动调整亮度到200
      */
@@ -327,16 +343,20 @@ public class DetectActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Log.i("onResume", "onResume: mDetectStopped = " + mDetectStopped);
         if (mDetectStopped) {
-            faceDetectManager.start();
             mDetectStopped = false;
         }
-        mHandler.postDelayed(searchFaceRunnable, 10);
+        initCameraView();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dialogReLogin = null;
+        dialogMessage = null;
+        dialogChooseOutpatient = null;
+        dialogChooseRole = null;
         if (null != timer) {
             timer.cancel();
             timer = null;
@@ -511,8 +531,9 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showReLoginDialog(String dialogContent) {
-        final BaseDialog dialogMessage = new BaseDialog(mContext);
-
+        if(null==dialogReLogin){
+            return;
+        }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
 
         final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
@@ -526,7 +547,7 @@ public class DetectActivity extends BaseActivity {
         btnDialogOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogMessage.dismiss();
+                dialogReLogin.dismiss();
                 mContext.startActivity(new Intent(mContext, LoginActivity.class));
                 Activity activity = (Activity) mContext;
                 activity.finish();
@@ -534,9 +555,14 @@ public class DetectActivity extends BaseActivity {
             }
         });
 
-        dialogMessage.setContentView(view);
-        dialogMessage.setCancelable(false);
-        dialogMessage.show();
+        final TextView btnDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
+        btnDialogCancel.setVisibility(View.GONE);
+
+        dialogReLogin.setContentView(view);
+        dialogReLogin.setCancelable(false);
+        if (null!=dialogReLogin && !dialogReLogin.isShowing()){
+            dialogReLogin.show();
+        }
     }
 
     private void startRegisterActivity(String base64Image) {
@@ -618,8 +644,9 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showChooseRoleDialog() {
-        final BaseDialog dialogChooseRole = new BaseDialog(mContext);
-
+        if(null==dialogChooseRole){
+            return;
+        }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_role, null);
 
         final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
@@ -650,7 +677,9 @@ public class DetectActivity extends BaseActivity {
 
         dialogChooseRole.setContentView(view);
         dialogChooseRole.setCancelable(false);
-        dialogChooseRole.show();
+        if ( null!=dialogChooseRole && !dialogChooseRole.isShowing()){
+            dialogChooseRole.show();
+        }
     }
 
     /**
@@ -659,8 +688,9 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showChooseOutpatientDialog(final String patientId) {
-        final BaseDialog dialogChooseRole = new BaseDialog(mContext);
-
+        if(null==dialogChooseOutpatient){
+            return;
+        }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_outpatient, null);
 
         final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
@@ -676,7 +706,7 @@ public class DetectActivity extends BaseActivity {
         View.OnClickListener onChooseHealthCareTeamClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogChooseRole.dismiss();
+                dialogChooseOutpatient.dismiss();
                 // checkInOnHealthCareTeamAttendanceState(patientId, true);
                 showCommonMessageDialog("签到失败。请您联系照护师改期或进行其他操作，谢谢。");
             }
@@ -685,7 +715,7 @@ public class DetectActivity extends BaseActivity {
         View.OnClickListener onChooseOrdinaryOutpatientClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogChooseRole.dismiss();
+                dialogChooseOutpatient.dismiss();
                 checkInOnHealthCareTeamAttendanceState(patientId, false);
             }
         };
@@ -697,9 +727,11 @@ public class DetectActivity extends BaseActivity {
         rlChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
         ibtChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
 
-        dialogChooseRole.setContentView(view);
-        dialogChooseRole.setCancelable(false);
-        dialogChooseRole.show();
+        dialogChooseOutpatient.setContentView(view);
+        dialogChooseOutpatient.setCancelable(false);
+        if (null!=dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()){
+            dialogChooseOutpatient.show();
+        }
     }
 
     /**
@@ -708,8 +740,9 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showCommonMessageDialog(String dialogContent) {
-        final BaseDialog dialogMessage = new BaseDialog(mContext);
-
+        if(null==dialogMessage){
+            return;
+        }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
 
         final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
@@ -734,7 +767,9 @@ public class DetectActivity extends BaseActivity {
 
         dialogMessage.setContentView(view);
         dialogMessage.setCancelable(false);
-        dialogMessage.show();
+        if (null!=dialogMessage && !dialogMessage.isShowing()){
+            dialogMessage.show();
+        }
     }
 
     private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam){
@@ -818,7 +853,9 @@ public class DetectActivity extends BaseActivity {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
-                showCommonMessageDialog("您已签到，无需重复签到。请就诊，谢谢。");
+                ResponseMessageBean.resultContent resultContent1 = responseMessage.getResultContent();
+                String name1 = resultContent1.getNickname();
+                showCommonMessageDialog((!TextUtils.isEmpty(name1)?("尊敬的"+name1+"：\n"):("尊敬的患者：\n")) + "您已签到，无需重复签到。请就诊，谢谢。");
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
