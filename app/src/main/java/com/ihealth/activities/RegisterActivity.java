@@ -680,6 +680,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             default:
+                dialogContents = "签到失败：" + resultMessage + "。\n请返回签到重试，谢谢。";
+                showRegisteredResultDialog(dialogContents);
                 break;
         }
     }

@@ -7,6 +7,7 @@ package com.ihealth.retrofit;
 public class Constants {
     public static final String BACKEND_URL_PRODUCTION = "https://pigeon.ihealthlabs.com.cn";
     public static final String BACKEND_URL_STAGING = "https://pigeon.gtzh-stg.ihealthcn.com";
+    public static final String BACKEND_URL_LOCAL = "http://172.16.1.248:3080";
 
     public static final int FACE_RESPONSE_CODE_SUCCESS = 0;
     public static final int FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND = 1001;
@@ -14,6 +15,7 @@ public class Constants {
     public static final int FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS = 1003;
     public static final int FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST = 2001;
     public static final int FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS = 2002;
+    public static final int FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID = 3001;
     public static final int FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN = 4001;
     public static final int FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE = 4002;
     public static final int FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY = 4003;

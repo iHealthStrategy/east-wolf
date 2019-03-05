@@ -436,7 +436,7 @@ public class DetectActivity extends BaseActivity {
                 paint.setColor(Color.GREEN);
             }
             final Bitmap face = model.cropFace();
-            if (face != null) {
+            if (face != null && mList.size() < 10) {
                 mList.add(face);
                 if (mList.size() == 10) {
                     mHandler.postDelayed(searchFaceRunnable, 100);
@@ -846,6 +846,7 @@ public class DetectActivity extends BaseActivity {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
+            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
                 detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
                 setDisplayElements();
 
