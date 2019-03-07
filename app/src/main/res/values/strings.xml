@@ -36,4 +36,11 @@
     <string name="liveness_good">非常好</string>
     <string name="track_tips">提示：仅实时检测画面内面积最大的人脸</string>
     <string name="text_detect_waiting_for_signing"><![CDATA[【 等待签到 】]]></string>
+    <string name="txt_register_mobile_error">手机号格式不正确！</string>
+    <string name="txt_register_mobile_cannot_blank">手机号不能为空！</string>
+    <string name="txt_register_name_cannot_blank">姓名不能为空！</string>
+    <string name="txt_register_id_invalid_error">身份证号无效！请核对！</string>
+    <string name="txt_register_id_cannot_blank">身份证号不能为空！</string>
+    <string name="txt_register_social_insurance_cannot_blank">社会保障卡号不能为空！</string>
+    <string name="txt_register_social_insurance_mismatch">两次输入的社会保障卡号不一致！</string>
 </resources>

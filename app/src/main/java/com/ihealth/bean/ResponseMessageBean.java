@@ -15,6 +15,7 @@ public class ResponseMessageBean {
         private String phoneNumber;
         private String nickname;
         private String idCard;
+        private String socialInsurance;
 
         public String getUserId() {
             return userId;
@@ -48,6 +49,14 @@ public class ResponseMessageBean {
             this.idCard = idCard;
         }
 
+        public String getSocialInsurance() {
+            return socialInsurance;
+        }
+
+        public void setSocialInsurance(String socialInsurance) {
+            this.socialInsurance = socialInsurance;
+        }
+
         @Override
         public String toString() {
             return "resultContent{" +
@@ -55,6 +64,7 @@ public class ResponseMessageBean {
                     ", phoneNumber='" + phoneNumber + '\'' +
                     ", nickname='" + nickname + '\'' +
                     ", idCard='" + idCard + '\'' +
+                    ", socialInsurance='" + socialInsurance + '\'' +
                     '}';
         }
     }

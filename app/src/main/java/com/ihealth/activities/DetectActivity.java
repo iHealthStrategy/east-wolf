@@ -473,7 +473,7 @@ public class DetectActivity extends BaseActivity {
                         if (responseMessage != null) {
                             tackleWithResponds(responseMessage, base64Image);
                         } else {
-                            showReLoginDialog("系统认证失败，请重新登录。");
+                            showReLoginDialog("系统认证失败，请重新登录");
                         }
                     }
 
@@ -608,17 +608,17 @@ public class DetectActivity extends BaseActivity {
             case SIGN_FAILED_USER_NOT_MATCH:
             case SIGN_FAILED_OTHER_REASONS:
                 displayColor = getResources().getColor(android.R.color.holo_red_light);
-                titleText = "签到失败！请重试。";
+                titleText = "请再试一次";
                 setButtonState(btnDetectContinueSigning, true);
                 break;
             case SIGN_FAILED_ALREADY_SIGNED_IN:
                 displayColor = getResources().getColor(android.R.color.holo_red_light);
-                titleText = "您已经签到，请就诊。";
+                titleText = "您已经签到，请就诊";
                 setButtonState(btnDetectContinueSigning, true);
                 break;
             case SIGN_SUCCEEDED:
                 displayColor = getResources().getColor(android.R.color.holo_green_light);
-                titleText = "签到成功！谢谢！";
+                titleText = "签到成功！";
                 setButtonState(btnDetectContinueSigning, true);
                 break;
             default:
@@ -708,7 +708,7 @@ public class DetectActivity extends BaseActivity {
             public void onClick(View v) {
                 dialogChooseOutpatient.dismiss();
                 // checkInOnHealthCareTeamAttendanceState(patientId, true);
-                showCommonMessageDialog("签到失败。请您联系照护师改期或进行其他操作，谢谢。");
+                showCommonMessageDialog("请您联系照护师改期或进行其他操作");
             }
         };
 
@@ -813,10 +813,17 @@ public class DetectActivity extends BaseActivity {
                 String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
                 tvDetectResultName.setText(name);
                 tvDetectResultMobile.setText(mobile);
-                String originIdCard = resultContent.getIdCard();
-                if (!originIdCard.isEmpty()) {
-                    String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
-                    tvDetectResultIdCard.setText(idCard);
+//                String originIdCard = resultContent.getIdCard();
+//                if (!originIdCard.isEmpty()) {
+//                    String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
+//                    tvDetectResultIdCard.setText(idCard);
+//                } else {
+//                    tvDetectResultIdCard.setText("--");
+//                }
+                String originSocialInsurance = resultContent.getSocialInsurance();
+                if (!originSocialInsurance.isEmpty()) {
+                    String socialInsurance = originSocialInsurance;
+                    tvDetectResultIdCard.setText(socialInsurance);
                 } else {
                     tvDetectResultIdCard.setText("--");
                 }
@@ -856,11 +863,12 @@ public class DetectActivity extends BaseActivity {
             case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
                 ResponseMessageBean.resultContent resultContent1 = responseMessage.getResultContent();
                 String name1 = resultContent1.getNickname();
-                showCommonMessageDialog((!TextUtils.isEmpty(name1)?("尊敬的"+name1+"：\n"):("尊敬的患者：\n")) + "您已签到，无需重复签到。请就诊，谢谢。");
+                showCommonMessageDialog((!TextUtils.isEmpty(name1)?("尊敬的"+name1+"：\n"):("尊敬的患者：\n")) + "您已成功签到，请就诊");
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
-                showCommonMessageDialog("签到失败："+responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                // showCommonMessageDialog("签到失败："+responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                showCommonMessageDialog("请联系照护师核对信息进行签到，谢谢");
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY:
@@ -868,7 +876,8 @@ public class DetectActivity extends BaseActivity {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:
-                showCommonMessageDialog(responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                // showCommonMessageDialog(responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
+                showCommonMessageDialog("请联系照护师核对信息进行签到，谢谢");
                 break;
 
             default:

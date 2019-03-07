@@ -84,14 +84,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Toast.makeText(mContext, respondMsg, Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(mContext, "请求数据失败，请检查网络连接后重试。", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "请检查网络连接后重试", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<HospitalBean> call, Throwable t) {
                 // Log.i("getHospitalsCall", "onFailure: " + t);
-                Toast.makeText(mContext, "请求数据失败，请检查网络连接后重试。", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "请检查网络连接后重试", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -125,12 +125,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String password = etvLoginPassword.getText().toString();
 
         if ("--".equals(hospitalId)){
-            Toast.makeText(mContext, "请选择照护组！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "请选择照护组",Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(hospitalId) || TextUtils.isEmpty(password)){
-            Toast.makeText(mContext, "照护组名和密码不能为空！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "照护组名和密码不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -166,14 +166,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Activity activity = (Activity) mContext;
                     activity.finish();
                 } else {
-                    Toast.makeText(mContext, "登录失败。请检查用户名和密码后重试。",Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "请检查用户名和密码后重试",Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginBean> call, Throwable t) {
                 // Log.i("loginCall", "onFailure: "+t);
-                Toast.makeText(mContext, "登录失败。请检查用户名和密码后重试。",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "请再试一次",Toast.LENGTH_LONG).show();
             }
         });
     }
