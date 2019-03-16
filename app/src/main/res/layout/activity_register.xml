@@ -437,13 +437,13 @@
                     <Button
                         android:id="@+id/btn_detect_new_user_step_5_skip"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/layout_size_32dp"
+                        android:layout_height="@dimen/layout_size_48dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/layout_size_6dp"
                         android:background="@android:color/transparent"
                         android:text="暂时不录入，直接提交 >>"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_size_12sp"
+                        android:textSize="@dimen/text_size_14sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
