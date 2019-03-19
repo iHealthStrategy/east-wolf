@@ -32,6 +32,7 @@ import com.ihealth.bean.UserInfo;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
+import com.ihealth.utils.LoadingProgressBar;
 import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
 
@@ -69,11 +70,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     Button btnNewUserStep2Next;
 
     Button btnNewUserStep3Previous;
-    // Button btnNewUserStep3Skip;
+    Button btnNewUserStep3Skip;
     Button btnNewUserStep3Next;
 
-    // Button btnNewUserStep4Previous;
-    // Button btnNewUserStep4Done;
+    Button btnNewUserStep4Previous;
+    Button btnNewUserStep4Next;
 
     Button btnNewUserStep5Previous;
     Button btnNewUserStep5Skip;
@@ -83,13 +84,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     Button btnNewUserStep6Done;
 
     TextInputEditText etvNewUserName;
-    // TextInputEditText etvNewUserIdCard;
+    TextInputEditText etvNewUserIdCard;
     TextInputEditText etvNewUserMobile;
     TextInputEditText etvNewUserSocialInsurance;
     TextInputEditText etvNewUserSocialInsuranceConfirm;
 
     TextInputLayout layoutNewUserName;
-    // TextInputLayout layoutNewUserIdCard;
+    TextInputLayout layoutNewUserIdCard;
     TextInputLayout layoutNewUserMobile;
     TextInputLayout layoutNewUserSocialInsurance;
     TextInputLayout layoutNewUserSocialInsuranceConfirm;
@@ -107,6 +108,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private BaseDialog dialogMessage;
     private BaseDialog dialogChooseOutpatient;
 
+    LoadingProgressBar loadingProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +122,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         initListeners();
 
         mHandler = new InnerHandler(this);
+
     }
 
     @Override
@@ -187,11 +190,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         btnNewUserStep2Next = (Button) findViewById(R.id.btn_detect_new_user_step_2_next);
 
         btnNewUserStep3Previous = (Button) findViewById(R.id.btn_detect_new_user_step_3_previous);
-        // btnNewUserStep3Skip = (Button) findViewById(R.id.btn_detect_new_user_step_3_skip);
+        btnNewUserStep3Skip = (Button) findViewById(R.id.btn_detect_new_user_step_3_skip);
         btnNewUserStep3Next = (Button) findViewById(R.id.btn_detect_new_user_step_3_next);
 
-        // btnNewUserStep4Previous = (Button) findViewById(R.id.btn_detect_new_user_step_4_previous);
-        // btnNewUserStep4Done = (Button) findViewById(R.id.btn_detect_new_user_step_4_done);
+        btnNewUserStep4Previous = (Button) findViewById(R.id.btn_detect_new_user_step_4_previous);
+        btnNewUserStep4Next = (Button) findViewById(R.id.btn_detect_new_user_step_4_next);
 
         btnNewUserStep5Previous = (Button) findViewById(R.id.btn_detect_new_user_step_5_previous);
         btnNewUserStep5Skip = (Button) findViewById(R.id.btn_detect_new_user_step_5_skip);
@@ -201,17 +204,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         btnNewUserStep6Done = (Button) findViewById(R.id.btn_detect_new_user_step_6_done);
 
         etvNewUserName = (TextInputEditText) findViewById(R.id.etv_register_name);
-        // etvNewUserIdCard = (TextInputEditText) findViewById(R.id.etv_register_id_card);
+        etvNewUserIdCard = (TextInputEditText) findViewById(R.id.etv_register_id_card);
         etvNewUserMobile = (TextInputEditText) findViewById(R.id.etv_register_mobile);
         etvNewUserSocialInsurance = (TextInputEditText) findViewById(R.id.etv_register_social_insurance);
         etvNewUserSocialInsuranceConfirm = (TextInputEditText) findViewById(R.id.etv_register_social_insurance_confirm);
 
         layoutNewUserName = (TextInputLayout) findViewById(R.id.layout_register_name);
-        // layoutNewUserIdCard = (TextInputLayout) findViewById(R.id.layout_register_id_card);
+        layoutNewUserIdCard = (TextInputLayout) findViewById(R.id.layout_register_id_card);
         layoutNewUserMobile = (TextInputLayout) findViewById(R.id.layout_register_mobile);
         layoutNewUserSocialInsurance = (TextInputLayout) findViewById(R.id.layout_register_social_insurance);
         layoutNewUserSocialInsuranceConfirm = (TextInputLayout) findViewById(R.id.layout_register_social_insurance_confirm);
-
+        loadingProgressBar = new LoadingProgressBar(RegisterActivity.this);
     }
 
     private void initListeners() {
@@ -220,10 +223,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         btnNewUserStep2Previous.setOnClickListener(this);
         btnNewUserStep2Next.setOnClickListener(this);
         btnNewUserStep3Previous.setOnClickListener(this);
-        // btnNewUserStep3Skip.setOnClickListener(this);
+        btnNewUserStep3Skip.setOnClickListener(this);
         btnNewUserStep3Next.setOnClickListener(this);
-        // btnNewUserStep4Previous.setOnClickListener(this);
-        // btnNewUserStep4Done.setOnClickListener(this);
+        btnNewUserStep4Previous.setOnClickListener(this);
+        btnNewUserStep4Next.setOnClickListener(this);
         btnNewUserStep5Next.setOnClickListener(this);
         btnNewUserStep5Previous.setOnClickListener(this);
         btnNewUserStep5Skip.setOnClickListener(this);
@@ -289,38 +292,38 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-//        etvNewUserIdCard.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (!TextUtils.isEmpty(s)) {
-//                    if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
-//                        isUserIdCardValid = true;
-//                        setButtonState(btnNewUserStep4Done, true);
-//                        layoutNewUserIdCard.setErrorEnabled(false);
-//                    } else {
-//                        isUserIdCardValid = false;
-//                        setButtonState(btnNewUserStep4Done, false);
-//                        layoutNewUserIdCard.setError(getResources().getString(R.string.txt_register_id_invalid_error));
-//                        layoutNewUserIdCard.setErrorEnabled(true);
-//                    }
-//                } else {
-//                    isUserIdCardValid = true;
-//                    setButtonState(btnNewUserStep4Done, false);
-//                    layoutNewUserIdCard.setError(getResources().getString(R.string.txt_register_id_cannot_blank));
-//                    layoutNewUserIdCard.setErrorEnabled(true);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+       etvNewUserIdCard.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+               if (!TextUtils.isEmpty(s)) {
+                   if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
+                       isUserIdCardValid = true;
+                       setButtonState(btnNewUserStep4Next, true);
+                       layoutNewUserIdCard.setErrorEnabled(false);
+                   } else {
+                       isUserIdCardValid = false;
+                       setButtonState(btnNewUserStep4Next, false);
+                       layoutNewUserIdCard.setError(getResources().getString(R.string.txt_register_id_invalid_error));
+                       layoutNewUserIdCard.setErrorEnabled(true);
+                   }
+               } else {
+                   isUserIdCardValid = true;
+                   setButtonState(btnNewUserStep4Next, false);
+                   layoutNewUserIdCard.setError(getResources().getString(R.string.txt_register_id_cannot_blank));
+                   layoutNewUserIdCard.setErrorEnabled(false);
+               }
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+
+           }
+       });
 
         etvNewUserSocialInsurance.addTextChangedListener(new TextWatcher() {
             @Override
@@ -422,19 +425,23 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         int index = vfNewUserInfos.getDisplayedChild();
         switch (index) {
             case 0:
-                tvRegisterHeader.setText("建立患者信息（1/4）");
+                tvRegisterHeader.setText("建立患者信息（1/5）");
                 tvRegisterTitle.setText("患者手机号");
                 break;
             case 1:
-                tvRegisterHeader.setText("建立患者信息（2/4）");
+                tvRegisterHeader.setText("建立患者信息（2/5）");
                 tvRegisterTitle.setText("患者姓名");
                 break;
             case 2:
-                tvRegisterHeader.setText("建立患者信息（3/4）");
-                tvRegisterTitle.setText("社会保障卡号");
+                tvRegisterHeader.setText("建立患者信息（3/5）");
+                tvRegisterTitle.setText("居民身份证号");
                 break;
             case 3:
-                tvRegisterHeader.setText("建立患者信息（4/4）");
+                tvRegisterHeader.setText("建立患者信息（4/5）");
+                tvRegisterTitle.setText("社会保障卡号");
+                break;
+            case 4:
+                tvRegisterHeader.setText("建立患者信息（5/5）");
                 tvRegisterTitle.setText("社会保障卡号");
                 break;
             default:
@@ -495,33 +502,30 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 vfNewUserInfos.setDisplayedChild(2);
                 changeTitle();
                 break;
-//            case R.id.btn_detect_new_user_step_3_skip:
-//                vfNewUserInfos.setDisplayedChild(2);
-//                changeTitle();
-//                etvNewUserIdCard.setText("");
-//                setButtonState(btnNewUserStep3Next, false);
-//                break;
-//            case R.id.btn_detect_new_user_step_4_previous:
-//                vfNewUserInfos.setDisplayedChild(1);
-//                changeTitle();
-//                break;
-//            case R.id.btn_detect_new_user_step_4_done:
-//                if (!mFaceBase64Image.isEmpty()) {
-//                    Log.d("4_done", "onClick: entered!");
-//                    mHandler.postDelayed(addUserRunnable, 100);
-//                }
-//                break;
-
-            case R.id.btn_detect_new_user_step_5_previous:
+            case R.id.btn_detect_new_user_step_3_skip:
+                vfNewUserInfos.setDisplayedChild(3);
+                changeTitle();
+                etvNewUserIdCard.setText("");
+                break;
+            case R.id.btn_detect_new_user_step_4_previous:
                 vfNewUserInfos.setDisplayedChild(1);
                 changeTitle();
                 break;
-            case R.id.btn_detect_new_user_step_5_next:
+            case R.id.btn_detect_new_user_step_4_next:
                 vfNewUserInfos.setDisplayedChild(3);
                 changeTitle();
                 break;
-            case R.id.btn_detect_new_user_step_6_previous:
+
+            case R.id.btn_detect_new_user_step_5_previous:
                 vfNewUserInfos.setDisplayedChild(2);
+                changeTitle();
+                break;
+            case R.id.btn_detect_new_user_step_5_next:
+                vfNewUserInfos.setDisplayedChild(4);
+                changeTitle();
+                break;
+            case R.id.btn_detect_new_user_step_6_previous:
+                vfNewUserInfos.setDisplayedChild(3);
                 changeTitle();
                 break;
             case R.id.btn_detect_new_user_step_5_skip:
@@ -541,15 +545,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         @Override
         public void run() {
             // Log.i("addUserRunnable", "run: base64Image = " + mFaceBase64Image);
-
+            loadingProgressBar.show();
             String nickname = etvNewUserName.getText().toString();
             String phoneNumber = etvNewUserMobile.getText().toString();
-            // String idCard = etvNewUserIdCard.getText().toString();
+            String idCard = etvNewUserIdCard.getText().toString();
             String socialInsurance = etvNewUserSocialInsuranceConfirm.getText().toString();
 
             AddUserRequestBean addUserRequestBean = new AddUserRequestBean();
             addUserRequestBean.setBase64Image(mFaceBase64Image);
-            addUserRequestBean.setUserInfo(new UserInfo(phoneNumber, nickname, "", socialInsurance));
+            addUserRequestBean.setUserInfo(new UserInfo(phoneNumber, nickname, idCard, socialInsurance));
             addUserRequestBean.setHospitalId(
                     SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
             );
@@ -563,6 +567,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 @Override
                 public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
                     // Log.i("addUserRunnable", "onResponse: "+ response.body());
+                    loadingProgressBar.hide();
                     if (response.isSuccessful()) {
                         ResponseMessageBean responseMessageBean = response.body();
                         tackleWithResponds(responseMessageBean);
@@ -647,17 +652,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         });
 
         final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
-//        tvDialogContent.setText(
-//                "请确认如下信息是否正确：\n"
-//                        + "手机号：" + (TextUtils.isEmpty(phoneNumber) ? "--" : (phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(7, 11))) + "\n"
-//                        + "姓名：" + (TextUtils.isEmpty(nickname) ? "--" : nickname) + "\n"
-//                        + "身份证号：" + (TextUtils.isEmpty(idCard) ? "--" : (idCard.substring(0, 6) + "********" + idCard.substring(idCard.length() - 4)))
-//        );
 
         tvDialogContent.setText(
                 "请确认如下信息是否正确：\n"
                         + "手机号：" + (TextUtils.isEmpty(phoneNumber) ? "--" : (phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(7, 11))) + "\n"
                         + "姓名：" + (TextUtils.isEmpty(nickname) ? "--" : nickname) + "\n"
+                        + "身份证号：" + (TextUtils.isEmpty(idCard) ? "--" : (idCard.substring(0, 6) + "********" + idCard.substring(idCard.length() - 4)))+"\n"
                         + "社会保障卡号：" + (TextUtils.isEmpty(socialInsurance) ? "--" : socialInsurance)
         );
 

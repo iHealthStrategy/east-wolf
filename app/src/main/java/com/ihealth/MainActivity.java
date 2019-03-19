@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button btnMain2;
     private Button btnMainLogout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

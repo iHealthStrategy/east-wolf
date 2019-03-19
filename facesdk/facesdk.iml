@@ -17,7 +17,7 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/build/generated/res/rs/debug;file://$MODULE_DIR$/build/generated/res/resValues/debug" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
         <option name="PROJECT_TYPE" value="1" />
       </configuration>
@@ -83,10 +83,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/build/generated/not_namespaced_r_class_sources" />
+      <excludeFolder url="file://$MODULE_DIR$/build/generated/source/r" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/aapt_friendly_merged_manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/annotation_processor_list" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check_manifest_result" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/compile_only_not_namespaced_r_class_jar" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/full_jar" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/intermediate-jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javac" />
@@ -107,18 +110,18 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-vector-drawable-25.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-core-ui-25.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-fragment-25.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-v4-25.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-media-compat-25.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-fragment:25.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7:25.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/ihealth/Desktop/RNProject/DeftDog/facesdk/libs/baidu_license.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-25.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-compat-25.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable-25.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-compat:25.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-core-utils:25.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-media-compat:25.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-vector-drawable:25.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-v4:25.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable:25.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/ihealth/Desktop/RNProject/DeftDog/facesdk/libs/facesdk.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-annotations:25.1.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-core-ui:25.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/ihealth/Desktop/RNProject/DeftDog/facesdk/libs/ast.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-core-utils-25.1.0" level="project" />
   </component>
 </module>

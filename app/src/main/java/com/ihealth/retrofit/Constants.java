@@ -7,7 +7,7 @@ package com.ihealth.retrofit;
 public class Constants {
     public static final String BACKEND_URL_PRODUCTION = "https://pigeon.ihealthlabs.com.cn";
     public static final String BACKEND_URL_STAGING = "https://pigeon.gtzh-stg.ihealthcn.com";
-    public static final String BACKEND_URL_LOCAL = "http://172.16.1.248:3080";
+    public static final String BACKEND_URL_LOCAL = "http://172.16.0.91:3080";
 
     public static final int FACE_RESPONSE_CODE_SUCCESS = 0;
     public static final int FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND = 1001;
