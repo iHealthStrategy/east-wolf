@@ -675,13 +675,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                 // 如果信息全部完整，那么进行签到
                 // 否则需要填写缺失信息
-                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(nickname) && !TextUtils.isEmpty(socialInsurance)) {
+                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(nickname) && !TextUtils.isEmpty(idCard) && !TextUtils.isEmpty(socialInsurance)) {
                     mHandler.postDelayed(addUserRunnable, 100);
                 } else if (TextUtils.isEmpty(nickname)) {
                     vfNewUserInfos.setDisplayedChild(1);
                     changeTitle();
-                } else {
+                } else if(TextUtils.isEmpty(idCard)){
                     vfNewUserInfos.setDisplayedChild(2);
+                    changeTitle();
+                }else {
+                    vfNewUserInfos.setDisplayedChild(3);
                     changeTitle();
                 }
             }

@@ -34,8 +34,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvMainHospitalDepartmentName;
 
     private Button btnMainFacialCheckIn;
-    private Button btnMain2;
-    private Button btnMainLogout;
+   // private Button btnMain2;
+  //  private Button btnMainLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tvMainHospitalDepartmentName = (TextView) findViewById(R.id.tv_main_hospital_department_name);
 
         btnMainFacialCheckIn = (Button) findViewById(R.id.btn_main_facial_check_in);
-        btnMain2 = (Button) findViewById(R.id.btn_main_2);
-        btnMainLogout = (Button) findViewById(R.id.btn_main_log_out);
+       // btnMain2 = (Button) findViewById(R.id.btn_main_2);
+       // btnMainLogout = (Button) findViewById(R.id.btn_main_log_out);
     }
 
     private void initData() {
@@ -81,8 +81,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void addListener() {
         btnMainFacialCheckIn.setOnClickListener(this);
-        btnMain2.setOnClickListener(this);
-        btnMainLogout.setOnClickListener(this);
+       // btnMain2.setOnClickListener(this);
+      //  btnMainLogout.setOnClickListener(this);
     }
 
     @Override
@@ -97,12 +97,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
                     startActivity(itDetect);
                     break;
-                case R.id.btn_main_2:
+               /* case R.id.btn_main_2:
                     Toast.makeText(mContext, "敬请期待!", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.btn_main_log_out:
                     showCommonDialog();
-                    break;
+                    break;*/
                 default:
                     break;
             }
