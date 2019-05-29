@@ -36,6 +36,19 @@
             android:textSize="@dimen/text_size_16sp"
             android:textStyle="bold"
             android:layout_centerInParent="true"/>
+        <TextView
+            android:id="@+id/ble_status"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:text="蓝牙未开启"/>
 
         <ImageView
             android:id="@+id/closeIv"
@@ -105,6 +118,7 @@
             android:layout_toEndOf="@+id/ll_preview_view"
             android:orientation="vertical"
             android:padding="@dimen/preview_margin">
+
             <TextView
                 android:id="@+id/tv_detect_title"
                 android:layout_width="match_parent"
@@ -229,6 +243,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_16sp"
                     android:enabled="false"/>
+
 
             </RelativeLayout>
 

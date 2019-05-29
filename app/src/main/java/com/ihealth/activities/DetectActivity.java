@@ -8,6 +8,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -47,11 +49,18 @@ import com.baidu.idl.facesdk.FaceInfo;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.BaseDialog;
+import com.ihealth.Printer.BluetoothPrinter;
+import com.ihealth.Printer.BluetoothPrinterStatus;
+import com.ihealth.Printer.PrinterStatusResponse;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
+
+
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
@@ -66,6 +75,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 /**
  * 实时检测人脸框并把检测到得人脸图片绘制在屏幕上，每10帧截图一张。
  * Intent intent = new Intent(MainActivity.this, DetectActivity.class);
@@ -77,7 +87,7 @@ public class DetectActivity extends BaseActivity {
     private static final int MSG_REFRESH_TITLE = 1002;
 
     private static final int REQUEST_CODE_INIT_STATE = 2001;
-
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private Context mContext;
 
     private TextView tvDetectHospitalTitle;
@@ -109,6 +119,10 @@ public class DetectActivity extends BaseActivity {
     private BaseDialog dialogMessage;
     private BaseDialog dialogChooseRole;
     private BaseDialog dialogChooseOutpatient;
+
+    private BluetoothPrinter printer;
+    private TextView bleStatus;
+
 
     private int mFrameIndex = 0;
     private int mRound = 2;
@@ -150,6 +164,7 @@ public class DetectActivity extends BaseActivity {
         SIGN_SUCCEEDED,
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,9 +172,54 @@ public class DetectActivity extends BaseActivity {
         mContext = this;
         initComponents();
         faceDetectManager = new FaceDetectManager(this);
+
+
         initScreen();
         initView();
+        initBluetooth();
+
     }
+    private void initBluetooth(){
+        printer = new BluetoothPrinter(this, new PrinterStatusResponse() {
+            @Override
+            public void onStatusChange(BluetoothPrinterStatus status) {
+                switch (status){
+                    case OPEN: {bleStatus.setText("蓝牙已开启"); break;}
+                    case CLOSED:{bleStatus.setText("蓝牙已关闭");break;}
+
+                    case SEARCHING: {bleStatus.setText("搜索打印机");break;}
+                    case SEARCHING_CANCELED:{bleStatus.setText("搜索已取消");break;}
+                    case SEARCHING_STOPPED:{bleStatus.setText("搜索已结束");break;}
+                    case CONNECTED:{bleStatus.setText("打印机就绪");break;}
+                    case DISCONNECTED:{bleStatus.setText("打印机已断开");break;}
+                    case CONNECTING:{bleStatus.setText("连接打印机");break;}
+                    case CONNECT_FAIL: {bleStatus.setText("连接失败");break;}
+                    default:bleStatus.setText(status.toString());
+                }
+
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Android M Permission check
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                return;
+            }
+        }
+        printer.searchAndConnect();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_COARSE_LOCATION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    printer.searchAndConnect();
+                }
+                break;
+        }
+    }
+
 
     private void initComponents(){
         dialogReLogin = new BaseDialog(mContext);
@@ -201,6 +261,7 @@ public class DetectActivity extends BaseActivity {
         btnDetectContinueSigning = (Button) findViewById(R.id.btn_detect_continue_signing);
         tvDetectNextSigningTimer = (TextView) findViewById(R.id.tv_detect_next_signing_timer);
 
+        bleStatus = (TextView) findViewById(R.id.ble_status);
         btnDetectContinueSigning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -357,11 +418,14 @@ public class DetectActivity extends BaseActivity {
         dialogMessage = null;
         dialogChooseOutpatient = null;
         dialogChooseRole = null;
+        printer.destroy();
         if (null != timer) {
             timer.cancel();
             timer = null;
         }
     }
+
+
 
     private class InnerHandler extends Handler {
         private WeakReference<DetectActivity> mWeakReference;
