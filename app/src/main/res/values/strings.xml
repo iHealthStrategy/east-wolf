@@ -35,7 +35,7 @@
     <string name="liveness_head_down">缓慢低头</string>
     <string name="liveness_good">非常好</string>
     <string name="track_tips">提示：仅实时检测画面内面积最大的人脸</string>
-    <string name="text_detect_waiting_for_signing"><![CDATA[【 等待签到 】]]></string>
+    <string name="text_detect_waiting_for_signing">等待签到</string>
     <string name="txt_register_mobile_error">手机号格式不正确！</string>
     <string name="txt_register_mobile_cannot_blank">手机号不能为空！</string>
     <string name="txt_register_name_cannot_blank">姓名不能为空！</string>

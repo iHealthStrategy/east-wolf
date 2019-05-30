@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,11 +32,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Context mContext;
     private ImageView ivMainHospitalLogo;
-    private TextView tvMainHospitalDepartmentName;
-
     private Button btnMainFacialCheckIn;
-   // private Button btnMain2;
-  //  private Button btnMainLogout;
+   private LinearLayout close_ll ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +50,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void initView() {
         ivMainHospitalLogo = (ImageView) findViewById(R.id.iv_main_hospital_logo);
-        tvMainHospitalDepartmentName = (TextView) findViewById(R.id.tv_main_hospital_department_name);
-
+        close_ll = (LinearLayout) findViewById(R.id.close_ll);
+        close_ll.setVisibility(ImageView.GONE);
         btnMainFacialCheckIn = (Button) findViewById(R.id.btn_main_facial_check_in);
-       // btnMain2 = (Button) findViewById(R.id.btn_main_2);
-       // btnMainLogout = (Button) findViewById(R.id.btn_main_log_out);
     }
 
     private void initData() {
@@ -67,22 +63,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (!TextUtils.isEmpty(logoUrl)) {
                 Glide.with(mContext).load(logoUrl).into(ivMainHospitalLogo);
             }
-            String hospitalDepartmentName = "内分泌科";
-            tvMainHospitalDepartmentName.setText(hospitalDepartmentName);
         } else {
             String logoUrl = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_LOGO_URL);
             if (!TextUtils.isEmpty(logoUrl)) {
                 Glide.with(mContext).load(logoUrl).into(ivMainHospitalLogo);
             }
-            String hospitalDepartmentName = "内分泌科";
-            tvMainHospitalDepartmentName.setText(hospitalDepartmentName);
         }
     }
 
     private void addListener() {
         btnMainFacialCheckIn.setOnClickListener(this);
-       // btnMain2.setOnClickListener(this);
-      //  btnMainLogout.setOnClickListener(this);
     }
 
     @Override
@@ -97,12 +87,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
                     startActivity(itDetect);
                     break;
-               /* case R.id.btn_main_2:
-                    Toast.makeText(mContext, "敬请期待!", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.btn_main_log_out:
-                    showCommonDialog();
-                    break;*/
                 default:
                     break;
             }

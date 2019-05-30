@@ -75,8 +75,8 @@
     <dimen name="round">1dp</dimen>
     <dimen name="line_space_extra">10dp</dimen>
 
-    <dimen name="preview_image_width">280dp</dimen>
-    <dimen name="preview_image_height">280dp</dimen>
+    <dimen name="preview_image_width">230dp</dimen>
+    <dimen name="preview_image_height">230dp</dimen>
 
     <dimen name="text_image_space_extra">20dp</dimen>
 

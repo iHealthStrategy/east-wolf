@@ -80,17 +80,17 @@ public class DetectActivity extends BaseActivity {
 
     private Context mContext;
 
-    private TextView tvDetectHospitalTitle;
-    private TextView tvDetectResultTitle;
+   // private TextView tvDetectHospitalTitle;
+    /*private TextView tvDetectResultTitle;
     private TextView tvDetectResultName;
     private TextView tvDetectResultMobile;
     private TextView tvDetectResultIdCard;
 
-    private Button btnDetectContinueSigning;
+    private Button btnDetectContinueSigning;*/
     private TextView tvDetectNextSigningTimer;
 
     private PreviewView previewView;
-    private ImageView closeIv;
+    private LinearLayout close_ll;
     private boolean mDetectStopped = false;
 
     private FaceDetectManager faceDetectManager;
@@ -187,20 +187,15 @@ public class DetectActivity extends BaseActivity {
         previewView = (PreviewView) findViewById(R.id.preview_view);
         mTextureView = (TextureView) findViewById(R.id.texture_view);
 
-        tvDetectHospitalTitle = (TextView) findViewById(R.id.tv_detect_hospital_title);
-        tvDetectHospitalTitle.setText(
-                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_FULL_NAME)
-                +"-内分泌科"
-        );
-
-        tvDetectResultTitle = (TextView) findViewById(R.id.tv_detect_title);
+        /*tvDetectResultTitle = (TextView) findViewById(R.id.tv_detect_title);
         tvDetectResultName = (TextView) findViewById(R.id.tv_detect_result_name_content);
         tvDetectResultMobile = (TextView) findViewById(R.id.tv_detect_result_mobile_content);
         tvDetectResultIdCard = (TextView) findViewById(R.id.tv_detect_result_id_card_content);
 
-        btnDetectContinueSigning = (Button) findViewById(R.id.btn_detect_continue_signing);
+        btnDetectContinueSigning = (Button) findViewById(R.id.btn_detect_continue_signing);*/
         tvDetectNextSigningTimer = (TextView) findViewById(R.id.tv_detect_next_signing_timer);
 
+/*
         btnDetectContinueSigning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,6 +205,7 @@ public class DetectActivity extends BaseActivity {
                 resetDisplayContents();
             }
         });
+*/
 
         mTextureView.setOpaque(false);
         // mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
@@ -284,8 +280,8 @@ public class DetectActivity extends BaseActivity {
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         cameraImageSource.getCameraControl().setDisplayOrientation(rotation);
         setCameraType(cameraImageSource);
-        closeIv = (ImageView) findViewById(R.id.closeIv);
-        closeIv.setOnClickListener(new View.OnClickListener() {
+        close_ll = (LinearLayout) findViewById(R.id.close_ll);
+        close_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -520,9 +516,9 @@ public class DetectActivity extends BaseActivity {
         detectStates = DETECT_STATES.WAITING_FOR_SIGNING;
         setDisplayElements();
 
-        tvDetectResultIdCard.setText("--");
+       /* tvDetectResultIdCard.setText("--");
         tvDetectResultName.setText("--");
-        tvDetectResultMobile.setText("--");
+        tvDetectResultMobile.setText("--");*/
     }
 
     /**
@@ -596,36 +592,36 @@ public class DetectActivity extends BaseActivity {
                 displayColor = getResources().getColor(android.R.color.holo_orange_dark);
                 titleText = "等待签到...";
                 tvDetectNextSigningTimer.setText("【 等待签到 】");
-                setButtonState(btnDetectContinueSigning, false);
+               // setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGNING:
                 displayColor = getResources().getColor(android.R.color.holo_blue_light);
                 titleText = "正在签到...";
                 tvDetectNextSigningTimer.setText("【 正在签到 】");
-                setButtonState(btnDetectContinueSigning, false);
+               // setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGN_FAILED_USER_NOT_FOUND:
             case SIGN_FAILED_USER_NOT_MATCH:
             case SIGN_FAILED_OTHER_REASONS:
                 displayColor = getResources().getColor(android.R.color.holo_red_light);
                 titleText = "请再试一次";
-                setButtonState(btnDetectContinueSigning, true);
+               // setButtonState(btnDetectContinueSigning, true);
                 break;
             case SIGN_FAILED_ALREADY_SIGNED_IN:
                 displayColor = getResources().getColor(android.R.color.holo_red_light);
                 titleText = "您已经签到，请就诊";
-                setButtonState(btnDetectContinueSigning, true);
+               // setButtonState(btnDetectContinueSigning, true);
                 break;
             case SIGN_SUCCEEDED:
                 displayColor = getResources().getColor(android.R.color.holo_green_light);
                 titleText = "签到成功！";
-                setButtonState(btnDetectContinueSigning, true);
+                //setButtonState(btnDetectContinueSigning, true);
                 break;
             default:
                 break;
         }
-        tvDetectResultTitle.setTextColor(displayColor);
-        tvDetectResultTitle.setText(titleText);
+       // tvDetectResultTitle.setTextColor(displayColor);
+       // tvDetectResultTitle.setText(titleText);
         tvDetectNextSigningTimer.setBackgroundColor(displayColor);
     }
 
@@ -652,8 +648,8 @@ public class DetectActivity extends BaseActivity {
         final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
         ivCloseDialog.setVisibility(View.GONE);
 
-        final ImageButton btnChooseNewUser = (ImageButton) view.findViewById(R.id.btn_choose_new_user);
-        final ImageButton btnChooseOldUser = (ImageButton) view.findViewById(R.id.btn_choose_old_user);
+        final Button btnChooseNewUser = (Button) view.findViewById(R.id.btn_choose_new_user);
+        final Button btnChooseOldUser = (Button) view.findViewById(R.id.btn_choose_old_user);
         btnChooseNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -811,8 +807,8 @@ public class DetectActivity extends BaseActivity {
                 String name = resultContent.getNickname();
                 String originMobile = resultContent.getPhoneNumber();
                 String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
-                tvDetectResultName.setText(name);
-                tvDetectResultMobile.setText(mobile);
+               // tvDetectResultName.setText(name);
+               // tvDetectResultMobile.setText(mobile);
 //                String originIdCard = resultContent.getIdCard();
 //                if (!originIdCard.isEmpty()) {
 //                    String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
@@ -823,9 +819,9 @@ public class DetectActivity extends BaseActivity {
                 String originSocialInsurance = resultContent.getSocialInsurance();
                 if (!originSocialInsurance.isEmpty()) {
                     String socialInsurance = originSocialInsurance;
-                    tvDetectResultIdCard.setText(socialInsurance);
+                  //  tvDetectResultIdCard.setText(socialInsurance);
                 } else {
-                    tvDetectResultIdCard.setText("--");
+                  //  tvDetectResultIdCard.setText("--");
                 }
                 startCountDownTimer();
                 break;
