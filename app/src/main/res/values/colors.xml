@@ -9,4 +9,6 @@
     <color name="color_main_btn_1">#F44336</color>
     <color name="color_main_btn_2">#4CAF50</color>
     <color name="color_main_btn_3">#9C27B0</color>
+
+    <color name="color_time_line_point_off">#9B9B9B</color>
 </resources>

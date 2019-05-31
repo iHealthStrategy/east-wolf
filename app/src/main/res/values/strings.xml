@@ -43,4 +43,8 @@
     <string name="txt_register_id_cannot_blank">身份证号不能为空！</string>
     <string name="txt_register_social_insurance_cannot_blank">社会保障卡号不能为空！</string>
     <string name="txt_register_social_insurance_mismatch">两次输入的社会保障卡号不一致！</string>
+    <string name="time_line_text_one">患者手机号</string>
+    <string name="time_line_text_two">患者姓名</string>
+    <string name="time_line_text_three">患者身份证</string>
+    <string name="time_line_text_four">患者社保号</string>
 </resources>

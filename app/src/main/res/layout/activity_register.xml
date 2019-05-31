@@ -24,17 +24,13 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_12sp"
             />
-        <com.github.vipulasri.timelineview.TimelineView
-            android:id="@+id/timeline"
+        <include
+            android:id="@+id/ll_time_line"
+            layout="@layout/layout_time_line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:markerSize="20dp"
-            app:lineWidth="2dp"
-            app:startLineColor="@color/colorPrimary"
-            app:endLineColor="@color/colorPrimary"
-            app:linePadding="5dp"
-            app:lineOrientation="horizontal"
-            />
+            android:layout_marginRight="@dimen/layout_size_10dp"
+            android:layout_marginTop="@dimen/layout_size_10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

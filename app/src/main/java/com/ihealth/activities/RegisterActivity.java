@@ -24,14 +24,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.github.vipulasri.timelineview.TimelineView;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.BaseDialog;
-import com.ihealth.adapter.TimeLineAdapter;
 import com.ihealth.bean.AddUserRequestBean;
 import com.ihealth.bean.ResponseMessageBean;
-import com.ihealth.bean.TimeLineBean;
 import com.ihealth.bean.UserInfo;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
@@ -41,9 +38,7 @@ import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -99,7 +94,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     TextInputLayout layoutNewUserSocialInsurance;
     TextInputLayout layoutNewUserSocialInsuranceConfirm;
 
-    TimelineView timelineView;
+    TextView tvTimeLine1,tvTimeLine2,tvTimeLine3,tvTimeLine4;
+    TextView tvTitle1,tvTitle2,tvTitle3,tvTitle4;
+    View lineView1,lineView2,lineView3;
+
 
     String mFaceBase64Image = "";
 
@@ -114,10 +112,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private BaseDialog dialogMessage;
     private BaseDialog dialogChooseOutpatient;
 
-    private TimeLineAdapter mAdapter;
-
-    private List<TimeLineBean> datas = new ArrayList<>();
-
     LoadingProgressBar loadingProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +124,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
        // initData();
         initView();
         initListeners();
-        initTimeLineView();
 
         mHandler = new InnerHandler(this);
 
@@ -219,20 +212,21 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         layoutNewUserMobile = (TextInputLayout) findViewById(R.id.layout_register_mobile);
         layoutNewUserSocialInsurance = (TextInputLayout) findViewById(R.id.layout_register_social_insurance);
         layoutNewUserSocialInsuranceConfirm = (TextInputLayout) findViewById(R.id.layout_register_social_insurance_confirm);
-        timelineView = findViewById(R.id.timeline);
+
+        tvTimeLine1 = findViewById(R.id.tv_time_line_one);
+        tvTimeLine2 = findViewById(R.id.tv_time_line_two);
+        tvTimeLine3 = findViewById(R.id.tv_time_line_three);
+        tvTimeLine4 = findViewById(R.id.tv_time_line_four);
+        lineView1 = findViewById(R.id.time_line_one);
+        lineView2 = findViewById(R.id.time_line_two);
+        lineView3 = findViewById(R.id.time_line_three);
+        tvTitle1 = findViewById(R.id.tv_title_one);
+        tvTitle2 = findViewById(R.id.tv_title_two);
+        tvTitle3 = findViewById(R.id.tv_title_three);
+        tvTitle4 = findViewById(R.id.tv_title_four);
+
         loadingProgressBar = new LoadingProgressBar(RegisterActivity.this);
 
-    }
-
-    private void initTimeLineView (){
-        for(int i = 0; i < 4; i++){
-            TimeLineBean timeLineBean = new TimeLineBean();
-            timeLineBean.setContent("time"+i);
-            timeLineBean.setIndex(i);
-            datas.add(timeLineBean);
-        }
-        mAdapter = new TimeLineAdapter(this,datas);
-        timelineView=mAdapter;
     }
 
     private void initListeners() {
@@ -443,30 +437,109 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         int index = vfNewUserInfos.getDisplayedChild();
         switch (index) {
             case 0:
+                chageTimeLineOffColor(1);
+                chageTimeLineOffColor(2);
+                chageTimeLineOffColor(3);
                 tvRegisterHeader.setText("建立患者信息（1/5）");
                 tvRegisterTitle.setText("患者手机号");
                 break;
             case 1:
+                chageTimeLineOnColor(1);
+                chageTimeLineOffColor(2);
+                chageTimeLineOffColor(3);
                 tvRegisterHeader.setText("建立患者信息（2/5）");
                 tvRegisterTitle.setText("患者姓名");
                 break;
             case 2:
+                chageTimeLineOnColor(1);
+                chageTimeLineOnColor(2);
+                chageTimeLineOffColor(3);
                 tvRegisterHeader.setText("建立患者信息（3/5）");
                 tvRegisterTitle.setText("居民身份证号");
                 break;
             case 3:
+                chageTimeLineOnColor(1);
+                chageTimeLineOnColor(2);
+                chageTimeLineOnColor(3);
                 tvRegisterHeader.setText("建立患者信息（4/5）");
                 tvRegisterTitle.setText("社会保障卡号");
                 break;
             case 4:
+                chageTimeLineOnColor(1);
+                chageTimeLineOnColor(2);
+                chageTimeLineOnColor(3);
                 tvRegisterHeader.setText("建立患者信息（5/5）");
                 tvRegisterTitle.setText("社会保障卡号");
                 break;
             default:
+                chageTimeLineOffColor(1);
+                chageTimeLineOffColor(2);
+                chageTimeLineOffColor(3);
                 tvRegisterHeader.setText("建立患者信息");
                 tvRegisterTitle.setText("患者信息");
                 break;
         }
+    }
+
+    //把timeline的各项设置为选中色
+    private void chageTimeLineOnColor(int index){
+        switch (index) {
+            case 1:
+                tvTitle2.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvTimeLine2.setTextColor(getResources().getColor(R.color.colorWhite));
+                tvTimeLine2.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_on));
+                lineView2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                break;
+            case 2:
+                tvTitle3.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvTimeLine3.setTextColor(getResources().getColor(R.color.colorWhite));
+                tvTimeLine3.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_on));
+                lineView3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                break;
+            case 3:
+                tvTitle4.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvTimeLine4.setTextColor(getResources().getColor(R.color.colorWhite));
+                tvTimeLine4.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_on));
+                break;
+            case 4:
+                tvTitle4.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvTimeLine4.setTextColor(getResources().getColor(R.color.colorWhite));
+                tvTimeLine4.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_on));
+                break;
+            default:
+                break;
+        }
+    }
+
+    //把timeline的各项设置为非选中色
+    private void chageTimeLineOffColor(int index){
+        switch (index) {
+            case 1:
+                tvTitle2.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine2.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine2.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_off));
+                lineView2.setBackgroundColor(getResources().getColor(R.color.color_time_line_point_off));
+                break;
+            case 2:
+                tvTitle3.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine3.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine3.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_off));
+                lineView3.setBackgroundColor(getResources().getColor(R.color.color_time_line_point_off));
+                break;
+            case 3:
+                tvTitle4.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine4.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine4.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_off));
+                break;
+            case 4:
+                tvTitle4.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine4.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
+                tvTimeLine4.setBackground(getResources().getDrawable(R.drawable.shape_timeline_point_off));
+                break;
+            default:
+                break;
+        }
+
     }
 
     @Override
