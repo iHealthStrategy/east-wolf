@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,11 +24,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.github.vipulasri.timelineview.TimelineView;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.BaseDialog;
+import com.ihealth.adapter.TimeLineAdapter;
 import com.ihealth.bean.AddUserRequestBean;
 import com.ihealth.bean.ResponseMessageBean;
+import com.ihealth.bean.TimeLineBean;
 import com.ihealth.bean.UserInfo;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
@@ -37,7 +41,9 @@ import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -59,12 +65,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private Handler mHandler = new Handler();
     private Context mContext;
 
-    TextView tvRegisterHospitalTitle;
     TextView tvRegisterHeader;
     TextView tvRegisterTitle;
     ViewFlipper vfNewUserInfos;
-
-    ImageView ivRegisterHome;
+    LinearLayout ivRegisterHome;
 
     Button btnNewUserStep2Previous;
     Button btnNewUserStep2Next;
@@ -95,6 +99,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     TextInputLayout layoutNewUserSocialInsurance;
     TextInputLayout layoutNewUserSocialInsuranceConfirm;
 
+    TimelineView timelineView;
+
     String mFaceBase64Image = "";
 
     boolean isUserNameValid = false;
@@ -108,6 +114,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private BaseDialog dialogMessage;
     private BaseDialog dialogChooseOutpatient;
 
+    private TimeLineAdapter mAdapter;
+
+    private List<TimeLineBean> datas = new ArrayList<>();
+
     LoadingProgressBar loadingProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +127,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mContext = this;
 
         initComponents();
-        initData();
+       // initData();
         initView();
         initListeners();
+        initTimeLineView();
 
         mHandler = new InnerHandler(this);
 
@@ -169,12 +180,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void initView() {
 
-        tvRegisterHospitalTitle = (TextView) findViewById(R.id.tv_register_hospital_title);
-        tvRegisterHospitalTitle.setText(
-                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_FULL_NAME)
-                        + "-内分泌科"
-        );
-
         tvRegisterHeader = (TextView) findViewById(R.id.tv_register_header);
         tvRegisterTitle = (TextView) findViewById(R.id.tv_register_title);
 
@@ -184,7 +189,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         vfNewUserInfos.setAutoStart(false);
         vfNewUserInfos.setDisplayedChild(0);
 
-        ivRegisterHome = (ImageView) findViewById(R.id.iv_register_exit);
+        ivRegisterHome = (LinearLayout) findViewById(R.id.close_ll);
 
         btnNewUserStep2Previous = (Button) findViewById(R.id.btn_detect_new_user_step_2_previous);
         btnNewUserStep2Next = (Button) findViewById(R.id.btn_detect_new_user_step_2_next);
@@ -214,7 +219,20 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         layoutNewUserMobile = (TextInputLayout) findViewById(R.id.layout_register_mobile);
         layoutNewUserSocialInsurance = (TextInputLayout) findViewById(R.id.layout_register_social_insurance);
         layoutNewUserSocialInsuranceConfirm = (TextInputLayout) findViewById(R.id.layout_register_social_insurance_confirm);
+        timelineView = findViewById(R.id.timeline);
         loadingProgressBar = new LoadingProgressBar(RegisterActivity.this);
+
+    }
+
+    private void initTimeLineView (){
+        for(int i = 0; i < 4; i++){
+            TimeLineBean timeLineBean = new TimeLineBean();
+            timeLineBean.setContent("time"+i);
+            timeLineBean.setIndex(i);
+            datas.add(timeLineBean);
+        }
+        mAdapter = new TimeLineAdapter(this,datas);
+        timelineView=mAdapter;
     }
 
     private void initListeners() {
@@ -454,7 +472,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_register_exit:
+            case R.id.close_ll:
                 this.finish();
                 break;
             case R.id.btn_detect_new_user_step_2_next:

@@ -6,53 +6,35 @@
     android:layout_height="match_parent"
     tools:context="com.ihealth.activities.RegisterActivity">
 
-    <RelativeLayout
-        android:id="@+id/rl_1"
+    <com.ihealth.commonLayout.HeaderBar
+        android:id="@+id/header_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_size_40dp"
-        android:background="@color/colorPrimary">
-
-        <TextView
-            android:id="@+id/tv_register_hospital_title"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/layout_size_30dp"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:text="北京朝阳医院-内分泌科"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_16sp"
-            android:layout_margin="@dimen/layout_size_10dp"/>
-
-        <TextClock
-            android:id="@+id/clock_detect_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:format24Hour="HH:mm:ss"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_16sp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
-
-        <ImageView
-            android:id="@+id/iv_register_exit"
-            android:layout_width="@dimen/layout_size_32dp"
-            android:layout_height="@dimen/layout_size_32dp"
-            android:layout_marginEnd="@dimen/layout_size_10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_close_white_48dp"
-            android:background="@drawable/button_round_shape_enabled"/>
-    </RelativeLayout>
-
+        android:layout_height="wrap_content"
+         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="@dimen/preview_margin"
-        android:layout_below="@+id/rl_1">
-
+        android:layout_below="@+id/header_bar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="建立患者信息"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_12sp"
+            />
+        <com.github.vipulasri.timelineview.TimelineView
+            android:id="@+id/timeline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:markerSize="20dp"
+            app:lineWidth="2dp"
+            app:startLineColor="@color/colorPrimary"
+            app:endLineColor="@color/colorPrimary"
+            app:linePadding="5dp"
+            app:lineOrientation="horizontal"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +53,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/layout_size_10dp"
                 android:gravity="center"
-                android:text="建立患者信息（1/4）"
+                android:text="建立患者信息（1/5）"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_18sp"
                 android:textStyle="bold" />

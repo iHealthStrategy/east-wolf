@@ -159,6 +159,8 @@ public class DetectActivity extends BaseActivity {
         faceDetectManager = new FaceDetectManager(this);
         initScreen();
         initView();
+        Intent intent = new Intent(mContext, RegisterActivity.class);
+        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
     }
 
     private void initComponents(){
@@ -499,12 +501,12 @@ public class DetectActivity extends BaseActivity {
         timer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                tvDetectNextSigningTimer.setText("【 " + (millisUntilFinished / 1000 + 1) + " 秒后继续签到 】");
+                tvDetectNextSigningTimer.setText((millisUntilFinished / 1000 + 1) + " 秒后继续签到");
             }
 
             @Override
             public void onFinish() {
-                tvDetectNextSigningTimer.setText("【 等待签到 】");
+                tvDetectNextSigningTimer.setText("等待签到");
                 timer.cancel();
                 mList.clear();
                 resetDisplayContents();
@@ -586,18 +588,18 @@ public class DetectActivity extends BaseActivity {
     private void setDisplayElements() {
         int displayColor = getResources().getColor(android.R.color.darker_gray);
         String titleText = "欢迎您";
-        String countDownTimerText = "【 欢迎您 】";
+        String countDownTimerText = "欢迎您";
         switch (detectStates) {
             case WAITING_FOR_SIGNING:
                 displayColor = getResources().getColor(android.R.color.holo_orange_dark);
                 titleText = "等待签到...";
-                tvDetectNextSigningTimer.setText("【 等待签到 】");
+                tvDetectNextSigningTimer.setText("等待签到");
                // setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGNING:
                 displayColor = getResources().getColor(android.R.color.holo_blue_light);
                 titleText = "正在签到...";
-                tvDetectNextSigningTimer.setText("【 正在签到 】");
+                tvDetectNextSigningTimer.setText("正在签到");
                // setButtonState(btnDetectContinueSigning, false);
                 break;
             case SIGN_FAILED_USER_NOT_FOUND:
@@ -622,7 +624,7 @@ public class DetectActivity extends BaseActivity {
         }
        // tvDetectResultTitle.setTextColor(displayColor);
        // tvDetectResultTitle.setText(titleText);
-        tvDetectNextSigningTimer.setBackgroundColor(displayColor);
+      //  tvDetectNextSigningTimer.setBackgroundColor(displayColor);
     }
 
     private void setButtonState(Button button, boolean isEnabled){

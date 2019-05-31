@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/main_ll"
         android:layout_width="match_parent"
-        android:layout_height="483dp"
+        android:layout_height="@dimen/layout_size_240dp"
         android:background="@color/colorPrimary"
         android:gravity="center_horizontal"
         android:orientation="vertical">
@@ -36,22 +36,27 @@
                 android:background="@color/colorTransparency"
                 android:src="@drawable/workwechat1546494739475" />
 
-            <TextView
+            <TextClock
                 android:id="@+id/time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="14:00"
+                android:gravity="center"
+                android:format24Hour="HH:mm"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_16sp"
                 android:textStyle="bold"
-                android:textColor="@color/colorWhite"
-                android:textSize="35sp" />
+                android:layout_centerInParent="true"/>
 
-            <TextView
-                android:id="@+id/date_tv"
+            <TextClock
+                android:id="@+id/dataView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3月22日 星期五"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:format24Hour ="MM月dd日 EEEE"
+                android:format12Hour ="MM月dd日 EEEE"
                 android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -60,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_below="@+id/main_ll"
-        android:layout_marginTop="-200dp"
+        android:layout_marginTop="@dimen/layout_size_defeat_140dp"
         android:gravity="center">
         <LinearLayout
             android:layout_width="wrap_content"
@@ -70,15 +75,14 @@
             >
              <Button
                 android:id="@+id/btn_main_facial_check_in"
-                android:layout_width="@dimen/layout_size_180dp"
-                android:layout_height="@dimen/layout_size_180dp"
-                android:background="@mipmap/icon_face_button"
-                android:textSize="@dimen/text_size_18sp"/>
+                android:layout_width="@dimen/layout_size_170dp"
+                android:layout_height="@dimen/layout_size_170dp"
+                android:background="@mipmap/icon_face_button"/>
              <TextView
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_centerHorizontal="true"
-                 android:layout_marginTop="@dimen/layout_size_10dp"
+                 android:layout_marginTop="10dp"
                  android:text="点击进行人脸签到"
                  android:textColor="@android:color/black"
                  android:textSize="@dimen/text_size_16sp"/>

@@ -51,7 +51,9 @@
     <dimen name="layout_size_180dp">180dp</dimen>
     <dimen name="layout_size_190dp">190dp</dimen>
     <dimen name="layout_size_200dp">200dp</dimen>
+    <dimen name="layout_size_defeat_140dp">-140dp</dimen>
     <dimen name="layout_size_220dp">220dp</dimen>
+    <dimen name="layout_size_230dp">230dp</dimen>
     <dimen name="layout_size_240dp">240dp</dimen>
     <dimen name="layout_size_260dp">260dp</dimen>
     <dimen name="layout_size_280dp">280dp</dimen>
@@ -75,8 +77,8 @@
     <dimen name="round">1dp</dimen>
     <dimen name="line_space_extra">10dp</dimen>
 
-    <dimen name="preview_image_width">230dp</dimen>
-    <dimen name="preview_image_height">230dp</dimen>
+    <dimen name="preview_image_width">220dp</dimen>
+    <dimen name="preview_image_height">220dp</dimen>
 
     <dimen name="text_image_space_extra">20dp</dimen>
 
