@@ -20,9 +20,9 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -47,11 +47,14 @@ import com.baidu.idl.facesdk.FaceInfo;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.BaseDialog;
+import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
+import com.ihealth.views.CheckItemSelectDialog;
+import com.ihealth.views.PrintContentDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
@@ -159,8 +162,9 @@ public class DetectActivity extends BaseActivity {
         faceDetectManager = new FaceDetectManager(this);
         initScreen();
         initView();
-        Intent intent = new Intent(mContext, RegisterActivity.class);
-        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
+        getAppointmentInfo();
+//        Intent intent = new Intent(mContext, RegisterActivity.class);
+//        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
     }
 
     private void initComponents(){
@@ -387,7 +391,7 @@ public class DetectActivity extends BaseActivity {
                     activity.start();
                     break;
                 case MSG_REFRESH_TITLE:
-                    setDisplayElements();
+                    setDisplayElements("");
                     break;
                 default:
                     break;
@@ -516,7 +520,7 @@ public class DetectActivity extends BaseActivity {
 
     private void resetDisplayContents() {
         detectStates = DETECT_STATES.WAITING_FOR_SIGNING;
-        setDisplayElements();
+        setDisplayElements("");
 
        /* tvDetectResultIdCard.setText("--");
         tvDetectResultName.setText("--");
@@ -585,7 +589,7 @@ public class DetectActivity extends BaseActivity {
         // previewView.getTextureView().setScaleX(-1);
     }
 
-    private void setDisplayElements() {
+    private void setDisplayElements(String name) {
         int displayColor = getResources().getColor(android.R.color.darker_gray);
         String titleText = "欢迎您";
         String countDownTimerText = "欢迎您";
@@ -610,21 +614,19 @@ public class DetectActivity extends BaseActivity {
                // setButtonState(btnDetectContinueSigning, true);
                 break;
             case SIGN_FAILED_ALREADY_SIGNED_IN:
-                displayColor = getResources().getColor(android.R.color.holo_red_light);
-                titleText = "您已经签到，请就诊";
-               // setButtonState(btnDetectContinueSigning, true);
+                titleText = "尊敬的"+name+"\n您已签到，无需重复签到\n直接就诊即可，谢谢";
+//                showCommonMessageDialogNew(titleText,"TO_PRINT");
+//                showCommonMessageDialog(titleText);
+//                CheckItemSelectDialog checkItemDialog = new CheckItemSelectDialog(this);
+//                getAppointmentInfo();
                 break;
             case SIGN_SUCCEEDED:
-                displayColor = getResources().getColor(android.R.color.holo_green_light);
-                titleText = "签到成功！";
-                //setButtonState(btnDetectContinueSigning, true);
+                titleText = "尊敬的"+name+"\n您已签到成功，感谢您参加照护门诊";
+                showCommonMessageDialogNew(titleText,"TO_PRINT");
                 break;
             default:
                 break;
         }
-       // tvDetectResultTitle.setTextColor(displayColor);
-       // tvDetectResultTitle.setText(titleText);
-      //  tvDetectNextSigningTimer.setBackgroundColor(displayColor);
     }
 
     private void setButtonState(Button button, boolean isEnabled){
@@ -770,6 +772,53 @@ public class DetectActivity extends BaseActivity {
         }
     }
 
+    //展示一般对话框,改版后的新UI
+    private void showCommonMessageDialogNew(String dialogContent, final String type) {
+        if(null==dialogMessage){
+            return;
+        }
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common_sigle_button, null);
+        final ImageView ivCloseDialog = view.findViewById(R.id.iv_dialog_close);
+//        ivCloseDialog.setVisibility(View.GONE);
+        ivCloseDialog.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogMessage.dismiss();
+                    }
+                }
+        );
+
+        final TextView tvDialogContent = view.findViewById(R.id.tv_common_dialog_content);
+        tvDialogContent.setText(dialogContent);
+
+        final TextView btnDialogOk =  view.findViewById(R.id.btn_dialog_ok);
+        String btnText = "我知道了";
+        if(type.equals("TO_PRINT")){
+            btnText = "选择检查项目";
+        }
+        btnDialogOk.setText(btnText);
+        btnDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMessage.dismiss();
+                if(type.equals("TO_PRINT")){
+                    Intent intent = new Intent(mContext, RegisterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("patientId", "");
+                    intent.putExtra("print_data", bundle);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        dialogMessage.setContentView(view);
+        dialogMessage.setCancelable(false);
+        if (null!=dialogMessage && !dialogMessage.isShowing()){
+            dialogMessage.show();
+        }
+    }
+
     private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam){
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("patientId", patientId);
@@ -799,16 +848,44 @@ public class DetectActivity extends BaseActivity {
         });
     }
 
+    private void getAppointmentInfo(){
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("patientId", "5ab4a677db7e8e31401c9f89");
+//        requestMap.put("patientId", SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID));
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(requestMap, HashMap.class);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
+        ApiUtil.getAppointmentCall(mContext, requestBody).enqueue(new Callback<AppointmentsBean>() {
+            @Override
+            public void onResponse(Call<AppointmentsBean> call, Response<AppointmentsBean> response) {
+                 Log.i("getAppointmentInfo", "onResponse: "+response.body());
+                AppointmentsBean appointmentsBean = response.body();
+                if (appointmentsBean != null) {
+                    new CheckItemSelectDialog(DetectActivity.this,appointmentsBean);
+//                    tackleWithResponds(responseMessage, "");
+                } else {
+//                    showReLoginDialog("系统认证失败，请重新登录。");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AppointmentsBean> call, Throwable t) {
+                 Log.i("getAppointmentInfo", "onFailure: "+t);
+            }
+        });
+    }
+
     private void tackleWithResponds(ResponseMessageBean responseMessage, String base64Image){
+        ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
+        String name = resultContent.getNickname();
+        String originMobile = resultContent.getPhoneNumber();
+        String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
+        String patientId = resultContent.getUserId();
+        SharedPreferenceUtil.editSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID, patientId);
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS:
                 detectStates = DETECT_STATES.SIGN_SUCCEEDED;
-                setDisplayElements();
-
-                ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
-                String name = resultContent.getNickname();
-                String originMobile = resultContent.getPhoneNumber();
-                String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
+                setDisplayElements(name);
                // tvDetectResultName.setText(name);
                // tvDetectResultMobile.setText(mobile);
 //                String originIdCard = resultContent.getIdCard();
@@ -818,50 +895,42 @@ public class DetectActivity extends BaseActivity {
 //                } else {
 //                    tvDetectResultIdCard.setText("--");
 //                }
-                String originSocialInsurance = resultContent.getSocialInsurance();
-                if (!originSocialInsurance.isEmpty()) {
-                    String socialInsurance = originSocialInsurance;
-                  //  tvDetectResultIdCard.setText(socialInsurance);
-                } else {
-                  //  tvDetectResultIdCard.setText("--");
-                }
+//                String originSocialInsurance = resultContent.getSocialInsurance();
+//                if (!originSocialInsurance.isEmpty()) {
+//                    String socialInsurance = originSocialInsurance;
+//                  //  tvDetectResultIdCard.setText(socialInsurance);
+//                } else {
+//                  //  tvDetectResultIdCard.setText("--");
+//                }
                 startCountDownTimer();
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
                 detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
-                setDisplayElements();
-
+                setDisplayElements(name);
                 startRegisterActivity(base64Image);
                 resetDisplayContents();
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
                 detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
-                setDisplayElements();
-
-//                                    mSearchFailTimes++;
-//                                    if (mSearchFailTimes == 1) {
-//                                        // startRegisterActivity(base64Image);
-//                                        showChooseRoleDialog();
-//                                        mSearchFailTimes = 0;
-//                                    }
-
+                setDisplayElements(name);
                 showChooseRoleDialog();
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
             case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
                 detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
-                setDisplayElements();
-
+                setDisplayElements(name);
                 startCountDownTimer();
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
-                ResponseMessageBean.resultContent resultContent1 = responseMessage.getResultContent();
-                String name1 = resultContent1.getNickname();
-                showCommonMessageDialog((!TextUtils.isEmpty(name1)?("尊敬的"+name1+"：\n"):("尊敬的患者：\n")) + "您已成功签到，请就诊");
+                detectStates = DETECT_STATES.SIGN_FAILED_ALREADY_SIGNED_IN;
+                setDisplayElements(name);
+//                ResponseMessageBean.resultContent resultContent1 = responseMessage.getResultContent();
+//                String name1 = resultContent1.getNickname();
+//                showCommonMessageDialog((!TextUtils.isEmpty(name1)?("尊敬的"+name1+"：\n"):("尊敬的患者：\n")) + "您已成功签到，请就诊");
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:

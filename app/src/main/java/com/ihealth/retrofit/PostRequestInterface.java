@@ -1,5 +1,6 @@
 package com.ihealth.retrofit;
 
+import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.LoginBean;
 import com.ihealth.bean.ResponseMessageBean;
 
@@ -36,5 +37,7 @@ public interface PostRequestInterface {
     @POST("detectFace/searchUserByPhoneNumber")
     Call<ResponseMessageBean> searchUserByPhoneNumber(@HeaderMap Map<String, String> headerMap, @Body RequestBody requestBody);
 
+    @POST("detectFace/getAppointmentInfo")
+    Call<AppointmentsBean> getAppointmentInfo(@HeaderMap Map<String, String> headerMap, @Body RequestBody requestBody);
 
 }

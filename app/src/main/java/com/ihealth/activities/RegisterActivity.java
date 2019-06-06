@@ -121,7 +121,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mContext = this;
 
         initComponents();
-       // initData();
+        initData();
         initView();
         initListeners();
 
@@ -168,7 +168,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
         mFaceBase64Image = bundle.getString("new_user_image", "");
-        // Log.i("initData", "initData: " + mFaceBase64Image);
+         Log.i("initData", "initData: " + mFaceBase64Image);
     }
 
     private void initView() {

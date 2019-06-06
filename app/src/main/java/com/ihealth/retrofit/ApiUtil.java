@@ -2,6 +2,7 @@ package com.ihealth.retrofit;
 
 import android.content.Context;
 
+import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.HospitalBean;
 import com.ihealth.bean.LoginBean;
 import com.ihealth.bean.ResponseMessageBean;
@@ -96,5 +97,14 @@ public class ApiUtil {
 
     public static Call<HospitalBean> getHospitalsCall(){
         return ApiUtil.getGetApiService().getHospitals();
+    }
+
+    public static Call<AppointmentsBean> getAppointmentCall(Context context, RequestBody requestBody){
+        String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
+        // Log.i("searchUserByPhoneNumberCall", "searchFaceCall: "+token);
+        Map<String, String> headerMap = new HashMap<>(2);
+        headerMap.put("Content-type","application/json;charset=UTF-8");
+        headerMap.put("Authorization","Bearer "+token);
+        return ApiUtil.getPostApiService().getAppointmentInfo(headerMap, requestBody);
     }
 }

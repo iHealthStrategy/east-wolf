@@ -1,0 +1,602 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/layout_size_360dp"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_size_10dp"
+            android:layout_marginLeft="@dimen/layout_size_10dp"
+            android:layout_marginTop="@dimen/layout_size_10dp"
+            android:text="打印就诊小条"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_size_10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_print_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本次门诊就诊项目（2019年6月4日）"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_print_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="张某某/复诊/医生：贾玉梅"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:layout_marginRight="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_10dp"
+                android:background="@color/color_line_bg" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:layout_marginRight="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_base_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_base_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="体征测量"
+                        android:textColor="@color/color_print_title"
+                        android:textSize="@dimen/text_size_10sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_base_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/layout_size_20dp"
+                    android:layout_toRightOf="@id/ll_base_title"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="腰围"
+                        android:textColor="@color/color_print_title"
+                        android:textSize="@dimen/text_size_10sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="体重"
+                        android:textColor="@color/color_print_title"
+                        android:textSize="@dimen/text_size_10sp" />
+
+                    <TextView
+                        android:id="@+id/tv_height"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="身高"
+                        android:textColor="@color/color_print_title"
+                        android:textSize="@dimen/text_size_10sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ll_base_one"
+                    android:layout_marginLeft="@dimen/layout_size_20dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:layout_toRightOf="@id/ll_base_title"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="血压"
+                        android:textColor="@color/color_print_title"
+                        android:textSize="@dimen/text_size_10sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="心率"
+                        android:textColor="@color/color_print_title"
+                        android:textSize="@dimen/text_size_10sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="空腹/餐后"
+                        android:textColor="@color/color_print_title"
+                        android:textSize="@dimen/text_size_10sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:layout_marginRight="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:background="@drawable/shape_dash_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_blood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="化验检查"
+                            android:textColor="@color/color_print_title"
+                            android:textSize="@dimen/text_size_10sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_size_20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="糖化"
+                            android:textColor="@color/color_print_title"
+                            android:textSize="@dimen/text_size_10sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="尿微"
+                            android:textColor="@color/color_print_title"
+                            android:textSize="@dimen/text_size_10sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:background="@drawable/shape_dash_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_quantization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:text="量表填写"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:background="@drawable/shape_dash_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_nutrition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:text="营养评估"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:background="@drawable/shape_dash_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_insulin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:text="胰岛素注射部位评估"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:background="@drawable/shape_dash_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_foot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_5dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ll_foot_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="足部评估"
+                            android:textColor="@color/color_print_title"
+                            android:textSize="@dimen/text_size_10sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_foot_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_size_10dp"
+                        android:layout_toRightOf="@id/ll_foot_title"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_size_1dp"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            android:text="血管"
+                            android:textSize="@dimen/text_size_12sp" />
+
+                        <CheckBox
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/layout_size_1dp"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            android:text="神经"
+                            android:textSize="@dimen/text_size_12sp" />
+
+                        <CheckBox
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_size_1dp"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            android:text="ABI"
+                            android:textSize="@dimen/text_size_12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ll_foot_one"
+                        android:layout_marginLeft="@dimen/layout_size_10dp"
+                        android:layout_toRightOf="@id/ll_foot_title"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_size_1dp"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            android:text="TBI"
+                            android:textSize="@dimen/text_size_12sp" />
+
+                        <CheckBox
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/layout_size_1dp"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:scaleX="0.6"
+                            android:scaleY="0.6"
+                            android:text="躯体感觉"
+                            android:textSize="@dimen/text_size_12sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:background="@drawable/shape_dash_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_eye"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:text="眼底检查"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:background="@drawable/shape_dash_line" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:text="医生问诊"
+                android:textColor="@color/color_print_title"
+                android:textSize="@dimen/text_size_10sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:layout_marginRight="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:background="@drawable/shape_dash_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_teach"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:text="健康知识教育"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_5dp"
+                    android:background="@drawable/shape_dash_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="缴费"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/layout_size_20dp"
+                    android:text="缴费后请把部分单据交回给护士"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/layout_size_10dp"
+                android:background="@color/color_line_bg" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/layout_size_10dp"
+                    android:layout_marginRight="@dimen/layout_size_10dp"
+                    android:layout_marginTop="@dimen/layout_size_10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_dialog_cancel"
+                        android:layout_width="@dimen/layout_size_60dp"
+                        android:layout_height="@dimen/layout_size_20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_white_bg"
+                        android:gravity="center"
+                        android:text="取消"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/btn_dialog_print"
+                        android:layout_width="@dimen/layout_size_60dp"
+                        android:layout_height="@dimen/layout_size_20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/layout_size_20dp"
+                        android:background="@drawable/button_blue_bg"
+                        android:gravity="center"
+                        android:text="打印"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_size_10sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
