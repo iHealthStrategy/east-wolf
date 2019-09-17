@@ -8,3 +8,4 @@
 *.iml
 .idea
 app/build
+facesdk/build
