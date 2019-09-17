@@ -101,7 +101,7 @@ public class AppointmentsBean {
 
     }
 
-    public class Appointments{
+    public static class Appointments{
         private String _id;
         private String isOutPatient;
         private String blood;

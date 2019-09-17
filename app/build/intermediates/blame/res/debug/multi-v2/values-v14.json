@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/liuhuan/Documents/workspaces/DeftDog/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v14/values-v14.xml",
+            "map": [
+                {
+                    "source": "/Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/res/values-v14/values-v14.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "100",
+                        "endColumns": "120",
+                        "endOffsets": "216"
+                    }
+                }
+            ]
+        }
+    ]
+}

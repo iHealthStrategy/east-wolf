@@ -1,0 +1,296 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+MERGED from [:facesdk] /Users/liuhuan/Documents/workspaces/DeftDog/facesdk/build/intermediates/library_manifest/debug/AndroidManifest.xml:3:1-20:12
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:2:1-24:12
+MERGED from [com.dilusense.android:customkeyboard:1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customkeyboard-1.1.aar/c8964eba419adb3f993c268b0f69a879/AndroidManifest.xml:2:1-17:12
+MERGED from [com.android.support:design:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/6310105154da6a2d7cf295e1492db4fc/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:appcompat-v7:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/e5c442e4d367789ee7093a95cb1d86cf/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:recyclerview-v7:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.1.aar/402540a683067003491641197159dbd7/AndroidManifest.xml:17:1-22:12
+MERGED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:17:1-33:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/cc35ece9dbe608222f733cb029c7f274/AndroidManifest.xml:2:1-11:12
+MERGED from [com.victor:lib:1.0.4] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/lib-1.0.4.aar/2af2d0cbbc1105f576606cc34bea8f46/AndroidManifest.xml:2:1-16:12
+MERGED from [com.github.vipulasri:timelineview:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/timelineview-1.1.0.aar/3c6f869d5dd283d31c993ed07c31aa7b/AndroidManifest.xml:2:1-17:12
+MERGED from [com.github.bumptech.glide:glide:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/glide-4.8.0.aar/0bc72d20e1d5f252b11a181e6d39e727/AndroidManifest.xml:2:1-12:12
+MERGED from [com.android.support:support-v4:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/b475b76e0a1660b5e8670b3ce8e93f67/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/d02439a9adead06c1badd57ed5298686/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.1.aar/1b588538a4a82462f58e6c9ad300ae7f/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/233608960d37c841e0e268ce5700d1f5/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/03b7d573586a3316d15c6ac90bb9c2db/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.1.aar/11e63a05c12780d5d1814ff5d4ecb91a/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:transition:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/transition-27.1.1.aar/98f97cf4b4f81d34870cb6fb7a82c3af/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-media-compat:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/59329bd78ec546aace7353e1c5275982/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/22a20d68e2ca7fa79d22d555139c2841/AndroidManifest.xml:17:1-22:12
+MERGED from [com.github.bumptech.glide:gifdecoder:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.8.0.aar/0c7f4f88fba9ceeb1665428e30a8627b/AndroidManifest.xml:2:1-11:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/d7bc71cfd45cf84201e4f6caf09e5216/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/9287f84264b5c87314272315c34a11c0/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/552d30895cacfe3a99aa8eb0a60b2d1b/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/e9f04a214a5f32e721bab21e9a6ef9ea/AndroidManifest.xml:17:1-22:12
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+	package
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:3:5-41
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:1-78:12
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.CAMERA
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:5:5-65
+MERGED from [:facesdk] /Users/liuhuan/Documents/workspaces/DeftDog/facesdk/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:5-65
+MERGED from [:facesdk] /Users/liuhuan/Documents/workspaces/DeftDog/facesdk/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:5-65
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:5:22-62
+uses-permission#android.permission.INTERNET
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:6:5-67
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:6:22-64
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:7:5-80
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:7:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:8:5-81
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:8:22-78
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:9:5-78
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:9:22-76
+uses-permission#android.permission.BLUETOOTH
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:10:5-68
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:11:5-68
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:11:5-68
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:10:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:11:5-74
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:12:5-74
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:12:5-74
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:11:22-71
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:12:5-79
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:13:5-79
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:13:5-79
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:12:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:13:5-81
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:14:5-81
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:14:5-81
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:13:22-78
+uses-feature#android.hardware.camera
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:15:5-60
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:15:19-57
+uses-feature#android.hardware.camera.autofocus
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:16:5-70
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:16:19-67
+uses-feature#android.hardware.bluetooth_le
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:17:5-19:35
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:16:5-18:35
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:16:5-18:35
+	android:required
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:19:9-32
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:18:9-53
+application
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:21:5-76:19
+MERGED from [:facesdk] /Users/liuhuan/Documents/workspaces/DeftDog/facesdk/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:5-18:19
+MERGED from [:facesdk] /Users/liuhuan/Documents/workspaces/DeftDog/facesdk/build/intermediates/library_manifest/debug/AndroidManifest.xml:14:5-18:19
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:20:5-22:19
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:20:5-22:19
+MERGED from [com.dilusense.android:customkeyboard:1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customkeyboard-1.1.aar/c8964eba419adb3f993c268b0f69a879/AndroidManifest.xml:11:5-15:19
+MERGED from [com.dilusense.android:customkeyboard:1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customkeyboard-1.1.aar/c8964eba419adb3f993c268b0f69a879/AndroidManifest.xml:11:5-15:19
+MERGED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:26:5-31:19
+MERGED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:26:5-31:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/cc35ece9dbe608222f733cb029c7f274/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/cc35ece9dbe608222f733cb029c7f274/AndroidManifest.xml:9:5-20
+MERGED from [com.victor:lib:1.0.4] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/lib-1.0.4.aar/2af2d0cbbc1105f576606cc34bea8f46/AndroidManifest.xml:11:5-14:19
+MERGED from [com.victor:lib:1.0.4] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/lib-1.0.4.aar/2af2d0cbbc1105f576606cc34bea8f46/AndroidManifest.xml:11:5-14:19
+MERGED from [com.github.vipulasri:timelineview:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/timelineview-1.1.0.aar/3c6f869d5dd283d31c993ed07c31aa7b/AndroidManifest.xml:11:5-15:19
+MERGED from [com.github.vipulasri:timelineview:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/timelineview-1.1.0.aar/3c6f869d5dd283d31c993ed07c31aa7b/AndroidManifest.xml:11:5-15:19
+MERGED from [com.github.bumptech.glide:glide:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/glide-4.8.0.aar/0bc72d20e1d5f252b11a181e6d39e727/AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:glide:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/glide-4.8.0.aar/0bc72d20e1d5f252b11a181e6d39e727/AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.8.0.aar/0c7f4f88fba9ceeb1665428e30a8627b/AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.8.0.aar/0c7f4f88fba9ceeb1665428e30a8627b/AndroidManifest.xml:9:5-20
+	android:supportsRtl
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:27:9-35
+	android:label
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:25:9-41
+	android:roundIcon
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:26:9-54
+	android:icon
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:24:9-43
+	android:allowBackup
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:23:9-35
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:28:9-40
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:22:9-56
+activity#com.ihealth.activities.RegisterActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:29:9-32:20
+	android:screenOrientation
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:30:13-50
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:31:13-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:29:19-73
+activity#com.ihealth.BaseActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:33:9-61
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:33:19-58
+activity#com.ihealth.activities.SplashStartActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:34:9-43:20
+	android:screenOrientation
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:36:13-50
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:37:13-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:35:13-70
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:38:13-42:29
+action#android.intent.action.MAIN
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:39:17-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:39:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:41:17-77
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:41:27-74
+activity#com.ihealth.activities.LoginActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:44:9-47:72
+	android:screenOrientation
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:46:13-50
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:47:13-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:45:13-64
+activity#com.ihealth.MainActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:48:9-59:20
+	android:screenOrientation
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:50:13-50
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:51:13-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:49:13-52
+activity#com.ihealth.activities.DetectActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:60:9-63:72
+	android:screenOrientation
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:62:13-50
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:63:13-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:61:13-65
+activity#com.ihealth.activities.TrackActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:64:9-67:72
+	android:screenOrientation
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:66:13-50
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:67:13-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:65:13-64
+activity#com.ihealth.activities.AttrActivity
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:68:9-71:72
+	android:screenOrientation
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:70:13-50
+	android:theme
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:71:13-69
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:69:13-63
+service#com.inuker.bluetooth.library.BluetoothService
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:72:9-73:76
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:21:9-81
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:21:9-81
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:73:13-73
+service#net.xprinter.service.XprinterService
+ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:74:9-80
+	android:name
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml:74:18-69
+uses-sdk
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+MERGED from [:facesdk] /Users/liuhuan/Documents/workspaces/DeftDog/facesdk/build/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-10:41
+MERGED from [:facesdk] /Users/liuhuan/Documents/workspaces/DeftDog/facesdk/build/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-10:41
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:7:5-9:41
+MERGED from [com.inuker.bluetooth:library:1.4.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/library-1.4.0.aar/04c96ce8344be61daf31e310ce356a49/AndroidManifest.xml:7:5-9:41
+MERGED from [com.dilusense.android:customkeyboard:1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customkeyboard-1.1.aar/c8964eba419adb3f993c268b0f69a879/AndroidManifest.xml:7:5-9:41
+MERGED from [com.dilusense.android:customkeyboard:1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customkeyboard-1.1.aar/c8964eba419adb3f993c268b0f69a879/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:design:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/6310105154da6a2d7cf295e1492db4fc/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:design:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/6310105154da6a2d7cf295e1492db4fc/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/e5c442e4d367789ee7093a95cb1d86cf/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/e5c442e4d367789ee7093a95cb1d86cf/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.1.aar/402540a683067003491641197159dbd7/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.1.aar/402540a683067003491641197159dbd7/AndroidManifest.xml:20:5-44
+MERGED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:22:5-24:41
+MERGED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/cc35ece9dbe608222f733cb029c7f274/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/cc35ece9dbe608222f733cb029c7f274/AndroidManifest.xml:5:5-7:41
+MERGED from [com.victor:lib:1.0.4] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/lib-1.0.4.aar/2af2d0cbbc1105f576606cc34bea8f46/AndroidManifest.xml:7:5-9:41
+MERGED from [com.victor:lib:1.0.4] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/lib-1.0.4.aar/2af2d0cbbc1105f576606cc34bea8f46/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.vipulasri:timelineview:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/timelineview-1.1.0.aar/3c6f869d5dd283d31c993ed07c31aa7b/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.vipulasri:timelineview:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/timelineview-1.1.0.aar/3c6f869d5dd283d31c993ed07c31aa7b/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.bumptech.glide:glide:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/glide-4.8.0.aar/0bc72d20e1d5f252b11a181e6d39e727/AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/glide-4.8.0.aar/0bc72d20e1d5f252b11a181e6d39e727/AndroidManifest.xml:6:5-8:41
+MERGED from [com.android.support:support-v4:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/b475b76e0a1660b5e8670b3ce8e93f67/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/b475b76e0a1660b5e8670b3ce8e93f67/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/d02439a9adead06c1badd57ed5298686/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/d02439a9adead06c1badd57ed5298686/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.1.aar/1b588538a4a82462f58e6c9ad300ae7f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.1.aar/1b588538a4a82462f58e6c9ad300ae7f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/233608960d37c841e0e268ce5700d1f5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/233608960d37c841e0e268ce5700d1f5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/03b7d573586a3316d15c6ac90bb9c2db/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/03b7d573586a3316d15c6ac90bb9c2db/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.1.aar/11e63a05c12780d5d1814ff5d4ecb91a/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.1.aar/11e63a05c12780d5d1814ff5d4ecb91a/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/transition-27.1.1.aar/98f97cf4b4f81d34870cb6fb7a82c3af/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/transition-27.1.1.aar/98f97cf4b4f81d34870cb6fb7a82c3af/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/59329bd78ec546aace7353e1c5275982/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/59329bd78ec546aace7353e1c5275982/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/22a20d68e2ca7fa79d22d555139c2841/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/22a20d68e2ca7fa79d22d555139c2841/AndroidManifest.xml:20:5-44
+MERGED from [com.github.bumptech.glide:gifdecoder:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.8.0.aar/0c7f4f88fba9ceeb1665428e30a8627b/AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.8.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.8.0.aar/0c7f4f88fba9ceeb1665428e30a8627b/AndroidManifest.xml:5:5-7:41
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/d7bc71cfd45cf84201e4f6caf09e5216/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/d7bc71cfd45cf84201e4f6caf09e5216/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/9287f84264b5c87314272315c34a11c0/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/9287f84264b5c87314272315c34a11c0/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/552d30895cacfe3a99aa8eb0a60b2d1b/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/552d30895cacfe3a99aa8eb0a60b2d1b/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/e9f04a214a5f32e721bab21e9a6ef9ea/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/e9f04a214a5f32e721bab21e9a6ef9ea/AndroidManifest.xml:20:5-44
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+		ADDED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/liuhuan/Documents/workspaces/DeftDog/app/src/main/AndroidManifest.xml
+activity#cat.ereza.customactivityoncrash.activity.DefaultErrorActivity
+ADDED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:27:9-30:65
+	android:process
+		ADDED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:29:13-46
+	android:theme
+		ADDED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:30:13-62
+	android:name
+		ADDED from [cat.ereza:customactivityoncrash:1.5.0] /Users/liuhuan/.gradle/caches/transforms-1/files-1.1/customactivityoncrash-1.5.0.aar/1f250c4b935e7db91270420a546fd098/AndroidManifest.xml:28:13-89

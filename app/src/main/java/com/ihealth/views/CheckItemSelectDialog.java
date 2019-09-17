@@ -79,6 +79,16 @@ public class CheckItemSelectDialog extends Dialog implements View.OnClickListene
         cb_quantization.setOnCheckedChangeListener(this);
 
         AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
+        if(appointments == null){
+            appointments = new AppointmentsBean.Appointments();
+            appointments.setBlood("true");
+            appointments.setEyeGroundAt("true");
+            appointments.setInsulinAt("true");
+            appointments.setNutritionAt("true");
+            appointments.setHealthTech("true");
+            appointments.setQuantizationAt("true");
+            appointments.setFootAt("true");
+        }
         if(appointments != null){
             if ("true".equals(appointments.getBlood())) {
                 cb_blood.setChecked(true);

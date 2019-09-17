@@ -1,7 +1,10 @@
 package com.ihealth.views;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ihealth.BaseDialog;
+import com.ihealth.Printer.BluetoothPrinter;
+import com.ihealth.Printer.BluetoothPrinterStatus;
+import com.ihealth.Printer.PrinterStatusResponse;
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.facecheckinapp.R;
+import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.ScreenUtils;
+import com.ihealth.utils.SharedPreferenceUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import com.ihealth.bean.AppointmentsBean;
 
 /**
  * 打印就诊小条dialog
@@ -29,6 +38,7 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
     private LinearLayout ll_blood,ll_foot,ll_eye,ll_insulin,ll_nutrition,ll_teach,ll_quantization;
     private TextView tv_print_title,tv_print_name,btn_print,btn_cancel,tv_height;
     private  AppointmentsBean appointmentsBean;
+    private BluetoothPrinter bluetoothPrinter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +128,36 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         }
     }
 
+//
+//    public void saveUserIsPrinted(){
+//        String patientId = SharedPreferenceUtil.getStringTypeSharedPreference(mContext,
+//                Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID);
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String formatStr =formatter.format(new Date());
+//        SharedPreferenceUtil.editSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS,
+//                Constants.SP_KEY_PATIENT_PRINTED,patientId+",printAt:"+formatStr);
+//    }
+
+private void initBluetooth(AppointmentsBean appointments){
+    bluetoothPrinter = new BluetoothPrinter(getContext(), appointments, new PrinterStatusResponse() {
+        @Override
+        public void onStatusChange(BluetoothPrinterStatus status) {
+            switch (status){
+//
+            }
+
+        }
+    });
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        // Android M Permission check
+//        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+//            return;
+//        }
+    }
+    bluetoothPrinter.searchAndConnect();
+}
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -125,6 +165,10 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
                 dialogPrint.dismiss();
                 break;
             case R.id.btn_dialog_print:
+//                saveUserIsPrinted();
+//                printListener.onPrint(v, appointmentsBean);
+                initBluetooth(appointmentsBean);
+                dialogPrint.dismiss();
                 dialogPrint.dismiss();
                 break;
         }
