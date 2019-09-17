@@ -1,11 +1,10 @@
 .gradle
 /local.properties
 /.idea
+*.jks
 .DS_Store
 /build
+/gradle
 *.iml
-node_modules/
 .idea
-android/app/build
-yarn.lock
-android/facesdk/build
+app/build
