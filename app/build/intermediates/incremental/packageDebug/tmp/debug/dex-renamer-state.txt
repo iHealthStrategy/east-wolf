@@ -1,4 +1,0 @@
-#Tue Sep 17 17:10:22 CST 2019
-base.0=/Users/liuhuan/Documents/workspaces/DeftDog/app/build/intermediates/dex/debug/mergeDexDebug/out
-path.0=classes.dex
-renamed.0=classes.dex
