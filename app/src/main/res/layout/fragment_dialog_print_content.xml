@@ -512,11 +512,35 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1px"
                     android:layout_marginLeft="@dimen/layout_size_10dp"
                     android:layout_marginRight="@dimen/layout_size_10dp"
                     android:layout_marginTop="@dimen/layout_size_5dp"
-                    android:background="@drawable/shape_dash_line" />
+                    android:background="@color/color_line_bg" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_disease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总结"
+                    android:textColor="@color/color_print_title"
+                    android:textSize="@dimen/text_size_10sp"
+                    android:textStyle="bold" />
+
+                <ListView
+                    android:id="@+id/lv_disease_process"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -551,7 +575,6 @@
                 android:layout_height="1px"
                 android:layout_marginTop="@dimen/layout_size_10dp"
                 android:background="@color/color_line_bg" />
-
 
             <RelativeLayout
                 android:layout_width="match_parent"

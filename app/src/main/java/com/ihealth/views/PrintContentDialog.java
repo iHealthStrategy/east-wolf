@@ -1,6 +1,7 @@
 package com.ihealth.views;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -10,22 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ihealth.BaseDialog;
 import com.ihealth.Printer.BluetoothPrinter;
 import com.ihealth.Printer.BluetoothPrinterStatus;
 import com.ihealth.Printer.PrinterStatusResponse;
+import com.ihealth.Printer.adapter.DiseaseProcessAdapter;
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.facecheckinapp.R;
-import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.ScreenUtils;
-import com.ihealth.utils.SharedPreferenceUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import com.ihealth.bean.AppointmentsBean;
+import java.util.List;
 
 /**
  * 打印就诊小条dialog
@@ -35,10 +34,13 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
 
     private BaseDialog dialogPrint;
     private Context mContext;
-    private LinearLayout ll_blood,ll_foot,ll_eye,ll_insulin,ll_nutrition,ll_teach,ll_quantization;
+    private LinearLayout ll_disease,ll_blood,ll_foot,ll_eye,ll_insulin,ll_nutrition,ll_teach,ll_quantization;
     private TextView tv_print_title,tv_print_name,btn_print,btn_cancel,tv_height;
+    private ListView lv_disease;
     private  AppointmentsBean appointmentsBean;
     private BluetoothPrinter bluetoothPrinter;
+
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,8 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         tv_print_title = view.findViewById(R.id.tv_print_title);
         tv_print_name = view.findViewById(R.id.tv_print_name);
         tv_height = view.findViewById(R.id.tv_height);
+        lv_disease = view.findViewById(R.id.lv_disease_process);
+        ll_disease = view.findViewById(R.id.ll_disease);
 
         btn_cancel = view.findViewById(R.id.btn_dialog_cancel);
         btn_print = view.findViewById(R.id.btn_dialog_print);
@@ -70,6 +74,13 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         btn_cancel.setOnClickListener(this);
         btn_print.setOnClickListener(this);
 
+        List<AppointmentsBean.PatientReport> dataList = (List<AppointmentsBean.PatientReport>) appointmentsBean.getPatientReport();
+        if(dataList != null && dataList.size() > 0){
+            DiseaseProcessAdapter adapter = new DiseaseProcessAdapter(mContext, dataList);
+            lv_disease.setAdapter(adapter);
+        } else {
+            ll_disease.setVisibility(View.GONE);
+        }
         AppointmentsBean.Patient patient = appointmentsBean.getPatient();
         AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
         Calendar c = Calendar.getInstance();
@@ -91,28 +102,28 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
             }
             tv_print_name.setText(patient.getNickname()+"/"+type+"/医生："+patient.getDoctor());
             tv_height.setText("身高："+patient.getHeight()+"cm");
-            
-            if (!"true".equals(appointments.getBlood())) {
-                ll_blood.setVisibility(View.GONE);
-            }
-            if (!"true".equals(appointments.getFootAt())) {
-                ll_foot.setVisibility(View.GONE);
-            }
-            if (!"true".equals(appointments.getEyeGroundAt())) {
-                ll_eye.setVisibility(View.GONE);
-            }
-            if (!"true".equals(appointments.getInsulinAt())) {
-                ll_insulin.setVisibility(View.GONE);
-            }
-            if (!"true".equals(appointments.getNutritionAt())) {
-                ll_nutrition.setVisibility(View.GONE);
-            }
-            if (!"true".equals(appointments.getHealthTech())) {
-                ll_teach.setVisibility(View.GONE);
-            }
-            if (!"true".equals(appointments.getQuantizationAt())) {
-                ll_quantization.setVisibility(View.GONE);
-            }
+//
+//            if (!"true".equals(appointments.getBlood())) {
+//                ll_blood.setVisibility(View.GONE);
+//            }
+//            if (!"true".equals(appointments.getFootAt())) {
+//                ll_foot.setVisibility(View.GONE);
+//            }
+//            if (!"true".equals(appointments.getEyeGroundAt())) {
+//                ll_eye.setVisibility(View.GONE);
+//            }
+//            if (!"true".equals(appointments.getInsulinAt())) {
+//                ll_insulin.setVisibility(View.GONE);
+//            }
+//            if (!"true".equals(appointments.getNutritionAt())) {
+//                ll_nutrition.setVisibility(View.GONE);
+//            }
+//            if (!"true".equals(appointments.getHealthTech())) {
+//                ll_teach.setVisibility(View.GONE);
+//            }
+//            if (!"true".equals(appointments.getQuantizationAt())) {
+//                ll_quantization.setVisibility(View.GONE);
+//            }
         }
 
         dialogPrint.setContentView(view);
@@ -149,11 +160,11 @@ private void initBluetooth(AppointmentsBean appointments){
         }
     });
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        // Android M Permission check
-//        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
-//            return;
-//        }
+//         Android M Permission check
+        if (mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ((Activity)mContext).requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+            return;
+        }
     }
     bluetoothPrinter.searchAndConnect();
 }

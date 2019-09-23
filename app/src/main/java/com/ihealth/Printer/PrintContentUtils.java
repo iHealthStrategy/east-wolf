@@ -1,10 +1,14 @@
 package com.ihealth.Printer;
 
+import android.view.View;
+
+import com.ihealth.Printer.adapter.DiseaseProcessAdapter;
 import com.ihealth.bean.AppointmentsBean;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 就诊小条需要打印的内容
@@ -17,6 +21,7 @@ public class PrintContentUtils {
         String content = "";
         AppointmentsBean.Patient patient = appointmentsBean.getPatient();
         AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
+        List<AppointmentsBean.PatientReport> dataList = (List<AppointmentsBean.PatientReport>) appointmentsBean.getPatientReport();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
@@ -29,7 +34,15 @@ public class PrintContentUtils {
         String title = "   本次门诊就诊项目（"+currentDay+"）\n \n";
         String name;
         String height;
+        String diseaseContent = "";
 
+        if(dataList != null && dataList.size() > 0){
+            diseaseContent = diseaseTitle();
+            for(int i = 0; i < dataList.size(); i++){
+                diseaseContent += diseaseProcessContent(dataList.get(i).getStartDate(),
+                        dataList.get(i).getEndDate(),dataList.get(i).getContent());
+            }
+        }
 //        if(patient != null && appointments != null){
 //            String type= appointments.getType() ;
         String type= "first";
@@ -45,33 +58,9 @@ public class PrintContentUtils {
             name = "          "+"五月天"+"/"+type+"/医生："+"张琳"+"\n\n";
 //            height = patient.getHeight();
             height = "183";
-
-            content = title + name + baseContent(height);
-
-//            if ("true".equals(appointments.getBlood())) {
-                content += bloodContent();
-//            }
-//            if ("true".equals(appointments.getQuantizationAt())) {
-                content += quantizationContent();
-//            }
-//            if ("true".equals(appointments.getNutritionAt())) {
-                content += nutritionContent();
-//            }
-//            if ("true".equals(appointments.getInsulinAt())) {
-                content += insulinContent();
-//            }
-//            if ("true".equals(appointments.getFootAt())) {
-                content += footContent();
-//            }
-//            if ("true".equals(appointments.getEyeGroundAt())) {
-                content += eyeContent();
-//            }
-            content += doctorAskContent();
-//            if ("true".equals(appointments.getHealthTech())) {
-                content += teachContent();
-//            }
-            content += payContent();
-//        }
+            content = title + name + baseContent(height) + bloodContent() + quantizationContent() +
+            nutritionContent() + insulinContent() + footContent() + eyeContent() + doctorAskContent()
+                    + teachContent() + diseaseContent + payContent();
         return content;
     }
 
@@ -127,6 +116,18 @@ public class PrintContentUtils {
     private String doctorAskContent(){
         String content = "医生问诊\n"+
                          "----------------------------------------------\n";
+        return content;
+    }
+
+    private String diseaseTitle(){
+        String content = "总结\n";
+        return content;
+    }
+
+    private String diseaseProcessContent(String startDate, String endDate, String text){
+        String content = startDate + "-" + endDate + "\n" +
+                "本周总结：" + text +"\n"+
+                "----------------------------------------------\n";
         return content;
     }
 

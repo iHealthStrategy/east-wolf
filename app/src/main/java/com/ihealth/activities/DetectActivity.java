@@ -49,6 +49,8 @@ import com.baidu.idl.facesdk.FaceInfo;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.BaseDialog;
+import com.ihealth.Printer.PrintAllDepartContentUtils;
+import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.Printer.BluetoothPrinter;
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.ResponseMessageBean;
@@ -58,7 +60,9 @@ import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.FaceDetectExtendManager;
 import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.views.CheckItemSelectDialog;
-
+import com.ihealth.views.PirntAllDepartmentDialog;
+import com.ihealth.views.PrintContentDialog;
+import org.w3c.dom.Text;
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -579,7 +583,10 @@ public class DetectActivity extends BaseActivity {
                 AppointmentsBean appointmentsBean = response.body();
                 if (appointmentsBean != null) {
 //                    new CheckItemSelectDialog(DetectActivity.this, appointmentsBean);
+//                    new CheckItemSelectDialog(DetectActivity.this,appointmentsBean);
 //                    tackleWithResponds(responseMessage, "");
+                    new PrintContentDialog(DetectActivity.this,appointmentsBean);
+//                    new PirntAllDepartmentDialog(DetectActivity.this,appointmentsBean);
                 } else {
 //                    showReLoginDialog("系统认证失败，请重新登录。");
                 }

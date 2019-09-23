@@ -144,7 +144,8 @@ public class BluetoothPrinter {
 //                                printText(s);
 //
 //                            }
-                            PrintContentUtils printContentUtils = new PrintContentUtils();
+//                            PrintContentUtils printContentUtils = new PrintContentUtils();
+                            PrintAllDepartContentUtils printContentUtils = new PrintAllDepartContentUtils();
                             String content = printContentUtils.getPringContent(appointmentsBean);
                             String[] arr= content.split("\n");
                             for(String s: arr){

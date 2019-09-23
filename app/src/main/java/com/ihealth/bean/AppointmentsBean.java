@@ -10,6 +10,7 @@ public class AppointmentsBean implements Serializable {
 
     private Patient patient;
     private Appointments appointments;
+    private PatientReport patientReport;
 
     public Patient getPatient() {
         return patient;
@@ -19,12 +20,50 @@ public class AppointmentsBean implements Serializable {
         this.patient = patient;
     }
 
+    public PatientReport getPatientReport() {
+        return patientReport;
+    }
+
+    public void setPatientReport(PatientReport patientReport) {
+        this.patientReport = patientReport;
+    }
+
     public Appointments getAppointments() {
         return appointments;
     }
 
     public void setAppointments(Appointments appointments) {
         this.appointments = appointments;
+    }
+
+    public class PatientReport{
+        private String startDate;
+        private String endDate;
+        private String content;
+
+        public String getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(String startDate) {
+            this.startDate = startDate;
+        }
+
+        public String getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(String endDate) {
+            this.endDate = endDate;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 
     public class  Patient implements Serializable{
