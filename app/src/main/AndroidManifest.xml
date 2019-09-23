@@ -50,12 +50,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name="com.ihealth.activities.DetectActivity"
@@ -64,11 +59,28 @@
         <activity
             android:name="com.ihealth.activities.TrackActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+
+        </activity>
         <activity
             android:name="com.ihealth.activities.AttrActivity"
             android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+
+        </activity>
+        <activity android:name="com.ihealth.activities.RegisterPatientActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name="com.ihealth.activities.RegisterResultActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name="com.ihealth.activities.SelectPatientTypeActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+
         <service
             android:name="com.inuker.bluetooth.library.BluetoothService" />
         <service android:name="net.xprinter.service.XprinterService"></service>

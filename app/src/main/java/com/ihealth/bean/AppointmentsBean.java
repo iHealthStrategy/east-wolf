@@ -1,10 +1,12 @@
 package com.ihealth.bean;
 
+import java.io.Serializable;
+
 /**
  * 预约信息的实体类
  * Created by Liuhuan on 2019/06/05.
  */
-public class AppointmentsBean {
+public class AppointmentsBean implements Serializable {
 
     private Patient patient;
     private Appointments appointments;
@@ -25,7 +27,13 @@ public class AppointmentsBean {
         this.appointments = appointments;
     }
 
-    public class  Patient{
+    public class  Patient implements Serializable{
+        private String userId;
+        private String idCard;
+        private String nickname;
+        private String phoneNumber;
+        private String socialInsurance;
+
         private String _id;
         private String height;
         private String weight;
@@ -33,7 +41,38 @@ public class AppointmentsBean {
         private String mobile;
         private String avatar;
         private String petname;
-        private String nickname;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getIdCard() {
+            return idCard;
+        }
+
+        public void setIdCard(String idCard) {
+            this.idCard = idCard;
+        }
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
+
+        public String getSocialInsurance() {
+            return socialInsurance;
+        }
+
+        public void setSocialInsurance(String socialInsurance) {
+            this.socialInsurance = socialInsurance;
+        }
 
         public String get_id() {
             return _id;
@@ -101,7 +140,7 @@ public class AppointmentsBean {
 
     }
 
-    public static class Appointments{
+    public static class Appointments implements Serializable{
         private String _id;
         private String isOutPatient;
         private String blood;

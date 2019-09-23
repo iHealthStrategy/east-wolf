@@ -1,92 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
   -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@android:color/white"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/main_ll"
+    <include
+        layout="@layout/common_header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_size_240dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-        <com.ihealth.commonLayout.HeaderBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+        android:layout_height="@dimen/layout_size_47dp" />
+
+    <TextView
+        android:id="@+id/activity_main_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_size_40dp"
+        android:layout_marginBottom="@dimen/layout_size_11dp"
+        android:gravity="center"
+        android:text="00:00"
+        android:textColor="@color/color333333"
+        android:textSize="47sp" />
+
+    <TextView
+        android:id="@+id/activity_main_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/layout_size_21dp"
+        android:gravity="center"
+        android:text="2019年09月16日 星期一"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/text_size_16sp" />
+
+    <com.ihealth.views.SameCircleView
+        android:id="@+id/activity_main_start_face_dected"
+        android:layout_width="@dimen/layout_size_140dp"
+        android:layout_height="@dimen/layout_size_140dp"
+        android:layout_gravity="center" />
+    <TextView
+        android:id="@+id/activity_main_sign_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_size_19dp"
+        android:gravity="center"
+        android:text="今日已签到：30 人次"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/text_size_16sp" />
+    <!--以下布局为上次的创建的布局，现在的版本已经废弃，为了防止之前的逻辑会出现问题，现将以前的布局给gone了
+        修改时间2019.09.16
+        -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
+            android:id="@+id/main_ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/layout_size_240dp"
+            android:background="@color/colorPrimary"
             android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/layout_size_5dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_main_hospital_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/layout_size_48dp"
-                android:paddingVertical="5dp"
-                android:background="@color/colorTransparency"
-                android:src="@drawable/workwechat1546494739475" />
+            <com.ihealth.commonLayout.HeaderBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <TextClock
-                android:id="@+id/time_tv"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_size_5dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_main_hospital_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/layout_size_48dp"
+                    android:background="@color/colorTransparency"
+                    android:paddingVertical="5dp"
+                    android:src="@drawable/workwechat1546494739475" />
+
+                <TextClock
+                    android:id="@+id/time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:format24Hour="HH:mm"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:textStyle="bold" />
+
+                <TextClock
+                    android:id="@+id/dataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:format12Hour="MM月dd日 EEEE"
+                    android:format24Hour="MM月dd日 EEEE"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_ll"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/layout_size_140dp"
+            android:gravity="center">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:format24Hour="HH:mm"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_16sp"
-                android:textStyle="bold"
-                android:layout_centerInParent="true"/>
+                android:orientation="vertical">
 
-            <TextClock
-                android:id="@+id/dataView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:format24Hour ="MM月dd日 EEEE"
-                android:format12Hour ="MM月dd日 EEEE"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp"/>
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn_main_facial_check_in"
+                    android:layout_width="@dimen/layout_size_170dp"
+                    android:layout_height="@dimen/layout_size_170dp"
+                    android:background="@mipmap/icon_face_button" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="点击进行人脸签到"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_16sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_below="@+id/main_ll"
-        android:layout_marginTop="@dimen/layout_size_defeat_140dp"
-        android:gravity="center">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            >
-             <Button
-                android:id="@+id/btn_main_facial_check_in"
-                android:layout_width="@dimen/layout_size_170dp"
-                android:layout_height="@dimen/layout_size_170dp"
-                android:background="@mipmap/icon_face_button"/>
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="1dp"
-                 android:text="点击进行人脸签到"
-                 android:textColor="@android:color/black"
-                 android:textSize="@dimen/text_size_16sp"/>
-         </LinearLayout>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

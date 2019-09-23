@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPreferenceUtil {
+    public static String SP_FACE_DETECT_TIME="SP_FACE_DETECT_TIME";
     public static String getStringTypeSharedPreference(Context context, String spKey, String key){
         SharedPreferences sharedPreferences = context.getSharedPreferences(spKey, Context.MODE_PRIVATE);
         return sharedPreferences.getString(key,"");

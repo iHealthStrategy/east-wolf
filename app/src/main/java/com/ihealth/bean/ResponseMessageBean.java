@@ -1,15 +1,17 @@
 package com.ihealth.bean;
 
+import java.io.Serializable;
+
 /**
  * 人脸检测返回数据Bean类
  *
  * @author liyanwen
  * @date 2019-02-14
  */
-public class ResponseMessageBean {
+public class ResponseMessageBean implements Serializable {
     private int resultStatus;
     private String resultMessage;
-    private resultContent resultContent;
+    private AppointmentsBean resultContent;
     public static class resultContent {
         private String userId;
         private String phoneNumber;
@@ -77,14 +79,6 @@ public class ResponseMessageBean {
         this.resultStatus = resultStatus;
     }
 
-    public resultContent getResultContent() {
-        return resultContent;
-    }
-
-    public void setResultContent(resultContent resultContent) {
-        this.resultContent = resultContent;
-    }
-
     public String getResultMessage() {
         return resultMessage;
     }
@@ -93,12 +87,11 @@ public class ResponseMessageBean {
         this.resultMessage = resultMessage;
     }
 
-    @Override
-    public String toString() {
-        return "ResponseMessageBean{" +
-                "resultStatus=" + resultStatus +
-                ", resultContent = "+ resultContent.toString() +
-                ", resultMessage='" + resultMessage + '\'' +
-                '}';
+    public AppointmentsBean getResultContent() {
+        return resultContent;
+    }
+
+    public void setResultContent(AppointmentsBean resultContent) {
+        this.resultContent = resultContent;
     }
 }

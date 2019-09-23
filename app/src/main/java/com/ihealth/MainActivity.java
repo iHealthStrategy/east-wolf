@@ -26,25 +26,47 @@ import com.ihealth.activities.DetectActivity;
 import com.ihealth.activities.LoginActivity;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.Constants;
+import com.ihealth.utils.ConstantArguments;
+import com.ihealth.utils.DateUtils;
 import com.ihealth.utils.SharedPreferenceUtil;
+import com.ihealth.views.FaceDetectResultDialog;
+import com.ihealth.views.SameCircleView;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class MainActivity extends BaseActivity  {
+
+    @BindView(R.id.common_header_title)
+    TextView commonHeaderTitle;
+    @BindView(R.id.common_header_back_layout)
+    LinearLayout commonHeaderBackLayout;
+    @BindView(R.id.activity_main_time)
+    TextView activityMainTime;
+    @BindView(R.id.activity_main_date)
+    TextView activityMainDate;
+    @BindView(R.id.activity_main_start_face_dected)
+    SameCircleView activityMainStartFaceDected;
+    @BindView(R.id.activity_main_sign_time)
+    TextView activityMainSignTime;
     private Context mContext;
     private ImageView ivMainHospitalLogo;
     private Button btnMainFacialCheckIn;
-   private LinearLayout close_ll ;
+    private LinearLayout close_ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         mContext = this;
 
         initView();
         initData();
-        addListener();
     }
 
 
@@ -53,6 +75,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         close_ll = (LinearLayout) findViewById(R.id.close_ll);
         close_ll.setVisibility(ImageView.GONE);
         btnMainFacialCheckIn = (Button) findViewById(R.id.btn_main_facial_check_in);
+        Date temp = DateUtils.getCurrentSystemDate();
+        commonHeaderTitle.setText("共同照护内分泌全科室人脸签到");
+        activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
+        activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
     }
 
     private void initData() {
@@ -71,27 +97,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void addListener() {
-        btnMainFacialCheckIn.setOnClickListener(this);
-    }
+//    private void addListener() {
+//        btnMainFacialCheckIn.setOnClickListener(this);
+//    }
 
-    @Override
-    public void onClick(View v) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-        } else {
-            switch (v.getId()) {
-                case R.id.btn_main_facial_check_in:
-                    // TODO 实时人脸检测
-                    Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
-                    startActivity(itDetect);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
+//        } else {
+//            switch (v.getId()) {
+//                case R.id.btn_main_facial_check_in:
+//                    // TODO 实时人脸检测
+//                    Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
+//                    startActivity(itDetect);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -169,4 +195,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         dialog.show();
     }
 
+    @OnClick({R.id.common_header_back_layout, R.id.activity_main_start_face_dected})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.common_header_back_layout:
+                finish();
+                break;
+            case R.id.activity_main_start_face_dected:
+//                FaceDetectResultDialog dialog1 = new FaceDetectResultDialog(MainActivity.this);
+//                dialog1.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
+                } else {
+                    // TODO 实时人脸检测
+                    Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
+                    startActivity(itDetect);
+                }
+        }
+    }
 }
+

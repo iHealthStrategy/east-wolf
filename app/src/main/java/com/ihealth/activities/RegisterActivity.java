@@ -9,19 +9,21 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
@@ -41,6 +43,9 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -52,10 +57,26 @@ import retrofit2.Response;
  *
  * @author liyanwen
  */
-public class RegisterActivity extends BaseActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseActivity implements View.OnClickListener, View.OnTouchListener {
 
     private static final String TAG = "RegisterActivity";
     private static final String MSG_UPDATE = "RegisterActivity";
+    @BindView(R.id.common_header_title)
+    TextView commonHeaderTitle;
+    @BindView(R.id.common_header_back_layout)
+    LinearLayout commonHeaderBackLayout;
+    @BindView(R.id.activity_register_telephone_et)
+    EditText activityRegisterTelephoneEt;
+    @BindView(R.id.activity_register_telephone_dele_iv)
+    ImageView activityRegisterTelephoneDeleIv;
+    @BindView(R.id.activity_register_name_et)
+    EditText activityRegisterNameEt;
+    @BindView(R.id.activity_register_name_iv)
+    ImageView activityRegisterNameIv;
+    @BindView(R.id.activity_register_idcard_et)
+    EditText activityRegisterIdcardEt;
+    @BindView(R.id.activity_register_idcard_iv)
+    ImageView activityRegisterIdcardIv;
 
     private Handler mHandler = new Handler();
     private Context mContext;
@@ -94,9 +115,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     TextInputLayout layoutNewUserSocialInsurance;
     TextInputLayout layoutNewUserSocialInsuranceConfirm;
 
-    TextView tvTimeLine1,tvTimeLine2,tvTimeLine3,tvTimeLine4;
-    TextView tvTitle1,tvTitle2,tvTitle3,tvTitle4;
-    View lineView1,lineView2,lineView3;
+    TextView tvTimeLine1, tvTimeLine2, tvTimeLine3, tvTimeLine4;
+    TextView tvTitle1, tvTitle2, tvTitle3, tvTitle4;
+    View lineView1, lineView2, lineView3;
 
 
     String mFaceBase64Image = "";
@@ -113,10 +134,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private BaseDialog dialogChooseOutpatient;
 
     LoadingProgressBar loadingProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
 
         mContext = this;
 
@@ -133,6 +156,30 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
     }
+
+    @OnClick(R.id.common_header_back_layout)
+    public void onViewClicked() {
+        finish();
+    }
+
+    @OnClick({R.id.activity_register_telephone_dele_iv, R.id.activity_register_name_iv, R.id.activity_register_idcard_iv})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.activity_register_telephone_dele_iv:
+                activityRegisterTelephoneEt.setText("");
+                activityRegisterTelephoneDeleIv.setVisibility(View.GONE);
+                break;
+            case R.id.activity_register_name_iv:
+                activityRegisterNameEt.setText("");
+                activityRegisterNameIv.setVisibility(View.GONE);
+                break;
+            case R.id.activity_register_idcard_iv:
+                activityRegisterIdcardEt.setText("");
+                activityRegisterIdcardIv.setVisibility(View.GONE);
+                break;
+        }
+    }
+
 
     private static class InnerHandler extends Handler {
         private WeakReference<RegisterActivity> mWeakReference;
@@ -158,7 +205,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void initComponents(){
+    private void initComponents() {
         dialogChooseOutpatient = new BaseDialog(mContext);
         dialogMessage = new BaseDialog(mContext);
         dialogRegisteredSucceeded = new BaseDialog(mContext);
@@ -167,14 +214,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void initData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
-        mFaceBase64Image = bundle.getString("new_user_image", "");
-         Log.i("initData", "initData: " + mFaceBase64Image);
+//        mFaceBase64Image = bundle.getString("new_user_image", "");
+        Log.i("initData", "initData: " + mFaceBase64Image);
     }
 
     private void initView() {
 
-        tvRegisterHeader = (TextView) findViewById(R.id.tv_register_header);
-        tvRegisterTitle = (TextView) findViewById(R.id.tv_register_title);
 
         vfNewUserInfos = (ViewFlipper) findViewById(R.id.vf_register_new_user_infos);
         vfNewUserInfos.setInAnimation(this, R.anim.bottom_in);
@@ -194,25 +239,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         btnNewUserStep4Previous = (Button) findViewById(R.id.btn_detect_new_user_step_4_previous);
         btnNewUserStep4Next = (Button) findViewById(R.id.btn_detect_new_user_step_4_next);
 
-        btnNewUserStep5Previous = (Button) findViewById(R.id.btn_detect_new_user_step_5_previous);
-        btnNewUserStep5Skip = (Button) findViewById(R.id.btn_detect_new_user_step_5_skip);
-        btnNewUserStep5Next = (Button) findViewById(R.id.btn_detect_new_user_step_5_next);
-
-        btnNewUserStep6Previous = (Button) findViewById(R.id.btn_detect_new_user_step_6_previous);
-        btnNewUserStep6Done = (Button) findViewById(R.id.btn_detect_new_user_step_6_done);
-
-        etvNewUserName = (TextInputEditText) findViewById(R.id.etv_register_name);
-        etvNewUserIdCard = (TextInputEditText) findViewById(R.id.etv_register_id_card);
-        etvNewUserMobile = (TextInputEditText) findViewById(R.id.etv_register_mobile);
-        etvNewUserSocialInsurance = (TextInputEditText) findViewById(R.id.etv_register_social_insurance);
-        etvNewUserSocialInsuranceConfirm = (TextInputEditText) findViewById(R.id.etv_register_social_insurance_confirm);
-
-        layoutNewUserName = (TextInputLayout) findViewById(R.id.layout_register_name);
-        layoutNewUserIdCard = (TextInputLayout) findViewById(R.id.layout_register_id_card);
-        layoutNewUserMobile = (TextInputLayout) findViewById(R.id.layout_register_mobile);
-        layoutNewUserSocialInsurance = (TextInputLayout) findViewById(R.id.layout_register_social_insurance);
-        layoutNewUserSocialInsuranceConfirm = (TextInputLayout) findViewById(R.id.layout_register_social_insurance_confirm);
-
         tvTimeLine1 = findViewById(R.id.tv_time_line_one);
         tvTimeLine2 = findViewById(R.id.tv_time_line_two);
         tvTimeLine3 = findViewById(R.id.tv_time_line_three);
@@ -227,6 +253,40 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         loadingProgressBar = new LoadingProgressBar(RegisterActivity.this);
 
+        commonHeaderTitle.setText("建立患者信息");
+
+
+    }
+
+    private void handleInputEt(String content, EditText input, ImageView iv) {
+        if (content == null)
+            content = "";
+        if (content.length() > 0) {
+            iv.setVisibility(View.VISIBLE);
+        } else {
+            iv.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        String temp = "";
+        if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+            if (view instanceof Button) {
+                Button tempBtn = (Button) view;
+                if (!tempBtn.isEnabled()) {
+                    switch (view.getId()) {
+                        case R.id.btn_detect_new_user_step_2_next:
+                            temp = "请输入正确手机号！";
+                            break;
+                    }
+                    Toast.makeText(RegisterActivity.this,temp,Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+
+        return false;
     }
 
     private void initListeners() {
@@ -244,8 +304,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         btnNewUserStep5Skip.setOnClickListener(this);
         btnNewUserStep6Previous.setOnClickListener(this);
         btnNewUserStep6Done.setOnClickListener(this);
-
-        etvNewUserMobile.addTextChangedListener(new TextWatcher() {
+        activityRegisterTelephoneEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -253,32 +312,35 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s)) {
-                    if (TextInfosCheckUtil.checkMobile(s.toString())) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                handleInputEt(editable.toString(), activityRegisterTelephoneEt, activityRegisterTelephoneDeleIv);
+                if (!TextUtils.isEmpty(editable)) {
+                    if (TextInfosCheckUtil.checkMobile(editable.toString())) {
                         isUserMobileValid = true;
                         setButtonState(btnNewUserStep2Next, true);
                         layoutNewUserMobile.setErrorEnabled(false);
                     } else {
                         isUserMobileValid = false;
                         setButtonState(btnNewUserStep2Next, false);
-                        layoutNewUserMobile.setError(getResources().getString(R.string.txt_register_mobile_error));
+                        if(TextInfosCheckUtil.checkLength(editable.toString(),11))
+                        Toast.makeText(RegisterActivity.this,R.string.txt_register_mobile_error,Toast.LENGTH_SHORT).show();
+
                         layoutNewUserMobile.setErrorEnabled(true);
                     }
                 } else {
                     isUserMobileValid = false;
                     setButtonState(btnNewUserStep2Next, false);
-                    layoutNewUserMobile.setError(getResources().getString(R.string.txt_register_mobile_cannot_blank));
+//                    layotNewUserMobile.setError(getResources().getString(R.string.txt_register_mobile_cannot_blank));
                     layoutNewUserMobile.setErrorEnabled(true);
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
         });
 
-        etvNewUserName.addTextChangedListener(new TextWatcher() {
+        activityRegisterNameEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -286,6 +348,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                handleInputEt(s.toString(), activityRegisterNameEt, activityRegisterNameIv);
                 if (!TextUtils.isEmpty(s)) {
                     isUserNameValid = true;
                     setButtonState(btnNewUserStep3Next, true);
@@ -297,45 +365,41 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     layoutNewUserName.setErrorEnabled(true);
                 }
             }
+        });
+
+        activityRegisterIdcardEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                handleInputEt(s.toString(), activityRegisterIdcardEt, activityRegisterIdcardIv);
+                if (!TextUtils.isEmpty(s)) {
+                    if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
+                        isUserIdCardValid = true;
+                        setButtonState(btnNewUserStep4Next, true);
+                        layoutNewUserIdCard.setErrorEnabled(false);
+                    } else {
+                        isUserIdCardValid = false;
+                        setButtonState(btnNewUserStep4Next, false);
+                        Toast.makeText(RegisterActivity.this,R.string.txt_register_id_invalid_error,Toast.LENGTH_SHORT).show();
+                        layoutNewUserIdCard.setErrorEnabled(true);
+                    }
+                } else {
+                    isUserIdCardValid = true;
+                    setButtonState(btnNewUserStep4Next, false);
+                    layoutNewUserIdCard.setError(getResources().getString(R.string.txt_register_id_cannot_blank));
+                    layoutNewUserIdCard.setErrorEnabled(false);
+                }
             }
         });
-
-       etvNewUserIdCard.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-               if (!TextUtils.isEmpty(s)) {
-                   if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
-                       isUserIdCardValid = true;
-                       setButtonState(btnNewUserStep4Next, true);
-                       layoutNewUserIdCard.setErrorEnabled(false);
-                   } else {
-                       isUserIdCardValid = false;
-                       setButtonState(btnNewUserStep4Next, false);
-                       layoutNewUserIdCard.setError(getResources().getString(R.string.txt_register_id_invalid_error));
-                       layoutNewUserIdCard.setErrorEnabled(true);
-                   }
-               } else {
-                   isUserIdCardValid = true;
-                   setButtonState(btnNewUserStep4Next, false);
-                   layoutNewUserIdCard.setError(getResources().getString(R.string.txt_register_id_cannot_blank));
-                   layoutNewUserIdCard.setErrorEnabled(false);
-               }
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });
 
         etvNewUserSocialInsurance.addTextChangedListener(new TextWatcher() {
             @Override
@@ -348,7 +412,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if (!TextUtils.isEmpty(s)) {
                     setButtonState(btnNewUserStep5Next, true);
                     layoutNewUserSocialInsurance.setErrorEnabled(false);
-                    if (etvNewUserSocialInsuranceConfirm.getText().toString().equals(s.toString())){
+                    if (etvNewUserSocialInsuranceConfirm.getText().toString().equals(s.toString())) {
                         isUserSocialInsuranceValid = true;
                         setButtonState(btnNewUserStep6Done, true);
                         layoutNewUserSocialInsuranceConfirm.setErrorEnabled(false);
@@ -381,7 +445,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
-                    if (etvNewUserSocialInsurance.getText().toString().equals(s.toString())){
+                    if (etvNewUserSocialInsurance.getText().toString().equals(s.toString())) {
                         isUserSocialInsuranceValid = true;
                         setButtonState(btnNewUserStep6Done, true);
                         layoutNewUserSocialInsuranceConfirm.setErrorEnabled(false);
@@ -482,7 +546,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     //把timeline的各项设置为选中色
-    private void chageTimeLineOnColor(int index){
+    private void chageTimeLineOnColor(int index) {
         switch (index) {
             case 1:
                 tvTitle2.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -512,7 +576,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     //把timeline的各项设置为非选中色
-    private void chageTimeLineOffColor(int index){
+    private void chageTimeLineOffColor(int index) {
         switch (index) {
             case 1:
                 tvTitle2.setTextColor(getResources().getColor(R.color.color_time_line_point_off));
@@ -563,12 +627,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             ResponseMessageBean responseMessageBean = response.body();
                             int resultStatus = responseMessageBean.getResultStatus();
                             if (resultStatus == 0) {
-                                ResponseMessageBean.resultContent resultContent = responseMessageBean.getResultContent();
-                                String phoneNumber = resultContent.getPhoneNumber();
-                                String nickname = resultContent.getNickname();
-                                String idCard = resultContent.getIdCard();
-                                String socialInsurance = resultContent.getSocialInsurance();
-                                showCommonDialog(phoneNumber, nickname, idCard, socialInsurance);
+//                                ResponseMessageBean.resultContent resultContent = responseMessageBean.getResultContent();
+//                                String phoneNumber = resultContent.getPhoneNumber();
+//                                String nickname = resultContent.getNickname();
+//                                String idCard = resultContent.getIdCard();
+//                                String socialInsurance = resultContent.getSocialInsurance();
+//                                showCommonDialog(phoneNumber, nickname, idCard, socialInsurance);
                             } else {
                                 // 说明是新患者，直接下一步，建立患者信息
                                 vfNewUserInfos.setDisplayedChild(1);
@@ -607,25 +671,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 changeTitle();
                 break;
 
-            case R.id.btn_detect_new_user_step_5_previous:
-                vfNewUserInfos.setDisplayedChild(2);
-                changeTitle();
-                break;
-            case R.id.btn_detect_new_user_step_5_next:
-                vfNewUserInfos.setDisplayedChild(4);
-                changeTitle();
-                break;
-            case R.id.btn_detect_new_user_step_6_previous:
-                vfNewUserInfos.setDisplayedChild(3);
-                changeTitle();
-                break;
-            case R.id.btn_detect_new_user_step_5_skip:
-            case R.id.btn_detect_new_user_step_6_done:
-                if (!mFaceBase64Image.isEmpty()) {
-                    Log.d("6_done/5_skip", "onClick: entered!");
-                    mHandler.postDelayed(addUserRunnable, 100);
-                }
-                break;
+//           case R.id.btn_detect_new_user_step_4_next:
+//                if (!mFaceBase64Image.isEmpty()) {
+//                    Log.d("6_done/5_skip", "onClick: entered!");
+//                    mHandler.postDelayed(addUserRunnable, 100);
+//                }
+//                break;
             default:
                 changeTitle();
                 break;
@@ -644,7 +695,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             AddUserRequestBean addUserRequestBean = new AddUserRequestBean();
             addUserRequestBean.setBase64Image(mFaceBase64Image);
-            addUserRequestBean.setUserInfo(new UserInfo(phoneNumber, nickname, idCard, socialInsurance));
+            addUserRequestBean.setUserInfo(new UserInfo(phoneNumber, nickname, idCard));
             addUserRequestBean.setHospitalId(
                     SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
             );
@@ -683,7 +734,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * @param
      */
     private void showRegisteredResultDialog(String dialogContent) {
-        if(null==dialogRegisteredSucceeded){
+        if (null == dialogRegisteredSucceeded) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_register_success, null);
@@ -717,7 +768,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         dialogRegisteredSucceeded.setContentView(view);
         dialogRegisteredSucceeded.setCancelable(false);
-        if (null!=dialogRegisteredSucceeded && !dialogRegisteredSucceeded.isShowing()){
+        if (null != dialogRegisteredSucceeded && !dialogRegisteredSucceeded.isShowing()) {
             dialogRegisteredSucceeded.show();
         }
     }
@@ -728,7 +779,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * @param
      */
     private void showCommonDialog(final String phoneNumber, final String nickname, final String idCard, final String socialInsurance) {
-        if(null==dialogMessage){
+        if (null == dialogMessage) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
@@ -748,7 +799,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 "请确认如下信息是否正确：\n"
                         + "手机号：" + (TextUtils.isEmpty(phoneNumber) ? "--" : (phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(7, 11))) + "\n"
                         + "姓名：" + (TextUtils.isEmpty(nickname) ? "--" : nickname) + "\n"
-                        + "身份证号：" + (TextUtils.isEmpty(idCard) ? "--" : (idCard.substring(0, 6) + "********" + idCard.substring(idCard.length() - 4)))+"\n"
+                        + "身份证号：" + (TextUtils.isEmpty(idCard) ? "--" : (idCard.substring(0, 6) + "********" + idCard.substring(idCard.length() - 4))) + "\n"
                         + "社会保障卡号：" + (TextUtils.isEmpty(socialInsurance) ? "--" : socialInsurance)
         );
 
@@ -771,10 +822,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 } else if (TextUtils.isEmpty(nickname)) {
                     vfNewUserInfos.setDisplayedChild(1);
                     changeTitle();
-                } else if(TextUtils.isEmpty(idCard)){
+                } else if (TextUtils.isEmpty(idCard)) {
                     vfNewUserInfos.setDisplayedChild(2);
                     changeTitle();
-                }else {
+                } else {
                     vfNewUserInfos.setDisplayedChild(3);
                     changeTitle();
                 }
@@ -794,7 +845,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         dialogMessage.setContentView(view);
         dialogMessage.setCancelable(false);
-        if ( null!=dialogMessage && !dialogMessage.isShowing()){
+        if (null != dialogMessage && !dialogMessage.isShowing()) {
             dialogMessage.show();
         }
     }
@@ -805,7 +856,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * @param
      */
     private void showChooseOutpatientDialog(final String patientId) {
-        if(null==dialogChooseOutpatient){
+        if (null == dialogChooseOutpatient) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_outpatient, null);
@@ -846,12 +897,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         dialogChooseOutpatient.setContentView(view);
         dialogChooseOutpatient.setCancelable(false);
-        if (null!=dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()){
+        if (null != dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()) {
             dialogChooseOutpatient.show();
         }
     }
 
-    private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam){
+    private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam) {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("patientId", patientId);
         requestMap.put("hospitalId",
@@ -875,7 +926,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
-    private void tackleWithResponds(ResponseMessageBean responseMessageBean){
+    private void tackleWithResponds(ResponseMessageBean responseMessageBean) {
         int resultStatus = responseMessageBean.getResultStatus();
         String resultMessage = responseMessageBean.getResultMessage();
         String dialogContents = "";
@@ -896,7 +947,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY:
-                showChooseOutpatientDialog(responseMessageBean.getResultContent().getUserId());
+//                showChooseOutpatientDialog(responseMessageBean.getResultContent().getUserId());
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:

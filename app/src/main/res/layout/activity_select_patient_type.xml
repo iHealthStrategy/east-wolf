@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+    <include
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_47dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请选择患者病种信息"
+        android:layout_marginTop="@dimen/layout_size_33dp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/layout_size_33dp"
+        android:textSize="@dimen/text_size_25sp"
+        android:textColor="@color/color333333"
+        />
+    <!--https://gitee.com/bruce_yang/FlowLayout/ 引用地址
+    max_select：-1为不限制选择数量，>=1的数字为控制选择tag的数量
+    auto_select_effect 是否开启默认的选中效果，即为selector中设置的效果，默认为true；如果设置为false，则无选中效果，需要自己在回调中处理
+    -->
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/id_flowlayout"
+        zhy:max_select="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/layout_size_57dp"
+        android:paddingRight="@dimen/layout_size_57dp">
+    </com.zhy.view.flowlayout.TagFlowLayout>
+    <Button
+        android:id="@+id/activity_patient_type_btn"
+        android:layout_width="@dimen/layout_size_260dp"
+        android:layout_height="@dimen/layout_size_50dp"
+        android:text="确认信息"
+        android:layout_marginTop="@dimen/layout_size_71dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorFFFFFF"
+        android:textSize="@dimen/text_size_19sp"
+        android:background="@drawable/button_round_shape_enabled"/>
+</LinearLayout>

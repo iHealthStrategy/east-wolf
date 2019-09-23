@@ -16,7 +16,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -42,6 +41,7 @@ import com.baidu.aip.face.DetectRegionProcessor;
 import com.baidu.aip.face.FaceDetectManager;
 import com.baidu.aip.face.FaceFilter;
 import com.baidu.aip.face.PreviewView;
+import com.baidu.aip.face.TexturePreviewView;
 import com.baidu.aip.face.camera.ICameraControl;
 import com.baidu.aip.face.camera.PermissionCallback;
 import com.baidu.aip.fl.widget.BrightnessTools;
@@ -49,21 +49,15 @@ import com.baidu.idl.facesdk.FaceInfo;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.BaseDialog;
-import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.Printer.BluetoothPrinter;
-import com.ihealth.Printer.BluetoothPrinterStatus;
-import com.ihealth.Printer.PrinterStatusResponse;
+import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
+import com.ihealth.utils.FaceDetectExtendManager;
 import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.views.CheckItemSelectDialog;
-import com.ihealth.views.PrintContentDialog;
-
-
-
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
@@ -72,6 +66,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -86,14 +83,25 @@ import retrofit2.Response;
  */
 public class DetectActivity extends BaseActivity {
 
-    private static final int MSG_INITVIEW = 1001;
-    private static final int MSG_REFRESH_TITLE = 1002;
+    public static final int MSG_INITVIEW = 1001;
+    public static final int MSG_REFRESH_TITLE = 1002;
 
     private static final int REQUEST_CODE_INIT_STATE = 2001;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    @BindView(R.id.common_header_title)
+    TextView commonHeaderTitle;
+    @BindView(R.id.common_header_back_layout)
+    LinearLayout commonHeaderBackLayout;
+    @BindView(R.id.common_header_layout)
+    RelativeLayout commonHeaderLayout;
+
+    @BindView(R.id.activity_detect_preview_view_rl)
+    RelativeLayout activityDetectPreviewViewRl;
+    @BindView(R.id.back_imageview)
+    ImageView backImageview;
     private Context mContext;
 
-   // private TextView tvDetectHospitalTitle;
+    // private TextView tvDetectHospitalTitle;
     /*private TextView tvDetectResultTitle;
     private TextView tvDetectResultName;
     private TextView tvDetectResultMobile;
@@ -102,16 +110,12 @@ public class DetectActivity extends BaseActivity {
     private Button btnDetectContinueSigning;*/
     private TextView tvDetectNextSigningTimer;
 
-    private PreviewView previewView;
-    private LinearLayout close_ll;
+    private TexturePreviewView previewView;
     private boolean mDetectStopped = false;
 
     private FaceDetectManager faceDetectManager;
     private DetectRegionProcessor cropProcessor = new DetectRegionProcessor();
-    private int mScreenW;
-    private int mScreenH;
     private TextureView mTextureView;
-    private Paint paint = new Paint();
     // private RecyclerView mRecyclerview;
     private List<Bitmap> mList = new ArrayList<>();
     // private RecyAdapter mRecyAdapter;
@@ -134,58 +138,36 @@ public class DetectActivity extends BaseActivity {
 
     // private int mSearchFailTimes = 0;
 
-    private DETECT_STATES detectStates;
+    private FaceDetectExtendManager faceDetectSuperManager;
 
-    private enum DETECT_STATES {
-        /**
-         * 等待签到
-         */
-        WAITING_FOR_SIGNING,
-        /**
-         * 正在签到
-         */
-        SIGNING,
-        /**
-         * 签到失败：人脸识别失败-用户未找到（错误code: 1001）
-         */
-        SIGN_FAILED_USER_NOT_FOUND,
-        /**
-         * 签到失败：人脸识别失败-用户找到不匹配（错误code: 1002）
-         */
-        SIGN_FAILED_USER_NOT_MATCH,
-        /**
-         * 签到失败：人脸识别失败-其他错误（错误code: 1003）
-         */
-        SIGN_FAILED_OTHER_REASONS,
-        /**
-         * 签到失败：已经签到过，重复签到（错误code: 4001）
-         */
-        SIGN_FAILED_ALREADY_SIGNED_IN,
-        /**
-         * 签到成功
-         */
-        SIGN_SUCCEEDED,
+    @OnClick(R.id.common_header_back_layout)
+    public void onViewClicked() {
+        finish();
     }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detect);
+        ButterKnife.bind(this);
         mContext = this;
         initComponents();
+        initCameraView();
         faceDetectManager = new FaceDetectManager(this);
 
 
-        initScreen();
         initView();
         getAppointmentInfo();
-//        Intent intent = new Intent(mContext, RegisterActivity.class);
-//        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
         initBluetooth();
 
+//        Intent intent = new Intent(mContext, RegisterPatientActivity.class);
+//        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
+
     }
-    private void initBluetooth(){
+
+    private void initBluetooth() {
 //        printer = new BluetoothPrinter(this, new PrinterStatusResponse() {
 //            @Override
 //            public void onStatusChange(BluetoothPrinterStatus status) {
@@ -227,158 +209,37 @@ public class DetectActivity extends BaseActivity {
     }
 
 
-    private void initComponents(){
+    private void initComponents() {
         dialogReLogin = new BaseDialog(mContext);
         dialogMessage = new BaseDialog(mContext);
         dialogChooseOutpatient = new BaseDialog(mContext);
         dialogChooseRole = new BaseDialog(mContext);
     }
 
-    /**
-     * 获取屏幕参数
-     */
-    private void initScreen() {
-        WindowManager manager = getWindowManager();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        manager.getDefaultDisplay().getMetrics(outMetrics);
-        mScreenW = outMetrics.widthPixels;
-        mScreenH = outMetrics.heightPixels;
-        mRound = getResources().getDimensionPixelSize(R.dimen.round);
-    }
+
 
     /**
      * 初始化view
      */
     private void initView() {
-        previewView = (PreviewView) findViewById(R.id.preview_view);
-        mTextureView = (TextureView) findViewById(R.id.texture_view);
-
-        /*tvDetectResultTitle = (TextView) findViewById(R.id.tv_detect_title);
-        tvDetectResultName = (TextView) findViewById(R.id.tv_detect_result_name_content);
-        tvDetectResultMobile = (TextView) findViewById(R.id.tv_detect_result_mobile_content);
-        tvDetectResultIdCard = (TextView) findViewById(R.id.tv_detect_result_id_card_content);*/
-
-//        btnDetectContinueSigning = (Button) findViewById(R.id.btn_detect_continue_signing);
+        previewView = (TexturePreviewView) findViewById(R.id.activity_detect_texture_preview_view);
+        mTextureView = (TextureView) findViewById(R.id.activity_detect_texture_view);
+        backImageview.setBackground(getResources().getDrawable(R.drawable.back_white_iv));
+        commonHeaderTitle.setTextColor(getResources().getColor(R.color.colorFFFFFF));
         tvDetectNextSigningTimer = (TextView) findViewById(R.id.tv_detect_next_signing_timer);
-//        bleStatus = (TextView) findViewById(R.id.ble_status);
-//        btnDetectContinueSigning.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                tvDetectNextSigningTimer.setText("【 等待签到 】");
-//                timer.cancel();
-//                mList.clear();
-//                resetDisplayContents();
-//            }
-//        });
+        commonHeaderLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color1D1D1D));
+       faceDetectSuperManager = new FaceDetectExtendManager(this,previewView,mTextureView,tvDetectNextSigningTimer,mHandler);
 
-
-        mTextureView.setOpaque(false);
-        // mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
-
-        // 不需要屏幕自动变黑。
-        mTextureView.setKeepScreenOn(true);
-
-        final CameraImageSource cameraImageSource = new CameraImageSource(this);
-        cameraImageSource.setPreviewView(previewView);
-
-        faceDetectManager.setImageSource(cameraImageSource);
-        faceDetectManager.setOnFaceDetectListener(new FaceDetectManager.OnFaceDetectListener() {
-            @Override
-            public void onDetectFace(final int retCode, FaceInfo[] infos, ImageFrame frame) {
-                // Log.i("onDetectFace", "onDetectFace: retCode = "+ retCode+",infos = "+infos);
-                if (
-//                        detectStates != DETECT_STATES.SIGN_SUCCEEDED
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_ALREADY_SIGNED_IN
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_OTHER_REASONS
-                        detectStates == DETECT_STATES.SIGNING
-                        || detectStates == DETECT_STATES.WAITING_FOR_SIGNING
-                ) {
-                    if (retCode == 0) {
-                        detectStates = DETECT_STATES.SIGNING;
-                        mHandler.sendEmptyMessageDelayed(MSG_REFRESH_TITLE, 200);
-                    } else {
-                        detectStates = DETECT_STATES.WAITING_FOR_SIGNING;
-                        mHandler.sendEmptyMessageDelayed(MSG_REFRESH_TITLE, 200);
-                    }
-                }
-            }
-        });
-        faceDetectManager.setOnTrackListener(new FaceFilter.OnTrackListener() {
-            @Override
-            public void onTrack(final FaceFilter.TrackedModel trackedModel) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showFrame(trackedModel);
-                    }
-                });
-
-            }
-        });
-
-        cameraImageSource.getCameraControl().setPermissionCallback(new PermissionCallback() {
-            @Override
-            public boolean onRequestPermission() {
-                ActivityCompat.requestPermissions(DetectActivity.this,
-                        new String[]{Manifest.permission.CAMERA}, 100);
-                return true;
-            }
-        });
-
-
-        ICameraControl control = cameraImageSource.getCameraControl();
-        control.setPreviewView(previewView);
-        // 设置检测裁剪处理器
-        faceDetectManager.addPreProcessor(cropProcessor);
-
-        int orientation = getResources().getConfiguration().orientation;
-        boolean isPortrait = (orientation == Configuration.ORIENTATION_PORTRAIT);
-
-        if (isPortrait) {
-            previewView.setScaleType(PreviewView.ScaleType.FIT_WIDTH);
-        } else {
-            previewView.setScaleType(PreviewView.ScaleType.FIT_HEIGHT);
-        }
-
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-        cameraImageSource.getCameraControl().setDisplayOrientation(rotation);
-        setCameraType(cameraImageSource);
-        close_ll = (LinearLayout) findViewById(R.id.close_ll);
-        close_ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        initBrightness();
-        initPaint();
     }
 
-    private void initCameraView(){
+    private void initCameraView() {
         mHandler = new InnerHandler(this);
         mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
     }
 
-    /**
-     * 设置相机亮度，不够200自动调整亮度到200
-     */
-    private void initBrightness() {
-        int brightness = BrightnessTools.getScreenBrightness(DetectActivity.this);
-        if (brightness < 200) {
-            BrightnessTools.setBrightness(this, 200);
-        }
-    }
 
-    /**
-     * 启动人脸检测
-     */
-    private void start() {
-        RectF newDetectedRect = new RectF(0, 0, mScreenW, mScreenH);
-        cropProcessor.setDetectedRect(newDetectedRect);
-        faceDetectManager.start();
-    }
+
+
 
     @Override
     protected void onStop() {
@@ -395,11 +256,6 @@ public class DetectActivity extends BaseActivity {
         mList.clear();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
 
     @Override
     protected void onResume() {
@@ -408,7 +264,7 @@ public class DetectActivity extends BaseActivity {
         if (mDetectStopped) {
             mDetectStopped = false;
         }
-        initCameraView();
+
     }
 
     @Override
@@ -419,12 +275,8 @@ public class DetectActivity extends BaseActivity {
         dialogChooseOutpatient = null;
         dialogChooseRole = null;
 //        printer.destroy();
-        if (null != timer) {
-            timer.cancel();
-            timer = null;
-        }
-    }
 
+    }
 
 
     private class InnerHandler extends Handler {
@@ -450,10 +302,10 @@ public class DetectActivity extends BaseActivity {
             }
             switch (msg.what) {
                 case MSG_INITVIEW:
-                    activity.start();
+                    faceDetectSuperManager.start();
                     break;
                 case MSG_REFRESH_TITLE:
-                    setDisplayElements("");
+                    faceDetectSuperManager.setDisplayElements("");
                     break;
                 default:
                     break;
@@ -461,96 +313,7 @@ public class DetectActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 初始化画笔
-     */
-    private void initPaint() {
-        paint.setColor(Color.GREEN);
-        paint.setStyle(Paint.Style.STROKE);
-    }
 
-    /**
-     * 绘制人脸框。
-     *
-     * @param model 追踪到的人脸
-     */
-    private void showFrame(FaceFilter.TrackedModel model) {
-        Canvas canvas = mTextureView.lockCanvas();
-        if (canvas == null) {
-            return;
-        }
-        // 清空canvas
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-        if (model != null) {
-            FaceInfo info = model.getInfo();
-            model.getImageFrame().retain();
-            RectF rectCenter = new RectF(1.8f*info.mCenter_x - 2 - info.mWidth*7/10,
-                    9* info.mCenter_y/10 -2 -info.mWidth*7/10,
-                    1.8f*info.mCenter_x + 2 + info.mWidth*7/10,
-                    9*info.mCenter_y/10 +2 + info.mWidth*7/10);
-            previewView.mapFromOriginalRect(rectCenter);
-            // 绘制框
-            paint.setStrokeWidth(mRound);
-            paint.setAntiAlias(true);
-            canvas.drawRect(rectCenter, paint);
-
-            if (model.meetCriteria()) {
-                // 符合检测要求，绘制绿框
-                paint.setColor(Color.GREEN);
-            }
-            final Bitmap face = model.cropFace();
-            if (face != null && mList.size() < 10) {
-                mList.add(face);
-                if (mList.size() == 10) {
-                    mHandler.postDelayed(searchFaceRunnable, 100);
-                }
-            }
-        }
-        mTextureView.unlockCanvasAndPost(canvas);
-    }
-
-    Runnable searchFaceRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (mList.size() > 0) {
-                Bitmap uploadedFace = mList.get(mList.size() - 1);
-                final String base64Image = convertImageToBase64String(uploadedFace);
-
-                Map<String, String> requestMap = new HashMap<>();
-
-                requestMap.put("base64Image", base64Image);
-                requestMap.put("hospitalId",
-                        SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
-                );
-
-                Gson gson = new Gson();
-                String jsonStr = gson.toJson(requestMap, HashMap.class);
-
-                final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
-
-                ApiUtil.searchFaceCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
-                    @Override
-                    public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                        // Log.i("searchFaceRunnable", "onResponse: response = " + response.body());
-                        ResponseMessageBean responseMessage = response.body();
-                        if (responseMessage != null) {
-                            tackleWithResponds(responseMessage, base64Image);
-                        } else {
-                            showReLoginDialog("系统认证失败，请重新登录");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                        // Log.i("searchFaceRunnable", "onFailure: t = " + t);
-                    }
-                });
-
-            }
-
-        }
-    };
 
     private static String convertImageToBase64String(Bitmap imageBitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -563,31 +326,7 @@ public class DetectActivity extends BaseActivity {
         }
     }
 
-    private void startCountDownTimer() {
-        timer = new CountDownTimer(3000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                tvDetectNextSigningTimer.setText((millisUntilFinished / 1000 + 1) + " 秒后继续签到");
-            }
 
-            @Override
-            public void onFinish() {
-                tvDetectNextSigningTimer.setText("等待签到");
-                timer.cancel();
-                mList.clear();
-                resetDisplayContents();
-            }
-        }.start();
-    }
-
-    private void resetDisplayContents() {
-        detectStates = DETECT_STATES.WAITING_FOR_SIGNING;
-        setDisplayElements("");
-
-       /* tvDetectResultIdCard.setText("--");
-        tvDetectResultName.setText("--");
-        tvDetectResultMobile.setText("--");*/
-    }
 
     /**
      * 展示重新登录对话框
@@ -595,7 +334,7 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showReLoginDialog(String dialogContent) {
-        if(null==dialogReLogin){
+        if (null == dialogReLogin) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
@@ -624,7 +363,7 @@ public class DetectActivity extends BaseActivity {
 
         dialogReLogin.setContentView(view);
         dialogReLogin.setCancelable(false);
-        if (null!=dialogReLogin && !dialogReLogin.isShowing()){
+        if (null != dialogReLogin && !dialogReLogin.isShowing()) {
             dialogReLogin.show();
         }
     }
@@ -634,71 +373,14 @@ public class DetectActivity extends BaseActivity {
         bundle.putString("new_user_image", base64Image);
         Intent intent = new Intent(mContext, RegisterActivity.class);
         intent.putExtra("data_from_detect_activity", bundle);
-        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
+        startActivityForResult(intent, REQUEST_CODE_INIT_STATE);
     }
 
-    private void setCameraType(CameraImageSource cameraImageSource) {
-        // TODO 选择使用前置摄像头
-        cameraImageSource.getCameraControl().setCameraFacing(ICameraControl.CAMERA_FACING_FRONT);
 
-        // TODO 选择使用usb摄像头
-        //  cameraImageSource.getCameraControl().setCameraFacing(ICameraControl.CAMERA_USB);
-        // 如果不设置，人脸框会镜像，显示不准
-        //  previewView.getTextureView().setScaleX(-1);
 
-        // TODO 选择使用后置摄像头
-        // cameraImageSource.getCameraControl().setCameraFacing(ICameraControl.CAMERA_FACING_BACK);
-        // previewView.getTextureView().setScaleX(-1);
-    }
 
-    private void setDisplayElements(String name) {
-        int displayColor = getResources().getColor(android.R.color.darker_gray);
-        String titleText = "欢迎您";
-        String countDownTimerText = "欢迎您";
-        switch (detectStates) {
-            case WAITING_FOR_SIGNING:
-                displayColor = getResources().getColor(android.R.color.holo_orange_dark);
-                titleText = "等待签到...";
-                tvDetectNextSigningTimer.setText("等待签到");
-               // setButtonState(btnDetectContinueSigning, false);
-                break;
-            case SIGNING:
-                displayColor = getResources().getColor(android.R.color.holo_blue_light);
-                titleText = "正在签到...";
-                tvDetectNextSigningTimer.setText("正在签到");
-               // setButtonState(btnDetectContinueSigning, false);
-                break;
-            case SIGN_FAILED_USER_NOT_FOUND:
-            case SIGN_FAILED_USER_NOT_MATCH:
-            case SIGN_FAILED_OTHER_REASONS:
-                displayColor = getResources().getColor(android.R.color.holo_red_light);
-                titleText = "请再试一次";
-               // setButtonState(btnDetectContinueSigning, true);
-                break;
-            case SIGN_FAILED_ALREADY_SIGNED_IN:
-                titleText = "尊敬的"+name+"\n您已签到，无需重复签到\n直接就诊即可，谢谢";
-//                showCommonMessageDialogNew(titleText,"TO_PRINT");
-//                showCommonMessageDialog(titleText);
-//                CheckItemSelectDialog checkItemDialog = new CheckItemSelectDialog(this);
-//                getAppointmentInfo();
-                break;
-            case SIGN_SUCCEEDED:
-                titleText = "尊敬的"+name+"\n您已签到成功，感谢您参加照护门诊";
-                showCommonMessageDialogNew(titleText,"TO_PRINT");
-                break;
-            default:
-                break;
-        }
-    }
 
-    private void setButtonState(Button button, boolean isEnabled){
-        button.setEnabled(isEnabled);
-        if (isEnabled){
-            button.setBackground(getResources().getDrawable(R.drawable.button_round_shape_enabled));
-        } else {
-            button.setBackground(getResources().getDrawable(R.drawable.button_round_shape_disabled));
-        }
-    }
+
 
     /**
      * 展示选择患者类型对话框
@@ -706,7 +388,7 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showChooseRoleDialog() {
-        if(null==dialogChooseRole){
+        if (null == dialogChooseRole) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_role, null);
@@ -733,13 +415,13 @@ public class DetectActivity extends BaseActivity {
                 dialogChooseRole.dismiss();
                 // mSearchFailTimes = 0;
                 mList.clear();
-                resetDisplayContents();
+//                resetDisplayContents();
             }
         });
 
         dialogChooseRole.setContentView(view);
         dialogChooseRole.setCancelable(false);
-        if ( null!=dialogChooseRole && !dialogChooseRole.isShowing()){
+        if (null != dialogChooseRole && !dialogChooseRole.isShowing()) {
             dialogChooseRole.show();
         }
     }
@@ -750,7 +432,7 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showChooseOutpatientDialog(final String patientId) {
-        if(null==dialogChooseOutpatient){
+        if (null == dialogChooseOutpatient) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_outpatient, null);
@@ -778,7 +460,7 @@ public class DetectActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialogChooseOutpatient.dismiss();
-                checkInOnHealthCareTeamAttendanceState(patientId, false);
+//                checkInOnHealthCareTeamAttendanceState(patientId, false);
             }
         };
 
@@ -791,7 +473,7 @@ public class DetectActivity extends BaseActivity {
 
         dialogChooseOutpatient.setContentView(view);
         dialogChooseOutpatient.setCancelable(false);
-        if (null!=dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()){
+        if (null != dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()) {
             dialogChooseOutpatient.show();
         }
     }
@@ -802,7 +484,7 @@ public class DetectActivity extends BaseActivity {
      * @param
      */
     private void showCommonMessageDialog(String dialogContent) {
-        if(null==dialogMessage){
+        if (null == dialogMessage) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
@@ -820,7 +502,7 @@ public class DetectActivity extends BaseActivity {
             public void onClick(View v) {
                 dialogMessage.dismiss();
                 mList.clear();
-                resetDisplayContents();
+//                resetDisplayContents();
             }
         });
 
@@ -829,14 +511,14 @@ public class DetectActivity extends BaseActivity {
 
         dialogMessage.setContentView(view);
         dialogMessage.setCancelable(false);
-        if (null!=dialogMessage && !dialogMessage.isShowing()){
+        if (null != dialogMessage && !dialogMessage.isShowing()) {
             dialogMessage.show();
         }
     }
 
     //展示一般对话框,改版后的新UI
     private void showCommonMessageDialogNew(String dialogContent, final String type) {
-        if(null==dialogMessage){
+        if (null == dialogMessage) {
             return;
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common_sigle_button, null);
@@ -854,9 +536,9 @@ public class DetectActivity extends BaseActivity {
         final TextView tvDialogContent = view.findViewById(R.id.tv_common_dialog_content);
         tvDialogContent.setText(dialogContent);
 
-        final TextView btnDialogOk =  view.findViewById(R.id.btn_dialog_ok);
+        final TextView btnDialogOk = view.findViewById(R.id.btn_dialog_ok);
         String btnText = "我知道了";
-        if(type.equals("TO_PRINT")){
+        if (type.equals("TO_PRINT")) {
             btnText = "选择检查项目";
         }
         btnDialogOk.setText(btnText);
@@ -864,7 +546,7 @@ public class DetectActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialogMessage.dismiss();
-                if(type.equals("TO_PRINT")){
+                if (type.equals("TO_PRINT")) {
                     Intent intent = new Intent(mContext, RegisterActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("patientId", "");
@@ -876,41 +558,14 @@ public class DetectActivity extends BaseActivity {
 
         dialogMessage.setContentView(view);
         dialogMessage.setCancelable(false);
-        if (null!=dialogMessage && !dialogMessage.isShowing()){
+        if (null != dialogMessage && !dialogMessage.isShowing()) {
             dialogMessage.show();
         }
     }
 
-    private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam){
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("patientId", patientId);
-        requestMap.put("hospitalId",
-                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
-        );
-        requestMap.put("hasHealthCare", hasAttendedHealthCareTeam);
-        Gson gson = new Gson();
-        String jsonStr = gson.toJson(requestMap, HashMap.class);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
-        ApiUtil.checkInWithConditionCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
-            @Override
-            public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                // Log.i("checkInWithConditionCall", "onResponse: "+response.body());
-                ResponseMessageBean responseMessage = response.body();
-                if (responseMessage != null) {
-                    tackleWithResponds(responseMessage, "");
-                } else {
-                    showReLoginDialog("系统认证失败，请重新登录。");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                // Log.i("checkInWithConditionCall", "onFailure: "+t);
-            }
-        });
-    }
 
-    private void getAppointmentInfo(){
+    private void getAppointmentInfo() {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("patientId", "5ab4a677db7e8e31401c9f89");
 //        requestMap.put("patientId", SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID));
@@ -920,10 +575,10 @@ public class DetectActivity extends BaseActivity {
         ApiUtil.getAppointmentCall(mContext, requestBody).enqueue(new Callback<AppointmentsBean>() {
             @Override
             public void onResponse(Call<AppointmentsBean> call, Response<AppointmentsBean> response) {
-                 Log.i("getAppointmentInfo", "onResponse: "+response.body());
+                Log.i("getAppointmentInfo", "onResponse: " + response.body());
                 AppointmentsBean appointmentsBean = response.body();
                 if (appointmentsBean != null) {
-                    new CheckItemSelectDialog(DetectActivity.this,appointmentsBean);
+//                    new CheckItemSelectDialog(DetectActivity.this, appointmentsBean);
 //                    tackleWithResponds(responseMessage, "");
                 } else {
 //                    showReLoginDialog("系统认证失败，请重新登录。");
@@ -932,98 +587,23 @@ public class DetectActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<AppointmentsBean> call, Throwable t) {
-                 Log.i("getAppointmentInfo", "onFailure: "+t);
+                Log.i("getAppointmentInfo", "onFailure: " + t);
             }
         });
     }
 
-    private void tackleWithResponds(ResponseMessageBean responseMessage, String base64Image){
-        ResponseMessageBean.resultContent resultContent = responseMessage.getResultContent();
-        String name = resultContent.getNickname();
-        String originMobile = resultContent.getPhoneNumber();
-        String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
-        String patientId = resultContent.getUserId();
-        SharedPreferenceUtil.editSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID, patientId);
-        switch (responseMessage.getResultStatus()) {
-            case Constants.FACE_RESPONSE_CODE_SUCCESS:
-                detectStates = DETECT_STATES.SIGN_SUCCEEDED;
-                setDisplayElements(name);
-               // tvDetectResultName.setText(name);
-               // tvDetectResultMobile.setText(mobile);
-//                String originIdCard = resultContent.getIdCard();
-//                if (!originIdCard.isEmpty()) {
-//                    String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
-//                    tvDetectResultIdCard.setText(idCard);
-//                } else {
-//                    tvDetectResultIdCard.setText("--");
-//                }
-//                String originSocialInsurance = resultContent.getSocialInsurance();
-//                if (!originSocialInsurance.isEmpty()) {
-//                    String socialInsurance = originSocialInsurance;
-//                  //  tvDetectResultIdCard.setText(socialInsurance);
-//                } else {
-//                  //  tvDetectResultIdCard.setText("--");
-//                }
-                startCountDownTimer();
-                break;
 
-            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
-                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
-                setDisplayElements(name);
-                startRegisterActivity(base64Image);
-                resetDisplayContents();
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
-                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
-                setDisplayElements(name);
-                showChooseRoleDialog();
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
-            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
-                detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
-                setDisplayElements(name);
-                startCountDownTimer();
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
-                detectStates = DETECT_STATES.SIGN_FAILED_ALREADY_SIGNED_IN;
-                setDisplayElements(name);
-//                ResponseMessageBean.resultContent resultContent1 = responseMessage.getResultContent();
-//                String name1 = resultContent1.getNickname();
-//                showCommonMessageDialog((!TextUtils.isEmpty(name1)?("尊敬的"+name1+"：\n"):("尊敬的患者：\n")) + "您已成功签到，请就诊");
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
-                // showCommonMessageDialog("签到失败："+responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
-                showCommonMessageDialog("请联系照护师核对信息进行签到，谢谢");
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY:
-                showChooseOutpatientDialog(responseMessage.getResultContent().getUserId());
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:
-                // showCommonMessageDialog(responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
-                showCommonMessageDialog("请联系照护师核对信息进行签到，谢谢");
-                break;
-
-            default:
-                break;
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CODE_INIT_STATE:
                 mList.clear();
-                resetDisplayContents();
+//                resetDisplayContents();
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
 
     }

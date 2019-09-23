@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="@color/colorTransiton"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="@dimen/layout_size_333dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_height="@dimen/layout_size_383dp">
+        <TextView
+            android:id="@+id/dialog_face_detect_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_size_8dp"
+            android:layout_marginTop="@dimen/layout_size_27dp"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_25sp"
+            android:text="未能找到您的面部数据"
+            android:textColor="@color/color333333"/>
+        <TextView
+            android:id="@+id/dialog_face_detect_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_size_8dp"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_25sp"
+            android:text="请选择"
+            android:textColor="@color/color333333"/>
+        <TextView
+            android:layout_width="@dimen/layout_size_125dp"
+            android:layout_height="@dimen/layout_size_125dp"
+
+            android:textSize="@dimen/text_size_17sp"
+            android:textColor="@color/colorFFFFFF"
+            android:gravity="center"
+            android:background="@drawable/shape_blue_circle"
+            android:text="新患者"/>
+
+        <Button
+            android:id="@+id/dialog_face_detect_second_btn"
+            android:layout_width="@dimen/layout_size_260dp"
+            android:layout_height="@dimen/layout_size_50dp"
+            android:layout_marginTop="@dimen/layout_size_45dp"
+            android:text="重新识别"
+            android:textColor="@color/colorFFFFFF"
+            android:textSize="@dimen/text_size_19sp"
+            android:background="@drawable/button_round_shape_enabled"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

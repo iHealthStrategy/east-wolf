@@ -4,13 +4,11 @@ public class UserInfo {
     private String phoneNumber;
     private String nickname;
     private String idCard;
-    private String socialInsurance;
 
-    public UserInfo(String phoneNumber, String nickname, String idCard, String socialInsurance) {
+    public UserInfo(String phoneNumber, String nickname, String idCard) {
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.idCard = idCard;
-        this.socialInsurance = socialInsurance;
     }
 
     public String getPhoneNumber() {
@@ -37,11 +35,5 @@ public class UserInfo {
         this.idCard = idCard;
     }
 
-    public String getSocialInsurance() {
-        return socialInsurance;
-    }
 
-    public void setSocialInsurance(String socialInsurance) {
-        this.socialInsurance = socialInsurance;
-    }
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/margin_background_114"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <LinearLayout
+        android:layout_width="@dimen/layout_size_280dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorWhite"
+        android:gravity="center_horizontal"
+        android:layout_height="@dimen/layout_size_280dp">
+        <TextView
+            android:id="@+id/dialog_face_detect_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_size_8dp"
+            android:layout_marginTop="@dimen/layout_size_27dp"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_25sp"
+            android:text="你好"
+            android:textColor="@color/color333333"/>
+        <TextView
+            android:id="@+id/dialog_face_detect_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_16sp"
+            android:text="你好"
+            android:textColor="@color/color666666"/>
+        <ImageView
+            android:id="@+id/dialog_face_detect_photo"
+            android:layout_width="@dimen/layout_size_117dp"
+            android:layout_marginTop="@dimen/layout_size_27dp"
+            android:layout_height="@dimen/layout_size_117dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/layout_size_27dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/dialog_face_detect_first_btn"
+            android:layout_width="@dimen/layout_size_260dp"
+            android:layout_height="@dimen/layout_size_50dp"
+            android:text="返回拍照"
+            android:layout_marginRight="@dimen/layout_size_27dp"
+            android:visibility="gone"
+            android:textColor="@color/colorFFFFFF"
+            android:textSize="@dimen/text_size_19sp"
+            android:background="@drawable/button_round_shape_enabled"/>
+        <Button
+            android:id="@+id/dialog_face_detect_second_btn"
+            android:layout_width="@dimen/layout_size_260dp"
+            android:layout_height="@dimen/layout_size_50dp"
+            android:text="返回拍照"
+            android:textColor="@color/colorFFFFFF"
+            android:textSize="@dimen/text_size_19sp"
+            android:background="@drawable/button_round_shape_enabled"/>
+    </LinearLayout>
+
+</LinearLayout>

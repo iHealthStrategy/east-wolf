@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_47dp" />
+    <ImageView
+        android:id="@+id/activity_register_result_iv"
+        android:layout_width="@dimen/layout_size_100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/layout_size_52dp"
+        android:layout_height="@dimen/layout_size_100dp"
+        android:src="@drawable/delete_iv"
+        />
+    <TextView
+        android:id="@+id/activity_register_result_name"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/text_size_20sp"
+        android:textColor="@color/color333333"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/layout_size_16dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/activity_register_result_message"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/text_size_17sp"
+        android:textColor="@color/color999999"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/layout_size_88dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/activity_register_result_btn"
+        android:layout_width="@dimen/layout_size_260dp"
+        android:layout_height="@dimen/layout_size_50dp"
+        android:text="打印就诊小条"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorFFFFFF"
+        android:textSize="@dimen/text_size_19sp"
+        android:background="@drawable/button_round_shape_enabled"/>
+    <TextView
+        android:id="@+id/activity_register_result_other"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/text_size_19sp"
+        android:layout_marginTop="@dimen/layout_size_27dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/color3383FB"
+        android:text="查看其他病种"
+        android:layout_height="wrap_content" />
+</LinearLayout>
