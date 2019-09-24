@@ -1,6 +1,7 @@
 package com.ihealth.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 预约信息的实体类
@@ -10,7 +11,7 @@ public class AppointmentsBean implements Serializable {
 
     private Patient patient;
     private Appointments appointments;
-    private PatientReport patientReport;
+    private List<PatientReport> patientReport;
 
     public Patient getPatient() {
         return patient;
@@ -20,11 +21,11 @@ public class AppointmentsBean implements Serializable {
         this.patient = patient;
     }
 
-    public PatientReport getPatientReport() {
+    public List<PatientReport> getPatientReport() {
         return patientReport;
     }
 
-    public void setPatientReport(PatientReport patientReport) {
+    public void setPatientReport(List<PatientReport> patientReport) {
         this.patientReport = patientReport;
     }
 

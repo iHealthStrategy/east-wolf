@@ -354,7 +354,7 @@ public class FaceDetectExtendManager {
         final AppointmentsBean.Patient patient = appointmentsBean.getPatient();
         final FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext, patient, base64Image);
 
-        responseMessage.setResultStatus(FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND);
+//        responseMessage.setResultStatus(FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND);
 
         dialog.setOnFirstAndSecondClicker(new FaceDetectResultDialog.OnFirstAndSecondClicker() {
             @Override
@@ -413,8 +413,6 @@ public class FaceDetectExtendManager {
             case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
                 detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
                 dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_PERSON);
-
-
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://重新扫脸  1002 1003  3001
