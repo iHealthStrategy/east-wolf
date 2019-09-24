@@ -1,6 +1,8 @@
 package com.ihealth.bean;
 
-public class AddUserRequestBean {
+import java.io.Serializable;
+
+public class AddUserRequestBean implements Serializable {
     private String base64Image;
     private String hospitalId;
     private UserInfo userInfo;

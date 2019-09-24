@@ -3,6 +3,7 @@ package com.ihealth.retrofit;
 import android.content.Context;
 
 import com.ihealth.bean.AppointmentsBean;
+import com.ihealth.bean.FaceDetectResultByPhone;
 import com.ihealth.bean.HospitalBean;
 import com.ihealth.bean.LoginBean;
 import com.ihealth.bean.ResponseMessageBean;
@@ -69,7 +70,7 @@ public class ApiUtil {
         return ApiUtil.getPostApiService().searchFace(headerMap, requestBody);
     }
 
-    public static Call<ResponseMessageBean> searchUserByPhoneNumberCall(Context context, RequestBody requestBody){
+    public static Call<FaceDetectResultByPhone> searchUserByPhoneNumberCall(Context context, RequestBody requestBody){
         String token = SharedPreferenceUtil.getStringTypeSharedPreference(context,Constants.SP_NAME_AUTHORIZATION,Constants.SP_KEY_TOKEN);
         // Log.i("searchUserByPhoneNumberCall", "searchFaceCall: "+token);
         Map<String, String> headerMap = new HashMap<>(2);

@@ -614,40 +614,40 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.btn_detect_new_user_step_2_next:
 
-                Map<String, String> requestMap = new HashMap<>(2);
-                requestMap.put("phoneNumber", etvNewUserMobile.getText().toString());
-                Gson gson = new Gson();
-                String jsonStr = gson.toJson(requestMap, HashMap.class);
-                final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
-                ApiUtil.searchUserByPhoneNumberCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
-                    @Override
-                    public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                        // Log.i(TAG, "onResponse: "+response.body());
-                        if (response.isSuccessful()) {
-                            ResponseMessageBean responseMessageBean = response.body();
-                            int resultStatus = responseMessageBean.getResultStatus();
-                            if (resultStatus == 0) {
-//                                ResponseMessageBean.resultContent resultContent = responseMessageBean.getResultContent();
-//                                String phoneNumber = resultContent.getPhoneNumber();
-//                                String nickname = resultContent.getNickname();
-//                                String idCard = resultContent.getIdCard();
-//                                String socialInsurance = resultContent.getSocialInsurance();
-//                                showCommonDialog(phoneNumber, nickname, idCard, socialInsurance);
-                            } else {
-                                // 说明是新患者，直接下一步，建立患者信息
-                                vfNewUserInfos.setDisplayedChild(1);
-                                changeTitle();
-                            }
-                        } else {
-                            showRegisteredResultDialog("注册超时，请返回重试。");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                        // Log.i(TAG, "onFailure: "+t);
-                    }
-                });
+//                Map<String, String> requestMap = new HashMap<>(2);
+//                requestMap.put("phoneNumber", etvNewUserMobile.getText().toString());
+//                Gson gson = new Gson();
+//                String jsonStr = gson.toJson(requestMap, HashMap.class);
+//                final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
+//                ApiUtil.searchUserByPhoneNumberCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
+//                        // Log.i(TAG, "onResponse: "+response.body());
+//                        if (response.isSuccessful()) {
+//                            ResponseMessageBean responseMessageBean = response.body();
+//                            int resultStatus = responseMessageBean.getResultStatus();
+//                            if (resultStatus == 0) {
+////                                ResponseMessageBean.resultContent resultContent = responseMessageBean.getResultContent();
+////                                String phoneNumber = resultContent.getPhoneNumber();
+////                                String nickname = resultContent.getNickname();
+////                                String idCard = resultContent.getIdCard();
+////                                String socialInsurance = resultContent.getSocialInsurance();
+////                                showCommonDialog(phoneNumber, nickname, idCard, socialInsurance);
+//                            } else {
+//                                // 说明是新患者，直接下一步，建立患者信息
+//                                vfNewUserInfos.setDisplayedChild(1);
+//                                changeTitle();
+//                            }
+//                        } else {
+//                            showRegisteredResultDialog("注册超时，请返回重试。");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
+//                        // Log.i(TAG, "onFailure: "+t);
+//                    }
+//                });
                 break;
             case R.id.btn_detect_new_user_step_3_previous:
                 vfNewUserInfos.setDisplayedChild(0);

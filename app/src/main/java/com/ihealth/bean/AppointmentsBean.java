@@ -67,6 +67,7 @@ public class AppointmentsBean implements Serializable {
     }
 
     public class  Patient implements Serializable{
+
         private String userId;
         private String idCard;
         private String nickname;

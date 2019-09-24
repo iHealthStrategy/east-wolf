@@ -60,6 +60,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.ihealth.activities.DetectActivity.MSG_INITVIEW;
+import static com.ihealth.retrofit.Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND;
 
 public class FaceDetectExtendManager {
 
@@ -348,8 +349,13 @@ public class FaceDetectExtendManager {
         }
     }
 
-    private void handleFaceResult(final ResponseMessageBean responseMessage, String base64Image) {
-        FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext);
+    private void handleFaceResult(final ResponseMessageBean responseMessage, final String base64Image) {
+        final AppointmentsBean appointmentsBean = responseMessage.getResultContent();
+        final AppointmentsBean.Patient patient = appointmentsBean.getPatient();
+        final FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext, patient, base64Image);
+
+        responseMessage.setResultStatus(FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND);
+
         dialog.setOnFirstAndSecondClicker(new FaceDetectResultDialog.OnFirstAndSecondClicker() {
             @Override
             public void onFirstClick() {
@@ -362,11 +368,40 @@ public class FaceDetectExtendManager {
                 //无论如何状态，第二个按钮都是打印小条
 
             }
+
+            @Override
+            public void onNewPatientClick() {
+                Intent intent = new Intent(mContext, RegisterPatientActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(BundleKeys.BASE64IMAGE, base64Image);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onReFaceDetectClick() {
+                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
+                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
+                int times = 1;
+                if (!"".equals(faceTime)) {
+                    times = Integer.parseInt(faceTime);
+                }
+                if (times < 3) {
+                    times++;
+                    SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
+                } else {
+
+                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
+                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
+                    intentToTimes.putExtras(bundle);
+                    mContext.startActivity(intentToTimes, bundle);
+                }
+
+            }
         });
 
-
-        AppointmentsBean appointmentsBean = responseMessage.getResultContent();
-        AppointmentsBean.Patient patient = appointmentsBean.getPatient();
 
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
@@ -375,35 +410,35 @@ public class FaceDetectExtendManager {
 
                 break;
 
-            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
+            case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
                 detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
-                Intent intent = new Intent(mContext, RegisterPatientActivity.class);
-                mContext.startActivity(intent);
+                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_PERSON);
+
 
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://重新扫脸  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
             case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
-               String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(),DateUtils.DATE_FORMAT_yyyymmdd);
-                String faceTime=SharedPreferenceUtil.getStringTypeSharedPreference(mContext,SharedPreferenceUtil.SP_FACE_DETECT_TIME,dateKetString);
-                int times =0;
-                if(!"".equals(faceTime)){
+                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
+                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
+                int times = 1;
+                if (!"".equals(faceTime)) {
                     times = Integer.parseInt(faceTime);
                 }
-                if(times<3){
+                if (times < 3) {
                     times++;
                     dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
                     detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
-                    SharedPreferenceUtil.editSharedPreference(mContext,SharedPreferenceUtil.SP_FACE_DETECT_TIME,dateKetString,times+"");
-                }else{
+                    SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
+                } else {
 
                     Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN,appointmentsBean);
-                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS,ConstantArguments.REGISTER_FAILED_TO_TIMES);
+                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
+                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
                     intentToTimes.putExtras(bundle);
-                    mContext.startActivity(intentToTimes,bundle);
+                    mContext.startActivity(intentToTimes, bundle);
                 }
 
 
@@ -422,6 +457,7 @@ public class FaceDetectExtendManager {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY://4003签到错误，共同照护患者不在当天
+                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC);
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS://4004其他签到错误类型，直接提示，联系照护师
@@ -429,6 +465,7 @@ public class FaceDetectExtendManager {
 
             default:
                 break;
+//        }
         }
     }
 
@@ -446,12 +483,13 @@ public class FaceDetectExtendManager {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE://4002签到错误，请联系照护师
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY://4003签到错误，共同照护患者不在当天
-                break;
-
+            case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY://4003签到错误，共同照护患者不在当
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS://4004其他签到错误类型，直接提示，联系照护师
+                Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_ADD_CLINIC);
+                intentToTimes.putExtras(bundle);
+                mContext.startActivity(intentToTimes, bundle);
                 break;
 
             default:
@@ -493,7 +531,7 @@ public class FaceDetectExtendManager {
 //                startCountDownTimer();
                 break;
 
-            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
+            case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
                 detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
                 Intent intent = new Intent(mContext, RegisterPatientActivity.class);
                 mContext.startActivity(intent);
@@ -552,78 +590,6 @@ public class FaceDetectExtendManager {
         }
     }
 
-    public void setDisplayElements(String name) {
-
-//        faceDetectManager.stop();
-        int displayColor = mContext.getResources().getColor(android.R.color.darker_gray);
-        String titleText = "欢迎您";
-        String countDownTimerText = "欢迎您";
-        Log.e("123", "1111111111111");
-//        FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext);
-//        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//            @Override
-//            public void onDismiss(DialogInterface dialogInterface) {
-//                faceDetectManager.start();
-//            }
-//        });
-//        dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
-        switch (detectStates) {
-            case WAITING_FOR_SIGNING:
-                displayColor = mContext.getResources().getColor(android.R.color.holo_orange_dark);
-                titleText = "等待签到...";
-                mResultTV.setText("等待签到");
-                Log.e("123", "222222222");
-
-
-                // setButtonState(btnDetectContinueSigning, false);
-                break;
-            case SIGNING:
-                displayColor = mContext.getResources().getColor(android.R.color.holo_blue_light);
-                titleText = "正在签到...";
-                mResultTV.setText("正在签到");
-                // setButtonState(btnDetectContinueSigning, false);
-                break;
-            case SIGN_FAILED_USER_NOT_FOUND:
-                Intent intent = new Intent(mContext, RegisterPatientActivity.class);
-                mContext.startActivity(intent);
-                break;
-            case SIGN_FAILED_USER_NOT_MATCH:
-//                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-                break;
-            case SIGN_FAILED_OTHER_REASONS:
-                Log.e("123", "3333333333333");
-
-//                FaceDetectResultDialog dialog1 = new FaceDetectResultDialog(mContext);
-//                dialog1.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
-//                dialog1.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                    @Override
-//                    public void onDismiss(DialogInterface dialogInterface) {
-//                        faceDetectManager.start();
-//                    }
-//                });
-                displayColor = mContext.getResources().getColor(android.R.color.holo_red_light);
-                titleText = "请再试一次";
-                // setButtonState(btnDetectContinueSigning, true);
-                break;
-            case SIGN_FAILED_ALREADY_SIGNED_IN:
-//                FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext);
-//                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
-                titleText = "尊敬的" + name + "\n您已签到，无需重复签到\n直接就诊即可，谢谢";
-//                showCommonMessageDialogNew(titleText,"TO_PRINT");
-//                showCommonMessageDialog(titleText);
-//                CheckItemSelectDialog checkItemDialog = new CheckItemSelectDialog(this);
-//                getAppointmentInfo();
-                break;
-            case SIGN_SUCCEEDED:
-
-
-                titleText = "尊敬的" + name + "\n您已签到成功，感谢您参加照护门诊";
-//                showCommonMessageDialogNew(titleText, "TO_PRINT");
-                break;
-            default:
-                break;
-        }
-    }
 
     private void startCountDownTimer() {
         timer = new CountDownTimer(3000, 1000) {

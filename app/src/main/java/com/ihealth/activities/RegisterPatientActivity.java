@@ -30,11 +30,14 @@ import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.BaseDialog;
 import com.ihealth.bean.AddUserRequestBean;
+import com.ihealth.bean.FaceDetectResultByPhone;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.bean.UserInfo;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
+import com.ihealth.utils.BundleKeys;
+import com.ihealth.utils.ConstantArguments;
 import com.ihealth.utils.LoadingProgressBar;
 import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
@@ -51,6 +54,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 
 public class RegisterPatientActivity extends BaseActivity {
@@ -133,6 +137,9 @@ public class RegisterPatientActivity extends BaseActivity {
     private BaseDialog dialogChooseOutpatient;
 
     LoadingProgressBar loadingProgressBar;
+    private String base64Image;
+    //根据手机号去库里面查询是否有这个人，如果有这个人的话，在adduser的接口之后，是需要展示结果的ui的，如果没有的话，需要跳入选择科室的列表然后再次进行adduser
+    private  boolean isHasMyBody =true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +177,8 @@ public class RegisterPatientActivity extends BaseActivity {
             case R.id.btn_detect_new_user_step_2_previous:
                 break;
             case R.id.btn_detect_new_user_step_2_next://填写患者手机号下一步的操作-----动作重要
-                registerPhone();
+                vfRegisterNewUserInfos.setDisplayedChild(1);
+                changeTitle();
                 break;
             case R.id.btn_detect_new_user_step_3_previous://页面刷新
                 vfRegisterNewUserInfos.setDisplayedChild(0);
@@ -181,27 +189,23 @@ public class RegisterPatientActivity extends BaseActivity {
                 changeTitle();
                 break;
             case R.id.btn_detect_new_user_step_3_skip://页面刷新
-                vfRegisterNewUserInfos.setDisplayedChild(3);
-                changeTitle();
-                activityRegisterIdcardEt.setText("");
+                registerPhone();
                 break;
             case R.id.btn_detect_new_user_step_4_previous://页面刷新
                 vfRegisterNewUserInfos.setDisplayedChild(1);
                 changeTitle();
                 break;
             case R.id.btn_detect_new_user_step_4_next://页面刷新
-                vfRegisterNewUserInfos.setDisplayedChild(3);
-                changeTitle();
+//                vfRegisterNewUserInfos.setDisplayedChild(3);
+                registerPhone();
+//                changeTitle();
+
                 break;
 //            case R.id.btn_detect_new_user_step_6_done:   //最后一步动作要注册用户了----------动作重要
-//                if (!mFaceBase64Image.isEmpty()) {
-//                    Log.d("6_done/5_skip", "onClick: entered!");
-//                    mHandler.postDelayed(addUserRunnable, 100);
-//                }
+//
+//            default:
+//                changeTitle();
 //                break;
-            default:
-                changeTitle();
-                break;
         }
     }
 
@@ -216,25 +220,30 @@ public class RegisterPatientActivity extends BaseActivity {
         Gson gson = new Gson();
         String jsonStr = gson.toJson(requestMap, HashMap.class);
         final RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
-        ApiUtil.searchUserByPhoneNumberCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
+        ApiUtil.searchUserByPhoneNumberCall(mContext, requestBody).enqueue(new Callback<FaceDetectResultByPhone>() {
             @Override
-            public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
+            public void onResponse(Call<FaceDetectResultByPhone> call, Response<FaceDetectResultByPhone> response) {
                 // Log.i(TAG, "onResponse: "+response.body());
                 if (response.isSuccessful()) {
-                    ResponseMessageBean responseMessageBean = response.body();
+                    FaceDetectResultByPhone responseMessageBean = response.body();
                     int resultStatus = responseMessageBean.getResultStatus();
-                    if (resultStatus == 0) {
-                        ResponseMessageBean.resultContent resultContent = new ResponseMessageBean.resultContent();
-//                        ResponseMessageBean.resultContent resultContent = responseMessageBean.getResultContent();
-                        String phoneNumber = resultContent.getPhoneNumber();
-                        String nickname = resultContent.getNickname();
-                        String idCard = resultContent.getIdCard();
-                        String socialInsurance = resultContent.getSocialInsurance();
-                        showCommonDialog(phoneNumber, nickname, idCard, socialInsurance);
-                    } else {
-                        // 说明是新患者，直接下一步，建立患者信息
-                        vfRegisterNewUserInfos.setDisplayedChild(1);
-                        changeTitle();
+                    resultStatus=2001;
+                    if (resultStatus == 0) {//查到了患者
+                        FaceDetectResultByPhone.ResultContent resultContent = responseMessageBean.getResultContent();
+                        if (!mFaceBase64Image.isEmpty()) {
+                            isHasMyBody = true;
+                            mHandler.postDelayed(addUserRunnable, 100);
+                        }
+
+                    } else if (resultStatus == 2001) {//没有查到了患者
+                        FaceDetectResultByPhone.ResultContent resultContent = new FaceDetectResultByPhone.ResultContent();
+
+                        Intent intentToTimes = new Intent(mContext, SelectPatientTypeActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(BundleKeys.ADDUSERREQUESTBEAN, getEtString());
+//                        bundle.putString(BundleKeys.BASE64IMAGE, base64Image);
+                        intentToTimes.putExtras(bundle);
+                        mContext.startActivity(intentToTimes, bundle);
                     }
                 } else {
                     showRegisteredResultDialog("注册超时，请返回重试。");
@@ -242,7 +251,7 @@ public class RegisterPatientActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
+            public void onFailure(Call<FaceDetectResultByPhone> call, Throwable t) {
                 // Log.i(TAG, "onFailure: "+t);
             }
         });
@@ -281,7 +290,9 @@ public class RegisterPatientActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
+        Bundle bundle = intent.getExtras();
+//        Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
+        mFaceBase64Image=bundle.getString(BundleKeys.BASE64IMAGE);
 //        mFaceBase64Image = bundle.getString("new_user_image", "");
         Log.i("initData", "initData: " + mFaceBase64Image);
     }
@@ -522,23 +533,15 @@ public class RegisterPatientActivity extends BaseActivity {
 
 
     Runnable addUserRunnable = new Runnable() {
+
+
         @Override
         public void run() {
             // Log.i("addUserRunnable", "run: base64Image = " + mFaceBase64Image);
-            loadingProgressBar.show();
-            String nickname = activityRegisterNameEt.getText().toString();
-            String phoneNumber = activityRegisterTelephoneEt.getText().toString();
-            String idCard = activityRegisterIdcardEt.getText().toString();
-
-            AddUserRequestBean addUserRequestBean = new AddUserRequestBean();
-            addUserRequestBean.setBase64Image(mFaceBase64Image);
-            addUserRequestBean.setUserInfo(new UserInfo(phoneNumber, nickname, idCard));
-            addUserRequestBean.setHospitalId(
-                    SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
-            );
+//            loadingProgressBar.show();
 
             Gson gson = new Gson();
-            String jsonStr = gson.toJson(addUserRequestBean, AddUserRequestBean.class);
+            String jsonStr = gson.toJson(getEtString(), AddUserRequestBean.class);
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
 
@@ -546,25 +549,65 @@ public class RegisterPatientActivity extends BaseActivity {
                 @Override
                 public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
                     // Log.i("addUserRunnable", "onResponse: "+ response.body());
-                    loadingProgressBar.hide();
+//                    loadingProgressBar.hide();
                     if (response.isSuccessful()) {
                         ResponseMessageBean responseMessageBean = response.body();
-                        tackleWithResponds(responseMessageBean);
+                        if(isHasMyBody)
+                        handleResult(responseMessageBean);
                     } else {
-                        showRegisteredResultDialog("注册超时，请返回重试。");
+//                        showRegisteredResultDialog("注册超时，请返回重试。");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
                     // Log.i("addUserRunnable", "onFailure: " + t.toString());
-                    showRegisteredResultDialog("注册超时，请返回重试。");
+//                    showRegisteredResultDialog("注册超时，请返回重试。");
                 }
             });
 
         }
     };
+    private void handleResult(ResponseMessageBean responseMessage) {
+        Intent intent = new Intent(this,RegisterResultActivity.class);
+        Bundle bundle = new Bundle();
+        switch (responseMessage.getResultStatus()) {
+            case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
 
+                bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_SUCESS);
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
+
+                break;
+
+            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://重新扫脸  1002 1003  3001
+            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
+            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
+
+
+                break;
+            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST://添加用户失败 2001 2002
+            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
+                bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED);
+                break;
+        }
+
+        startActivity(intent);
+    }
+    private AddUserRequestBean getEtString(){
+        String nickname = activityRegisterNameEt.getText().toString();
+        String phoneNumber = activityRegisterTelephoneEt.getText().toString();
+        String idCard = activityRegisterIdcardEt.getText().toString();
+
+        AddUserRequestBean addUserRequestBean = new AddUserRequestBean();
+        addUserRequestBean.setBase64Image(mFaceBase64Image);
+        addUserRequestBean.setUserInfo(new UserInfo(phoneNumber, nickname, idCard));
+        addUserRequestBean.setHospitalId(
+                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
+        );
+        return addUserRequestBean;
+    }
     /**
      * 展示对话框
      *
@@ -615,7 +658,7 @@ public class RegisterPatientActivity extends BaseActivity {
      *
      * @param
      */
-    private void showCommonDialog(final String phoneNumber, final String nickname, final String idCard, final String socialInsurance) {
+    private void showCommonDialog(final String phoneNumber, final String nickname, final String idCard) {
         if (null == dialogMessage) {
             return;
         }
@@ -637,7 +680,7 @@ public class RegisterPatientActivity extends BaseActivity {
                         + "手机号：" + (TextUtils.isEmpty(phoneNumber) ? "--" : (phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(7, 11))) + "\n"
                         + "姓名：" + (TextUtils.isEmpty(nickname) ? "--" : nickname) + "\n"
                         + "身份证号：" + (TextUtils.isEmpty(idCard) ? "--" : (idCard.substring(0, 6) + "********" + idCard.substring(idCard.length() - 4))) + "\n"
-                        + "社会保障卡号：" + (TextUtils.isEmpty(socialInsurance) ? "--" : socialInsurance)
+
         );
 
 
@@ -654,7 +697,7 @@ public class RegisterPatientActivity extends BaseActivity {
 
                 // 如果信息全部完整，那么进行签到
                 // 否则需要填写缺失信息
-                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(nickname) && !TextUtils.isEmpty(idCard) && !TextUtils.isEmpty(socialInsurance)) {
+                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(nickname) && !TextUtils.isEmpty(idCard) ) {
                     mHandler.postDelayed(addUserRunnable, 100);
                 } else if (TextUtils.isEmpty(nickname)) {
                     vfRegisterNewUserInfos.setDisplayedChild(1);

@@ -1,14 +1,24 @@
 package com.ihealth.bean;
 
-public class UserInfo {
+import java.io.Serializable;
+
+public class UserInfo implements Serializable {
     private String phoneNumber;
     private String nickname;
     private String idCard;
+    private String disease;
 
     public UserInfo(String phoneNumber, String nickname, String idCard) {
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.idCard = idCard;
+    }
+
+    public UserInfo(String phoneNumber, String nickname, String idCard, String disease) {
+        this.phoneNumber = phoneNumber;
+        this.nickname = nickname;
+        this.idCard = idCard;
+        this.disease = disease;
     }
 
     public String getPhoneNumber() {
@@ -35,5 +45,11 @@ public class UserInfo {
         this.idCard = idCard;
     }
 
+    public String getDisease() {
+        return disease;
+    }
 
+    public void setDisease(String disease) {
+        this.disease = disease;
+    }
 }

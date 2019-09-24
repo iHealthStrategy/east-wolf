@@ -260,6 +260,20 @@ public class DetectActivity extends BaseActivity {
         mList.clear();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        faceDetectSuperManager.start();
+        mDetectStopped = true;
+        int size = mList.size();
+        for (int i = 0; i < size; i++) {
+            Bitmap bmp = mList.get(i);
+            if (bmp != null && !bmp.isRecycled()) {
+                bmp.recycle();
+            }
+        }
+        mList.clear();
+    }
 
     @Override
     protected void onResume() {
@@ -309,7 +323,7 @@ public class DetectActivity extends BaseActivity {
                     faceDetectSuperManager.start();
                     break;
                 case MSG_REFRESH_TITLE:
-                    faceDetectSuperManager.setDisplayElements("");
+//                    faceDetectSuperManager.setDisplayElements("");
                     break;
                 default:
                     break;
@@ -329,244 +343,6 @@ public class DetectActivity extends BaseActivity {
             return null;
         }
     }
-
-
-
-    /**
-     * 展示重新登录对话框
-     *
-     * @param
-     */
-    private void showReLoginDialog(String dialogContent) {
-        if (null == dialogReLogin) {
-            return;
-        }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
-
-        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
-        ivCloseDialog.setVisibility(View.GONE);
-
-        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
-        tvDialogContent.setText(dialogContent);
-
-        final TextView btnDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
-        btnDialogOk.setText("登录");
-        btnDialogOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogReLogin.dismiss();
-                mContext.startActivity(new Intent(mContext, LoginActivity.class));
-                Activity activity = (Activity) mContext;
-                activity.finish();
-
-            }
-        });
-
-        final TextView btnDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
-        btnDialogCancel.setVisibility(View.GONE);
-
-        dialogReLogin.setContentView(view);
-        dialogReLogin.setCancelable(false);
-        if (null != dialogReLogin && !dialogReLogin.isShowing()) {
-            dialogReLogin.show();
-        }
-    }
-
-    private void startRegisterActivity(String base64Image) {
-        Bundle bundle = new Bundle();
-        bundle.putString("new_user_image", base64Image);
-        Intent intent = new Intent(mContext, RegisterActivity.class);
-        intent.putExtra("data_from_detect_activity", bundle);
-        startActivityForResult(intent, REQUEST_CODE_INIT_STATE);
-    }
-
-
-
-
-
-
-
-    /**
-     * 展示选择患者类型对话框
-     *
-     * @param
-     */
-    private void showChooseRoleDialog() {
-        if (null == dialogChooseRole) {
-            return;
-        }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_role, null);
-
-        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
-        ivCloseDialog.setVisibility(View.GONE);
-
-        final Button btnChooseNewUser = (Button) view.findViewById(R.id.btn_choose_new_user);
-        final Button btnChooseOldUser = (Button) view.findViewById(R.id.btn_choose_old_user);
-        btnChooseNewUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogChooseRole.dismiss();
-                // mSearchFailTimes = 0;
-                Bitmap uploadedFace = mList.get(mList.size() - 1);
-                final String base64Image = convertImageToBase64String(uploadedFace);
-                startRegisterActivity(base64Image);
-            }
-        });
-
-        btnChooseOldUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogChooseRole.dismiss();
-                // mSearchFailTimes = 0;
-                mList.clear();
-//                resetDisplayContents();
-            }
-        });
-
-        dialogChooseRole.setContentView(view);
-        dialogChooseRole.setCancelable(false);
-        if (null != dialogChooseRole && !dialogChooseRole.isShowing()) {
-            dialogChooseRole.show();
-        }
-    }
-
-    /**
-     * 展示共同照护患者选择看诊门诊类型对话框
-     *
-     * @param
-     */
-    private void showChooseOutpatientDialog(final String patientId) {
-        if (null == dialogChooseOutpatient) {
-            return;
-        }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_outpatient, null);
-
-        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
-        ivCloseDialog.setVisibility(View.GONE);
-
-        final LinearLayout llChooseHealthCareTeam = (LinearLayout) view.findViewById(R.id.ll_dialog_health_care_team);
-        final LinearLayout llChooseOrdinaryOutpatient = (LinearLayout) view.findViewById(R.id.ll_dialog_ordinary_outpatients);
-        final RelativeLayout rlChooseHealthCareTeam = (RelativeLayout) view.findViewById(R.id.rl_dialog_health_care_team);
-        final RelativeLayout rlChooseOrdinaryOutpatient = (RelativeLayout) view.findViewById(R.id.rl_dialog_ordinary_outpatients);
-        final ImageButton ibtChooseHealthCareTeam = (ImageButton) view.findViewById(R.id.ibt_dialog_health_care_team);
-        final ImageButton ibtChooseOrdinaryOutpatient = (ImageButton) view.findViewById(R.id.ibt_dialog_ordinary_outpatients);
-
-        View.OnClickListener onChooseHealthCareTeamClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogChooseOutpatient.dismiss();
-                // checkInOnHealthCareTeamAttendanceState(patientId, true);
-                showCommonMessageDialog("请您联系照护师改期或进行其他操作");
-            }
-        };
-
-        View.OnClickListener onChooseOrdinaryOutpatientClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogChooseOutpatient.dismiss();
-//                checkInOnHealthCareTeamAttendanceState(patientId, false);
-            }
-        };
-
-        llChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
-        rlChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
-        ibtChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
-        llChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
-        rlChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
-        ibtChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
-
-        dialogChooseOutpatient.setContentView(view);
-        dialogChooseOutpatient.setCancelable(false);
-        if (null != dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()) {
-            dialogChooseOutpatient.show();
-        }
-    }
-
-    /**
-     * 展示一般对话框
-     *
-     * @param
-     */
-    private void showCommonMessageDialog(String dialogContent) {
-        if (null == dialogMessage) {
-            return;
-        }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
-
-        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
-        ivCloseDialog.setVisibility(View.GONE);
-
-        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
-        tvDialogContent.setText(dialogContent);
-
-        final TextView btnDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
-        btnDialogOk.setText("知道了");
-        btnDialogOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogMessage.dismiss();
-                mList.clear();
-//                resetDisplayContents();
-            }
-        });
-
-        final TextView btnDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
-        btnDialogCancel.setVisibility(View.GONE);
-
-        dialogMessage.setContentView(view);
-        dialogMessage.setCancelable(false);
-        if (null != dialogMessage && !dialogMessage.isShowing()) {
-            dialogMessage.show();
-        }
-    }
-
-    //展示一般对话框,改版后的新UI
-    private void showCommonMessageDialogNew(String dialogContent, final String type) {
-        if (null == dialogMessage) {
-            return;
-        }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common_sigle_button, null);
-        final ImageView ivCloseDialog = view.findViewById(R.id.iv_dialog_close);
-//        ivCloseDialog.setVisibility(View.GONE);
-        ivCloseDialog.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogMessage.dismiss();
-                    }
-                }
-        );
-
-        final TextView tvDialogContent = view.findViewById(R.id.tv_common_dialog_content);
-        tvDialogContent.setText(dialogContent);
-
-        final TextView btnDialogOk = view.findViewById(R.id.btn_dialog_ok);
-        String btnText = "我知道了";
-        if (type.equals("TO_PRINT")) {
-            btnText = "选择检查项目";
-        }
-        btnDialogOk.setText(btnText);
-        btnDialogOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogMessage.dismiss();
-                if (type.equals("TO_PRINT")) {
-                    Intent intent = new Intent(mContext, RegisterActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("patientId", "");
-                    intent.putExtra("print_data", bundle);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        dialogMessage.setContentView(view);
-        dialogMessage.setCancelable(false);
-        if (null != dialogMessage && !dialogMessage.isShowing()) {
-            dialogMessage.show();
-        }
-    }
-
 
 
     private void getAppointmentInfo() {

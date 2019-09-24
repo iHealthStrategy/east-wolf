@@ -110,6 +110,7 @@ public class RegisterResultActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.activity_register_result_btn:
+                setResultActionByStatus(status);
                 break;
             case R.id.activity_register_result_other:
                 break;
@@ -120,14 +121,14 @@ public class RegisterResultActivity extends BaseActivity {
 
     private void setResultActionByStatus(int status) {
         switch (status) {
-            case ConstantArguments.REGISTER_SUCESS:
+            case ConstantArguments.REGISTER_SUCESS://打印就诊小条
 
                 break;
-            case ConstantArguments.REGISTER_FAILED:
+            case ConstantArguments.REGISTER_FAILED://录入失败，重新填写信息，重新拍照
 
                 break;
-            case ConstantArguments.REGISTER_FAILED_TO_TIMES:
-            case ConstantArguments.REGISTER_FAILED_ADD_CLINIC:
+            case ConstantArguments.REGISTER_FAILED_TO_TIMES://识别太多次数
+            case ConstantArguments.REGISTER_FAILED_ADD_CLINIC://加诊
                 finish();
                 break;
         }

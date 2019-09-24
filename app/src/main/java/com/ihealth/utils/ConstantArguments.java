@@ -11,5 +11,6 @@ public class ConstantArguments {
     public final static int DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC = 7;
     public final static int DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC = 8;
     public final static int DETECT_RESULT_SUCESS_SIGN_MORE_TIME = 9;
+    public final static int DETECT_RESULT_SUCESS_NOT_PERSON = 10;
 
 }

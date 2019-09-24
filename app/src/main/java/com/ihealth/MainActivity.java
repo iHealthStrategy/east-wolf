@@ -74,6 +74,7 @@ public class MainActivity extends BaseActivity  {
         ivMainHospitalLogo = (ImageView) findViewById(R.id.iv_main_hospital_logo);
         close_ll = (LinearLayout) findViewById(R.id.close_ll);
         close_ll.setVisibility(ImageView.GONE);
+        commonHeaderBackLayout.setVisibility(ImageView.GONE);
         btnMainFacialCheckIn = (Button) findViewById(R.id.btn_main_facial_check_in);
         Date temp = DateUtils.getCurrentSystemDate();
         commonHeaderTitle.setText("共同照护内分泌全科室人脸签到");

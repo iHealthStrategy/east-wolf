@@ -49,6 +49,7 @@
         android:layout_marginTop="@dimen/layout_size_27dp"
         android:gravity="center_horizontal"
         android:textColor="@color/color3383FB"
+        android:visibility="gone"
         android:text="查看其他病种"
         android:layout_height="wrap_content" />
 </LinearLayout>
