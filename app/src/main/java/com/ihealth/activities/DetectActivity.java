@@ -255,16 +255,16 @@ public class DetectActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        faceDetectSuperManager.start();
-        mDetectStopped = true;
-        int size = mList.size();
-        for (int i = 0; i < size; i++) {
-            Bitmap bmp = mList.get(i);
-            if (bmp != null && !bmp.isRecycled()) {
-                bmp.recycle();
-            }
-        }
-        mList.clear();
+//        faceDetectSuperManager.start();
+//        mDetectStopped = true;
+//        int size = mList.size();
+//        for (int i = 0; i < size; i++) {
+//            Bitmap bmp = mList.get(i);
+//            if (bmp != null && !bmp.isRecycled()) {
+//                bmp.recycle();
+//            }
+//        }
+//        mList.clear();
     }
 
     @Override

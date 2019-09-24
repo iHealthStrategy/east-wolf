@@ -382,22 +382,22 @@ public class FaceDetectExtendManager {
             public void onReFaceDetectClick() {
                 String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
                 String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
-                int times = 1;
+                int times = 0;
                 if (!"".equals(faceTime)) {
                     times = Integer.parseInt(faceTime);
                 }
-                if (times < 3) {
-                    times++;
-                    SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
-                } else {
-
-                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
-                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
-                    intentToTimes.putExtras(bundle);
-                    mContext.startActivity(intentToTimes, bundle);
-                }
+//                if (times < 3) {
+                times++;
+                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
+//                } else {
+//
+//                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
+//                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
+//                    intentToTimes.putExtras(bundle);
+//                    mContext.startActivity(intentToTimes, bundle);
+////                }
 
             }
         });
@@ -412,32 +412,36 @@ public class FaceDetectExtendManager {
 
             case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
                 detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
-                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_PERSON);
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://重新扫脸  1002 1003  3001
+            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
-            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
-                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
-                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
-                int times = 1;
-                if (!"".equals(faceTime)) {
-                    times = Integer.parseInt(faceTime);
-                }
-                if (times < 3) {
-                    times++;
-                    dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-                    detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
-                    SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
-                } else {
+            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID://重新扫脸  3001
+                Intent intent = new Intent(mContext, RegisterPatientActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(BundleKeys.BASE64IMAGE, base64Image);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
 
-                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
-                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
-                    intentToTimes.putExtras(bundle);
-                    mContext.startActivity(intentToTimes, bundle);
-                }
+                //以下代码是重新拍照3次超过核验次数，版本不做
+//                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
+//                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
+//                int times = 1;
+//                if (!"".equals(faceTime)) {
+//                    times = Integer.parseInt(faceTime);
+//                }
+////                if (times < 3) {
+//                times++;
+//                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
+//                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
+//                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
+//                } else {
+//
+//                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
+//                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
+//                    intentToTimes.putExtras(bundle);
+//                    mContext.startActivity(intentToTimes, bundle);
+//                }
 
 
                 break;

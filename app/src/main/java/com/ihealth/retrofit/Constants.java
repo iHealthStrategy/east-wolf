@@ -17,7 +17,7 @@ public class Constants {
     public static final int FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS = 2002;
     public static final int FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID = 3001;
     public static final int FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN = 4001;
-    public static final int FACE_RESPONSE_E_ERROR_NEED_CONTACT_CDE = 4002;
+    public static final int FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE = 4002;
     public static final int FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY = 4003;
     public static final int FACE_RESPONSE_CODE_ERROR_OTHER_REASONS = 4004;
 

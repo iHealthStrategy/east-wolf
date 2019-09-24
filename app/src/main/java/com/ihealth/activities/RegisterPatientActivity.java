@@ -227,17 +227,14 @@ public class RegisterPatientActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     FaceDetectResultByPhone responseMessageBean = response.body();
                     int resultStatus = responseMessageBean.getResultStatus();
-                    resultStatus=2001;
                     if (resultStatus == 0) {//查到了患者
                         FaceDetectResultByPhone.ResultContent resultContent = responseMessageBean.getResultContent();
                         if (!mFaceBase64Image.isEmpty()) {
                             isHasMyBody = true;
                             mHandler.postDelayed(addUserRunnable, 100);
                         }
-
-                    } else if (resultStatus == 2001) {//没有查到了患者
+                    } else {//没有查到了患者
                         FaceDetectResultByPhone.ResultContent resultContent = new FaceDetectResultByPhone.ResultContent();
-
                         Intent intentToTimes = new Intent(mContext, SelectPatientTypeActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable(BundleKeys.ADDUSERREQUESTBEAN, getEtString());
@@ -571,6 +568,8 @@ public class RegisterPatientActivity extends BaseActivity {
     private void handleResult(ResponseMessageBean responseMessage) {
         Intent intent = new Intent(this,RegisterResultActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN,responseMessage.getResultContent());
+        intent.putExtras(bundle);
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
 
