@@ -81,6 +81,7 @@ public class AppointmentsBean implements Serializable {
         private String mobile;
         private String avatar;
         private String petname;
+        private String patientType;
 
         public String getUserId() {
             return userId;
@@ -178,6 +179,13 @@ public class AppointmentsBean implements Serializable {
             this.nickname = nickname;
         }
 
+        public String getPatientType() {
+            return patientType;
+        }
+
+        public void setPatientType(String patientType) {
+            this.patientType = patientType;
+        }
     }
 
     public static class Appointments implements Serializable{

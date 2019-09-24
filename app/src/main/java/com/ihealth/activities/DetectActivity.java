@@ -149,8 +149,6 @@ public class DetectActivity extends BaseActivity {
         finish();
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +161,7 @@ public class DetectActivity extends BaseActivity {
 
 
         initView();
-        getAppointmentInfo();
+//        getAppointmentInfo();
         initBluetooth();
 
 //        Intent intent = new Intent(mContext, RegisterPatientActivity.class);
@@ -220,8 +218,6 @@ public class DetectActivity extends BaseActivity {
         dialogChooseRole = new BaseDialog(mContext);
     }
 
-
-
     /**
      * 初始化view
      */
@@ -240,10 +236,6 @@ public class DetectActivity extends BaseActivity {
         mHandler = new InnerHandler(this);
         mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
     }
-
-
-
-
 
     @Override
     protected void onStop() {
@@ -296,7 +288,6 @@ public class DetectActivity extends BaseActivity {
 
     }
 
-
     private class InnerHandler extends Handler {
         private WeakReference<DetectActivity> mWeakReference;
 
@@ -331,8 +322,6 @@ public class DetectActivity extends BaseActivity {
         }
     }
 
-
-
     private static String convertImageToBase64String(Bitmap imageBitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         if (null != imageBitmap) {
@@ -343,7 +332,6 @@ public class DetectActivity extends BaseActivity {
             return null;
         }
     }
-
 
     private void getAppointmentInfo() {
         Map<String, Object> requestMap = new HashMap<>();
@@ -374,8 +362,6 @@ public class DetectActivity extends BaseActivity {
             }
         });
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

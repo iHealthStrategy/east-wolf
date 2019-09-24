@@ -14,6 +14,8 @@ import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.utils.BundleKeys;
 import com.ihealth.utils.ConstantArguments;
+import com.ihealth.views.PirntAllDepartmentDialog;
+import com.ihealth.views.PrintContentDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,19 +54,15 @@ public class RegisterResultActivity extends BaseActivity {
 
         if (intent != null) {
             try{
-
                 Bundle bundle = intent.getExtras();
                 data = (AppointmentsBean) bundle.getSerializable(BundleKeys.APPOINTMENTSBEAN);
                 mPatient = data.getPatient();
                 status = bundle.getInt(BundleKeys.REGISTER_RESULT_STATUS, 0);
                 setUIResultByStatus(status);
-
             }catch (Exception e){
                 Log.e("123",e.toString());
             }
-
         }
-
     }
 
     private void setUIResultByStatus(int status) {
@@ -122,7 +120,14 @@ public class RegisterResultActivity extends BaseActivity {
     private void setResultActionByStatus(int status) {
         switch (status) {
             case ConstantArguments.REGISTER_SUCESS://打印就诊小条
-
+                if(data != null && data.getPatient() != null){
+                    String patientType = data.getPatient().getPatientType();
+                    if(patientType.equals("GTZH")){
+                        new PrintContentDialog(RegisterResultActivity.this,data);
+                    } else {
+                        new PirntAllDepartmentDialog(RegisterResultActivity.this,data);
+                    }
+                }
                 break;
             case ConstantArguments.REGISTER_FAILED://录入失败，重新填写信息，重新拍照
 
