@@ -161,8 +161,8 @@ public class FaceDetectExtendManager {
             public void onDetectFace(final int retCode, FaceInfo[] infos, ImageFrame frame) {
 
                     if (retCode == 0) {
-                        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
-//                        mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
+//                        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+                        mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
                     } else {
                         mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
                     }
