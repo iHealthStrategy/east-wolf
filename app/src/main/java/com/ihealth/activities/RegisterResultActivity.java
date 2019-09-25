@@ -89,7 +89,7 @@ public class RegisterResultActivity extends BaseActivity {
                 activityRegisterResultIv.setImageDrawable(getResources().getDrawable(drawables[0]));
                 activityRegisterResultMessage.setText(messages[0]);
                 activityRegisterResultBtn.setText(btnMessages[0]);
-                activityRegisterResultOther.setVisibility(View.VISIBLE);
+//                activityRegisterResultOther.setVisibility(View.VISIBLE);
                 break;
             case ConstantArguments.REGISTER_FAILED:
                 if (mPatient != null)

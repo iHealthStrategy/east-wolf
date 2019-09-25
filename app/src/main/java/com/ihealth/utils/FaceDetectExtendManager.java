@@ -159,24 +159,13 @@ public class FaceDetectExtendManager {
         faceDetectManager.setOnFaceDetectListener(new FaceDetectManager.OnFaceDetectListener() {
             @Override
             public void onDetectFace(final int retCode, FaceInfo[] infos, ImageFrame frame) {
-                // Log.i("onDetectFace", "onDetectFace: retCode = "+ retCode+",infos = "+infos);
-                if (
-//                        detectStates != DETECT_STATES.SIGN_SUCCEEDED
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_ALREADY_SIGNED_IN
-//                                && detectStates != DETECT_STATES.SIGN_FAILED_OTHER_REASONS
-                        detectStates == FaceDetectExtendManager.DETECT_STATES.SIGNING
-                                || detectStates == FaceDetectExtendManager.DETECT_STATES.WAITING_FOR_SIGNING
-                ) {
+
                     if (retCode == 0) {
-                        detectStates = FaceDetectExtendManager.DETECT_STATES.SIGNING;
-                        mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
+                        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+//                        mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
                     } else {
-                        detectStates = FaceDetectExtendManager.DETECT_STATES.WAITING_FOR_SIGNING;
                         mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
                     }
-                }
             }
         });
         faceDetectManager.setOnTrackListener(new FaceFilter.OnTrackListener() {
@@ -357,7 +346,6 @@ public class FaceDetectExtendManager {
         final AppointmentsBean.Patient patient = appointmentsBean.getPatient();
         final FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext, patient, base64Image);
 
-//        responseMessage.setResultStatus(FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND);
 
         dialog.setOnFirstAndSecondClicker(new FaceDetectResultDialog.OnFirstAndSecondClicker() {
             @Override
@@ -416,13 +404,11 @@ public class FaceDetectExtendManager {
 
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
-                detectStates = DETECT_STATES.SIGN_SUCCEEDED;
                 dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
 
                 break;
 
             case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
-                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
             case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID://重新扫脸  3001
@@ -459,10 +445,8 @@ public class FaceDetectExtendManager {
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST://添加用户失败 2001 2002
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
 //                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
                 break;
             case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN://重复签到，打印就诊小条 4001
-                detectStates = DETECT_STATES.SIGN_FAILED_ALREADY_SIGNED_IN;
                 dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_MORE_TIME);
                 break;
 
@@ -522,7 +506,6 @@ public class FaceDetectExtendManager {
 //        setDisplayElements(name);
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS:
-                detectStates = DETECT_STATES.SIGN_SUCCEEDED;
                 dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
 //                setDisplayElements(name);
                 // tvDetectResultName.setText(name);
@@ -545,7 +528,6 @@ public class FaceDetectExtendManager {
                 break;
 
             case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
-                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_FOUND;
                 Intent intent = new Intent(mContext, RegisterPatientActivity.class);
                 mContext.startActivity(intent);
 //                setDisplayElements(name);
@@ -557,14 +539,12 @@ public class FaceDetectExtendManager {
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
             case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
                 dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
 //                setDisplayElements(name);
 //                showChooseRoleDialog();
                 break;
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST://添加用户失败
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
 //                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
 //                setDisplayElements(name);
 //                showChooseRoleDialog();
                 break;
@@ -576,7 +556,6 @@ public class FaceDetectExtendManager {
 //                break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN://重复签到，打印就诊小条
-                detectStates = DETECT_STATES.SIGN_FAILED_ALREADY_SIGNED_IN;
                 dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_MORE_TIME);
 //                setDisplayElements(name);
 //                ResponseMessageBean.resultContent resultContent1 = responseMessage.getResultContent();
@@ -629,7 +608,6 @@ public class FaceDetectExtendManager {
     }
 
     private void resetDisplayContents() {
-        detectStates = DETECT_STATES.WAITING_FOR_SIGNING;
 //        setDisplayElements("");
 
        /* tvDetectResultIdCard.setText("--");

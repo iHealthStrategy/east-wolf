@@ -57,6 +57,8 @@ import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.events.FinshDetectRegisterAndResultEvent;
 import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
+import com.ihealth.events.FinshRegisterAndResultEvent;
+import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
@@ -321,6 +323,7 @@ public class DetectActivity extends BaseActivity {
             switch (msg.what) {
                 case MSG_INITVIEW:
                     faceDetectSuperManager.start();
+                    mList.clear();
                     break;
                 case MSG_REFRESH_TITLE:
 //                    faceDetectSuperManager.setDisplayElements("");
@@ -331,46 +334,7 @@ public class DetectActivity extends BaseActivity {
         }
     }
 
-    private static String convertImageToBase64String(Bitmap imageBitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if (null != imageBitmap) {
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream);
-            byte[] byteArray = stream.toByteArray();
-            return Base64.encodeToString(byteArray, Base64.DEFAULT);
-        } else {
-            return null;
-        }
-    }
 
-    private void getAppointmentInfo() {
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("patientId", "5ab4a677db7e8e31401c9f89");
-//        requestMap.put("patientId", SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID));
-        Gson gson = new Gson();
-        String jsonStr = gson.toJson(requestMap, HashMap.class);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
-        ApiUtil.getAppointmentCall(mContext, requestBody).enqueue(new Callback<AppointmentsBean>() {
-            @Override
-            public void onResponse(Call<AppointmentsBean> call, Response<AppointmentsBean> response) {
-                Log.i("getAppointmentInfo", "onResponse: " + response.body());
-                AppointmentsBean appointmentsBean = response.body();
-                if (appointmentsBean != null) {
-//                    new CheckItemSelectDialog(DetectActivity.this, appointmentsBean);
-//                    new CheckItemSelectDialog(DetectActivity.this,appointmentsBean);
-//                    tackleWithResponds(responseMessage, "");
-                    new PrintContentDialog(DetectActivity.this, appointmentsBean);
-//                    new PirntAllDepartmentDialog(DetectActivity.this,appointmentsBean);
-                } else {
-//                    showReLoginDialog("系统认证失败，请重新登录。");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AppointmentsBean> call, Throwable t) {
-                Log.i("getAppointmentInfo", "onFailure: " + t);
-            }
-        });
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -394,5 +358,15 @@ public class DetectActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FinshDetectRegisterSelectTypeAndResultEvent event) {
         finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshRegisterAndResultEvent event){
+        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+        mList.clear();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshRegisterSelectTypeAndResultEvent event){
+        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+        mList.clear();
     }
 }

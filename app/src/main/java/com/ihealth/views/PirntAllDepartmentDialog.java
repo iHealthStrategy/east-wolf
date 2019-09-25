@@ -35,6 +35,7 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
     private BluetoothPrinter bluetoothPrinter;
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    private OnDismissClicker mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +121,18 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
             case R.id.btn_dialog_print:
                 initBluetooth(appointmentsBean);
                 dialogPrint.dismiss();
-                dialogPrint.dismiss();
+                if(mListener!=null){
+                    mListener.onDisClick();
+                }
+
                 break;
         }
     }
+    public interface OnDismissClicker {
+        public void onDisClick();
+    }
 
+    public void setOnDismissClicker(OnDismissClicker listener) {
+        mListener = listener;
+    }
 }

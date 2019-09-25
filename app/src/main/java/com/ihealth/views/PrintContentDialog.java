@@ -41,6 +41,7 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
     private BluetoothPrinter bluetoothPrinter;
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    private OnDismissClicker mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,10 +146,20 @@ private void initBluetooth(AppointmentsBean appointments){
                 break;
             case R.id.btn_dialog_print:
                 initBluetooth(appointmentsBean);
+                if(mListener!=null){
+                    mListener.onDisClick();
+                }
                 dialogPrint.dismiss();
                 dialogPrint.dismiss();
                 break;
         }
+    }
+    public interface OnDismissClicker {
+        public void onDisClick();
+    }
+
+    public void setOnDismissClicker(OnDismissClicker listener) {
+        mListener = listener;
     }
 
 }
