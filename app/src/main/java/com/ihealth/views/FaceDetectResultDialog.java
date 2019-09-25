@@ -83,7 +83,7 @@ public class FaceDetectResultDialog extends Dialog implements View.OnClickListen
         View view = inflater.inflate(R.layout.dialog_face_detect, null, false);
         setContentView(R.layout.dialog_face_detect);
         name = (TextView) view.findViewById(R.id.dialog_face_detect_name);
-        message = (TextView) view.findViewById(R.id.dialog_face_detect_name);
+        message = (TextView) view.findViewById(R.id.dialog_face_detect_message);
         photo = (ImageView) view.findViewById(R.id.dialog_face_detect_photo);
         firstBtn = (Button) view.findViewById(R.id.dialog_face_detect_first_btn);
         secondBtn = (Button) view.findViewById(R.id.dialog_face_detect_second_btn);
@@ -148,9 +148,7 @@ public class FaceDetectResultDialog extends Dialog implements View.OnClickListen
     }
 
     public void setData(int status) {
-//        name.setText();
-//        message.setText();
-//        photo.setImageDrawable();
+
         if(status==ConstantArguments.DETECT_RESULT_SUCESS_NOT_PERSON) {
             initNewPatientView(mContext);
         }else {
@@ -159,29 +157,34 @@ public class FaceDetectResultDialog extends Dialog implements View.OnClickListen
                 case ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC:
                     firstBtn.setVisibility(View.GONE);
                     secondBtn.setVisibility(View.VISIBLE);
+                    message.setText("您已成功签到，请准备就诊");
                     secondBtn.setText("打印就诊小条");
                     break;
                 case ConstantArguments.DETECT_RESULT_SUCESS_SIGN_MORE_TIME:
                     firstBtn.setVisibility(View.VISIBLE);
                     secondBtn.setVisibility(View.VISIBLE);
+                    message.setText("您今日已签到，请勿重复录入");
                     firstBtn.setText("返回拍照");
                     secondBtn.setText("重新打印就诊小条");
                     break;
                 case ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_SELECT_OTHER:
                     firstBtn.setVisibility(View.VISIBLE);
                     secondBtn.setVisibility(View.GONE);
+                    message.setText("今日还没您的门诊预约");
                     firstBtn.setText("选择其他病种");
                     secondBtn.setText("打印就诊小条");
                     break;
                 case ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC:
                     firstBtn.setVisibility(View.VISIBLE);
                     secondBtn.setVisibility(View.GONE);
+                    message.setText("今日还没您的门诊预约");
                     firstBtn.setText("我要加诊");
                     secondBtn.setText("打印就诊小条");
                     break;
                 case ConstantArguments.DETECT_RESULT_FAILED:
                     firstBtn.setVisibility(View.VISIBLE);
                     secondBtn.setVisibility(View.GONE);
+                    name.setText("人脸识别失败");
                     firstBtn.setText("重新拍照");
                     secondBtn.setText("打印就诊小条");
                     break;

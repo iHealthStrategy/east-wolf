@@ -21,7 +21,7 @@
             android:layout_marginTop="@dimen/layout_size_27dp"
             android:gravity="center_horizontal"
             android:textSize="@dimen/text_size_25sp"
-            android:text="你好"
+            android:text=""
             android:textColor="@color/color333333"/>
         <TextView
             android:id="@+id/dialog_face_detect_message"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textSize="@dimen/text_size_16sp"
-            android:text="你好"
+            android:text=""
             android:textColor="@color/color666666"/>
         <ImageView
             android:id="@+id/dialog_face_detect_photo"

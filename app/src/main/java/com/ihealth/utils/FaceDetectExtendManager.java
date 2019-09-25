@@ -160,12 +160,12 @@ public class FaceDetectExtendManager {
             @Override
             public void onDetectFace(final int retCode, FaceInfo[] infos, ImageFrame frame) {
 
-                    if (retCode == 0) {
+                if (retCode == 0) {
 //                        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
-                        mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
-                    } else {
-                        mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
-                    }
+                    mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
+                } else {
+                    mHandler.sendEmptyMessageDelayed(DetectActivity.MSG_REFRESH_TITLE, 200);
+                }
             }
         });
         faceDetectManager.setOnTrackListener(new FaceFilter.OnTrackListener() {
@@ -357,12 +357,34 @@ public class FaceDetectExtendManager {
             @Override
             public void onSecondClick() {
                 //无论如何状态，第二个按钮都是打印小条
-                if(appointmentsBean != null && appointmentsBean.getPatient() != null){
+                if (appointmentsBean != null && appointmentsBean.getPatient() != null) {
                     String patientType = appointmentsBean.getPatient().getPatientType();
-                    if(patientType.equals("GTZH")){
-                        new PrintContentDialog(mContext, appointmentsBean);
+                    if (patientType.equals("GTZH")) {
+                        new PrintContentDialog(mContext, appointmentsBean).setOnPriterClicker(new PrintContentDialog.OnPriterClicker() {
+                            @Override
+                            public void onPriterClick() {
+                                ((Activity)mContext).finish();
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                mList.clear();
+                                mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+                            }
+                        });
                     } else {
-                        new PirntAllDepartmentDialog(mContext, appointmentsBean);
+                        new PirntAllDepartmentDialog(mContext, appointmentsBean).setOnPriterClicker(new PirntAllDepartmentDialog.OnPriterClicker() {
+                            @Override
+                            public void onPriterClick() {
+                                ((Activity)mContext).finish();
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                mList.clear();
+                                mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+                            }
+                        });
                     }
                 }
 
@@ -381,13 +403,13 @@ public class FaceDetectExtendManager {
             public void onReFaceDetectClick() {
                 String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
                 String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
-                int times = 0;
-                if (!"".equals(faceTime)) {
-                    times = Integer.parseInt(faceTime);
-                }
+//                int times = 0;
+//                if (!"".equals(faceTime)) {
+//                    times = Integer.parseInt(faceTime);
+//                }
 //                if (times < 3) {
-                times++;
-                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
+//                times++;
+//                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
 //                } else {
 //
 //                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
@@ -411,12 +433,13 @@ public class FaceDetectExtendManager {
             case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
-            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID://重新扫脸  3001
                 Intent intent = new Intent(mContext, RegisterPatientActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString(BundleKeys.BASE64IMAGE, base64Image);
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
+                break;
+            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID://重新扫脸  3001
 
                 //以下代码是重新拍照3次超过核验次数，版本不做
 //                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
@@ -427,7 +450,7 @@ public class FaceDetectExtendManager {
 //                }
 ////                if (times < 3) {
 //                times++;
-//                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
+                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
 //                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
 //                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
 //                } else {
@@ -622,5 +645,21 @@ public class FaceDetectExtendManager {
         RectF newDetectedRect = new RectF(0, 0, mScreenW, mScreenH);
         cropProcessor.setDetectedRect(newDetectedRect);
         faceDetectManager.start();
+    }
+    public  void stop(){
+        faceDetectManager.stop();
+        int size = mList.size();
+        for (int i = 0; i < size; i++) {
+            Bitmap bmp = mList.get(i);
+            if (bmp != null && !bmp.isRecycled()) {
+                bmp.recycle();
+            }
+        }
+        mList.clear();
+    }
+    public void reFaceDetect(){
+        mList.clear();
+        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+
     }
 }

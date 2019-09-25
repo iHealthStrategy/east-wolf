@@ -100,8 +100,6 @@ public class DetectActivity extends BaseActivity {
     public static final int MSG_INITVIEW = 1001;
     public static final int MSG_REFRESH_TITLE = 1002;
 
-    private static final int REQUEST_CODE_INIT_STATE = 2001;
-    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     @BindView(R.id.common_header_title)
     TextView commonHeaderTitle;
     @BindView(R.id.common_header_back_layout)
@@ -115,43 +113,13 @@ public class DetectActivity extends BaseActivity {
     ImageView backImageview;
     private Context mContext;
 
-    // private TextView tvDetectHospitalTitle;
-    /*private TextView tvDetectResultTitle;
-    private TextView tvDetectResultName;
-    private TextView tvDetectResultMobile;
-    private TextView tvDetectResultIdCard;
-
-    private Button btnDetectContinueSigning;*/
     private TextView tvDetectNextSigningTimer;
-
     private TexturePreviewView previewView;
     private boolean mDetectStopped = false;
-
-    private FaceDetectManager faceDetectManager;
     private DetectRegionProcessor cropProcessor = new DetectRegionProcessor();
     private TextureView mTextureView;
-    // private RecyclerView mRecyclerview;
-    private List<Bitmap> mList = new ArrayList<>();
-    // private RecyAdapter mRecyAdapter;
-    private Handler mHandler = new Handler();
-    // private LinearLayoutManager mLayoutManager;
-
-    private BaseDialog dialogReLogin;
-    private BaseDialog dialogMessage;
-    private BaseDialog dialogChooseRole;
-    private BaseDialog dialogChooseOutpatient;
-
+     private Handler mHandler = new Handler();
     private BluetoothPrinter printer;
-    private TextView bleStatus;
-
-
-    private int mFrameIndex = 0;
-    private int mRound = 2;
-
-    private CountDownTimer timer;
-
-    // private int mSearchFailTimes = 0;
-
     private FaceDetectExtendManager faceDetectSuperManager;
 
     @OnClick(R.id.common_header_back_layout)
@@ -166,66 +134,8 @@ public class DetectActivity extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         mContext = this;
-        initComponents();
         initCameraView();
-        faceDetectManager = new FaceDetectManager(this);
-
         initView();
-//        getAppointmentInfo();
-//        initBluetooth();
-
-//        Intent intent = new Intent(mContext, RegisterPatientActivity.class);
-//        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
-
-    }
-
-//    private void initBluetooth() {
-//        printer = new BluetoothPrinter(this, new PrinterStatusResponse() {
-//            @Override
-//            public void onStatusChange(BluetoothPrinterStatus status) {
-//                switch (status){
-////                    case OPEN: {bleStatus.setText("蓝牙已开启"); break;}
-////                    case CLOSED:{bleStatus.setText("蓝牙已关闭");break;}
-////
-////                    case SEARCHING: {bleStatus.setText("搜索打印机");break;}
-////                    case SEARCHING_CANCELED:{bleStatus.setText("搜索已取消");break;}
-////                    case SEARCHING_STOPPED:{bleStatus.setText("搜索已结束");break;}
-////                    case CONNECTED:{bleStatus.setText("打印机就绪");break;}
-////                    case DISCONNECTED:{bleStatus.setText("打印机已断开");break;}
-////                    case CONNECTING:{bleStatus.setText("连接打印机");break;}
-////                    case CONNECT_FAIL: {bleStatus.setText("连接失败");break;}
-////                    default:bleStatus.setText(status.toString());
-//                }
-//
-//            }
-//        });
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            // Android M Permission check
-//            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
-//                return;
-//            }
-//        }
-//        printer.searchAndConnect();
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case PERMISSION_REQUEST_COARSE_LOCATION:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    printer.searchAndConnect();
-//                }
-//                break;
-//        }
-//    }
-
-
-    private void initComponents() {
-        dialogReLogin = new BaseDialog(mContext);
-        dialogMessage = new BaseDialog(mContext);
-        dialogChooseOutpatient = new BaseDialog(mContext);
-        dialogChooseRole = new BaseDialog(mContext);
     }
 
     /**
@@ -250,32 +160,12 @@ public class DetectActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        faceDetectManager.stop();
+        faceDetectSuperManager.stop();
         mDetectStopped = true;
-        int size = mList.size();
-        for (int i = 0; i < size; i++) {
-            Bitmap bmp = mList.get(i);
-            if (bmp != null && !bmp.isRecycled()) {
-                bmp.recycle();
-            }
-        }
-        mList.clear();
+
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-//        faceDetectSuperManager.start();
-//        mDetectStopped = true;
-//        int size = mList.size();
-//        for (int i = 0; i < size; i++) {
-//            Bitmap bmp = mList.get(i);
-//            if (bmp != null && !bmp.isRecycled()) {
-//                bmp.recycle();
-//            }
-//        }
-//        mList.clear();
-    }
+
 
     @Override
     protected void onResume() {
@@ -283,6 +173,7 @@ public class DetectActivity extends BaseActivity {
         // Log.i("onResume", "onResume: mDetectStopped = " + mDetectStopped);
         if (mDetectStopped) {
             mDetectStopped = false;
+            faceDetectSuperManager.start();
         }
 
     }
@@ -290,13 +181,7 @@ public class DetectActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dialogReLogin = null;
-        dialogMessage = null;
-        dialogChooseOutpatient = null;
-        dialogChooseRole = null;
-//        printer.destroy();
         EventBus.getDefault().unregister(this);
-
     }
 
     private class InnerHandler extends Handler {
@@ -323,7 +208,6 @@ public class DetectActivity extends BaseActivity {
             switch (msg.what) {
                 case MSG_INITVIEW:
                     faceDetectSuperManager.start();
-                    mList.clear();
                     break;
                 case MSG_REFRESH_TITLE:
 //                    faceDetectSuperManager.setDisplayElements("");
@@ -332,22 +216,6 @@ public class DetectActivity extends BaseActivity {
                     break;
             }
         }
-    }
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_CODE_INIT_STATE:
-                mList.clear();
-//                resetDisplayContents();
-                break;
-            default:
-                break;
-        }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -361,12 +229,10 @@ public class DetectActivity extends BaseActivity {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FinshRegisterAndResultEvent event){
-        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
-        mList.clear();
+        faceDetectSuperManager.reFaceDetect();
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FinshRegisterSelectTypeAndResultEvent event){
-        mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
-        mList.clear();
+        faceDetectSuperManager.reFaceDetect();
     }
 }

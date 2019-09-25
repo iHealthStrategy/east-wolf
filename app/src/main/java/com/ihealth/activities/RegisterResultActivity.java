@@ -136,14 +136,7 @@ public class RegisterResultActivity extends BaseActivity {
     private void setResultActionByStatus(int status) {
         switch (status) {
             case ConstantArguments.REGISTER_SUCESS://打印就诊小条
-                if (data != null && data.getPatient() != null) {
-                    String patientType = data.getPatient().getPatientType();
-                    if (patientType.equals("GTZH")) {
-                        new PrintContentDialog(RegisterResultActivity.this, data);
-                    } else {
-                        new PirntAllDepartmentDialog(RegisterResultActivity.this, data);
-                    }
-                }
+
                 break;
             case ConstantArguments.REGISTER_FAILED://录入失败，重新填写信息，重新拍照
                 break;
@@ -160,9 +153,30 @@ public class RegisterResultActivity extends BaseActivity {
                     if (data != null && data.getPatient() != null) {
                         String patientType = data.getPatient().getPatientType();
                         if (patientType.equals("GTZH")) {
-                            new PrintContentDialog(RegisterResultActivity.this, data);
+
+                            new PrintContentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PrintContentDialog.OnPriterClicker() {
+                                @Override
+                                public void onPriterClick() {
+                                    EventBus.getDefault().post(new FinshDetectRegisterSelectTypeAndResultEvent("finsh掉Detect  RegisterPatient  selectType result 返回到主界面"));
+                                }
+
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            });
                         } else {
-                            new PirntAllDepartmentDialog(RegisterResultActivity.this, data);
+                            new PirntAllDepartmentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PirntAllDepartmentDialog.OnPriterClicker() {
+                                @Override
+                                public void onPriterClick() {
+                                    EventBus.getDefault().post(new FinshDetectRegisterSelectTypeAndResultEvent("finsh掉Detect  RegisterPatient  selectType result 返回到主界面"));
+                                }
+
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            });
                         }
                     }
                     break;
@@ -178,6 +192,35 @@ public class RegisterResultActivity extends BaseActivity {
         } else {
             switch (status) {
                 case ConstantArguments.REGISTER_SUCESS://打印就诊小条
+                    if (data != null && data.getPatient() != null) {
+                        String patientType = data.getPatient().getPatientType();
+                        if (patientType.equals("GTZH")) {
+                            new PrintContentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PrintContentDialog.OnPriterClicker() {
+                                @Override
+                                public void onPriterClick() {
+                                    EventBus.getDefault().post(new FinshDetectRegisterAndResultEvent("finsh掉Detect  RegisterPatient result 返回到主界面\""));
+                                }
+
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            });
+                        } else {
+                            new PirntAllDepartmentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PirntAllDepartmentDialog.OnPriterClicker() {
+                                @Override
+                                public void onPriterClick() {
+                                    EventBus.getDefault().post(new FinshDetectRegisterAndResultEvent("finsh掉Detect  RegisterPatient result 返回到主界面\""));
+                                }
+
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            });
+                        }
+                    }
+                    break;
                 case ConstantArguments.REGISTER_FAILED_TO_TIMES://识别太多次数
                 case ConstantArguments.REGISTER_FAILED_ADD_CLINIC://加诊
                     EventBus.getDefault().post(new FinshDetectRegisterAndResultEvent("finsh掉Detect  RegisterPatient result 返回到主界面\""));
