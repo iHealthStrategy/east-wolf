@@ -159,17 +159,16 @@ public class DetectActivity extends BaseActivity {
         initCameraView();
         faceDetectManager = new FaceDetectManager(this);
 
-
         initView();
 //        getAppointmentInfo();
-        initBluetooth();
+//        initBluetooth();
 
 //        Intent intent = new Intent(mContext, RegisterPatientActivity.class);
 //        startActivityForResult(intent,REQUEST_CODE_INIT_STATE);
 
     }
 
-    private void initBluetooth() {
+//    private void initBluetooth() {
 //        printer = new BluetoothPrinter(this, new PrinterStatusResponse() {
 //            @Override
 //            public void onStatusChange(BluetoothPrinterStatus status) {
@@ -197,18 +196,18 @@ public class DetectActivity extends BaseActivity {
 //            }
 //        }
 //        printer.searchAndConnect();
-    }
+//    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_COARSE_LOCATION:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    printer.searchAndConnect();
-                }
-                break;
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case PERMISSION_REQUEST_COARSE_LOCATION:
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    printer.searchAndConnect();
+//                }
+//                break;
+//        }
+//    }
 
 
     private void initComponents() {

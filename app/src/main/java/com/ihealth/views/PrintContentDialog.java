@@ -34,7 +34,7 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
 
     private BaseDialog dialogPrint;
     private Context mContext;
-    private LinearLayout ll_disease,ll_blood,ll_foot,ll_eye,ll_insulin,ll_nutrition,ll_teach,ll_quantization;
+    private LinearLayout ll_disease;
     private TextView tv_print_title,tv_print_name,btn_print,btn_cancel,tv_height;
     private ListView lv_disease;
     private  AppointmentsBean appointmentsBean;
@@ -55,13 +55,6 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         dialogPrint = new BaseDialog(mContext);
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_print_content, null);
-        ll_blood = view.findViewById(R.id.ll_blood);
-        ll_foot = view.findViewById(R.id.ll_foot);
-        ll_eye = view.findViewById(R.id.ll_eye);
-        ll_insulin = view.findViewById(R.id.ll_insulin);
-        ll_nutrition = view.findViewById(R.id.ll_nutrition);
-        ll_teach = view.findViewById(R.id.ll_teach);
-        ll_quantization = view.findViewById(R.id.ll_quantization);
         tv_print_title = view.findViewById(R.id.tv_print_title);
         tv_print_name = view.findViewById(R.id.tv_print_name);
         tv_height = view.findViewById(R.id.tv_height);
@@ -74,7 +67,7 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         btn_cancel.setOnClickListener(this);
         btn_print.setOnClickListener(this);
 
-        List<AppointmentsBean.PatientReport> dataList = (List<AppointmentsBean.PatientReport>) appointmentsBean.getPatientReport();
+        List<AppointmentsBean.PatientReport> dataList = appointmentsBean.getPatientReport();
         if(dataList != null && dataList.size() > 0){
             DiseaseProcessAdapter adapter = new DiseaseProcessAdapter(mContext, dataList);
             lv_disease.setAdapter(adapter);
@@ -82,7 +75,7 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
             ll_disease.setVisibility(View.GONE);
         }
         AppointmentsBean.Patient patient = appointmentsBean.getPatient();
-        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
+        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointment();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
@@ -90,40 +83,20 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         String currentDay = year+"年"+month+"月"+date+"日";
         tv_print_title.setText("本次门诊就诊项目（"+currentDay+"）");
         if(patient != null && appointments != null){
-            String type;
-            if(appointments.getType().equals("first")){
-                type = "初诊";
-            } else if(appointments.getType().equals("addition")){
-                type = "加诊";
-            } else if(appointments.getType().equals("year")){
-                type = "年诊";
-            } else {
-                type = "复诊";
+            String type = "复诊";
+            if(appointments.getType() != null){
+                if(appointments.getType().equals("first")){
+                    type = "初诊";
+                } else if(appointments.getType().equals("addition")){
+                    type = "加诊";
+                } else if(appointments.getType().equals("year")){
+                    type = "年诊";
+                } else {
+                    type = "复诊";
+                }
             }
             tv_print_name.setText(patient.getNickname()+"/"+type+"/医生："+patient.getDoctor());
-            tv_height.setText("身高："+patient.getHeight()+"cm");
-//
-//            if (!"true".equals(appointments.getBlood())) {
-//                ll_blood.setVisibility(View.GONE);
-//            }
-//            if (!"true".equals(appointments.getFootAt())) {
-//                ll_foot.setVisibility(View.GONE);
-//            }
-//            if (!"true".equals(appointments.getEyeGroundAt())) {
-//                ll_eye.setVisibility(View.GONE);
-//            }
-//            if (!"true".equals(appointments.getInsulinAt())) {
-//                ll_insulin.setVisibility(View.GONE);
-//            }
-//            if (!"true".equals(appointments.getNutritionAt())) {
-//                ll_nutrition.setVisibility(View.GONE);
-//            }
-//            if (!"true".equals(appointments.getHealthTech())) {
-//                ll_teach.setVisibility(View.GONE);
-//            }
-//            if (!"true".equals(appointments.getQuantizationAt())) {
-//                ll_quantization.setVisibility(View.GONE);
-//            }
+            tv_height.setText("身高："+patient.getHeight()+" cm");
         }
 
         dialogPrint.setContentView(view);
@@ -139,22 +112,11 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-//
-//    public void saveUserIsPrinted(){
-//        String patientId = SharedPreferenceUtil.getStringTypeSharedPreference(mContext,
-//                Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID);
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//        String formatStr =formatter.format(new Date());
-//        SharedPreferenceUtil.editSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS,
-//                Constants.SP_KEY_PATIENT_PRINTED,patientId+",printAt:"+formatStr);
-//    }
-
 private void initBluetooth(AppointmentsBean appointments){
     bluetoothPrinter = new BluetoothPrinter(getContext(), appointments, new PrinterStatusResponse() {
         @Override
         public void onStatusChange(BluetoothPrinterStatus status) {
             switch (status){
-//
             }
 
         }
@@ -170,14 +132,18 @@ private void initBluetooth(AppointmentsBean appointments){
 }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        bluetoothPrinter.destroy();
+    }
+
+    @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_dialog_cancel:
                 dialogPrint.dismiss();
                 break;
             case R.id.btn_dialog_print:
-//                saveUserIsPrinted();
-//                printListener.onPrint(v, appointmentsBean);
                 initBluetooth(appointmentsBean);
                 dialogPrint.dismiss();
                 dialogPrint.dismiss();

@@ -10,7 +10,7 @@ public class PrintAllDepartContentUtils {
     public String getPringContent(AppointmentsBean appointmentsBean){
         String content = "";
         AppointmentsBean.Patient patient = appointmentsBean.getPatient();
-        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
+        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointment();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;

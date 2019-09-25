@@ -30,7 +30,7 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
 
     private BaseDialog dialogPrint;
     private Context mContext;
-    private TextView tv_print_title,btn_print,btn_cancel,tv_name,tv_diseases_ype,tv_last_time,tv_last_doctor;
+    private TextView tv_print_title,btn_print,btn_cancel,tv_name,tv_diseases_type,tv_last_time,tv_last_doctor;
     private AppointmentsBean appointmentsBean;
     private BluetoothPrinter bluetoothPrinter;
 
@@ -51,7 +51,7 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_print_all_department, null);
         tv_print_title = view.findViewById(R.id.tv_print_title);
         tv_name = view.findViewById(R.id.tv_name);
-        tv_diseases_ype = view.findViewById(R.id.tv_diseases_type);
+        tv_diseases_type = view.findViewById(R.id.tv_diseases_type);
         tv_last_time = view.findViewById(R.id.tv_last_time);
         tv_last_doctor = view.findViewById(R.id.tv_last_doctor);
 
@@ -63,13 +63,16 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
         btn_print.setOnClickListener(this);
 
         AppointmentsBean.Patient patient = appointmentsBean.getPatient();
-        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
+        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointment();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
         int date = c.get(Calendar.DATE);
         String currentDay = year+"年"+month+"月"+date+"日";
         tv_print_title.setText("本次门诊就诊项目（"+currentDay+"）");
+
+        tv_name.setText(patient.getNickname());
+        tv_diseases_type.setText(patient.getDoctor());
 
         dialogPrint.setContentView(view);
         dialogPrint.setCancelable(false);
@@ -89,9 +92,7 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
             @Override
             public void onStatusChange(BluetoothPrinterStatus status) {
                 switch (status){
-//
                 }
-
             }
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -102,6 +103,12 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
             }
         }
         bluetoothPrinter.searchAndConnect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        bluetoothPrinter.destroy();
     }
 
     @Override

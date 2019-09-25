@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:text="本周总结：血糖监测达标率50%"
         android:textColor="@color/color_print_title"
+        android:paddingRight="@dimen/layout_size_10dp"
         android:textSize="@dimen/text_size_10sp"
         android:textStyle="bold" />
 

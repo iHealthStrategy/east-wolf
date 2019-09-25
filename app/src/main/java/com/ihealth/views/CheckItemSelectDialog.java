@@ -78,7 +78,7 @@ public class CheckItemSelectDialog extends Dialog implements View.OnClickListene
         cb_teach.setOnCheckedChangeListener(this);
         cb_quantization.setOnCheckedChangeListener(this);
 
-        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
+        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointment();
         if(appointments == null){
             appointments = new AppointmentsBean.Appointments();
             appointments.setBlood("true");
@@ -139,31 +139,31 @@ public class CheckItemSelectDialog extends Dialog implements View.OnClickListene
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.ll_blood:
-                appointmentsBean.getAppointments().setBlood(!cb_blood.isChecked()+"");
+                appointmentsBean.getAppointment().setBlood(!cb_blood.isChecked()+"");
                 cb_blood.setChecked(!cb_blood.isChecked());
                 break;
             case R.id.ll_foot:
-                appointmentsBean.getAppointments().setFootAt(!cb_blood.isChecked()+"");
+                appointmentsBean.getAppointment().setFootAt(!cb_blood.isChecked()+"");
                 cb_foot.setChecked(!cb_foot.isChecked());
                 break;
             case R.id.ll_eye:
-                appointmentsBean.getAppointments().setEyeGroundAt(!cb_blood.isChecked()+"");
+                appointmentsBean.getAppointment().setEyeGroundAt(!cb_blood.isChecked()+"");
                 cb_eye.setChecked(!cb_eye.isChecked());
                 break;
             case R.id.ll_insulin:
-                appointmentsBean.getAppointments().setInsulinAt(!cb_blood.isChecked()+"");
+                appointmentsBean.getAppointment().setInsulinAt(!cb_blood.isChecked()+"");
                 cb_insulin.setChecked(!cb_insulin.isChecked());
                 break;
             case R.id.ll_nutrition:
-                appointmentsBean.getAppointments().setInsulinAt(!cb_blood.isChecked()+"");
+                appointmentsBean.getAppointment().setInsulinAt(!cb_blood.isChecked()+"");
                 cb_nutrition.setChecked(!cb_nutrition.isChecked());
                 break;
             case R.id.ll_teach:
-                appointmentsBean.getAppointments().setHealthTech(!cb_blood.isChecked()+"");
+                appointmentsBean.getAppointment().setHealthTech(!cb_blood.isChecked()+"");
                 cb_teach.setChecked(!cb_teach.isChecked());
                 break;
             case R.id.ll_quantization:
-                appointmentsBean.getAppointments().setQuantizationAt(!cb_blood.isChecked()+"");
+                appointmentsBean.getAppointment().setQuantizationAt(!cb_blood.isChecked()+"");
                 cb_quantization.setChecked(!cb_quantization.isChecked());
                 break;
             case R.id.btn_dialog_cancel:

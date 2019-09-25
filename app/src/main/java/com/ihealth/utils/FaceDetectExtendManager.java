@@ -46,6 +46,8 @@ import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.views.FaceDetectResultDialog;
+import com.ihealth.views.PirntAllDepartmentDialog;
+import com.ihealth.views.PrintContentDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -366,7 +368,14 @@ public class FaceDetectExtendManager {
             @Override
             public void onSecondClick() {
                 //无论如何状态，第二个按钮都是打印小条
-
+                if(appointmentsBean != null && appointmentsBean.getPatient() != null){
+                    String patientType = appointmentsBean.getPatient().getPatientType();
+                    if(patientType.equals("GTZH")){
+                        new PrintContentDialog(mContext, appointmentsBean);
+                    } else {
+                        new PirntAllDepartmentDialog(mContext, appointmentsBean);
+                    }
+                }
             }
 
             @Override

@@ -67,7 +67,6 @@ public class DiseaseProcessAdapter extends BaseAdapter {
         AppointmentsBean.PatientReport report = dataList.get(position);
         holder.date.setText(report.getStartDate());
         holder.content.setText(report.getContent());
-
         return convertView;
     }
 

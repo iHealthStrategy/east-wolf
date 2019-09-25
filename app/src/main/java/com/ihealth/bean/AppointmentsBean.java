@@ -10,7 +10,7 @@ import java.util.List;
 public class AppointmentsBean implements Serializable {
 
     private Patient patient;
-    private Appointments appointments;
+    private Appointments appointment;
     private List<PatientReport> patientReport;
 
     public Patient getPatient() {
@@ -29,12 +29,12 @@ public class AppointmentsBean implements Serializable {
         this.patientReport = patientReport;
     }
 
-    public Appointments getAppointments() {
-        return appointments;
+    public Appointments getAppointment() {
+        return appointment;
     }
 
     public void setAppointments(Appointments appointments) {
-        this.appointments = appointments;
+        this.appointment = appointment;
     }
 
     public class PatientReport{

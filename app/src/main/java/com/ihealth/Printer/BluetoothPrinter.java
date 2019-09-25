@@ -6,6 +6,8 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.ihealth.bean.AppointmentsBean;
+import com.ihealth.views.PirntAllDepartmentDialog;
+import com.ihealth.views.PrintContentDialog;
 import com.inuker.bluetooth.library.BluetoothClient;
 import com.inuker.bluetooth.library.beacon.Beacon;
 import com.inuker.bluetooth.library.connect.listener.BluetoothStateListener;
@@ -144,9 +146,17 @@ public class BluetoothPrinter {
 //                                printText(s);
 //
 //                            }
-//                            PrintContentUtils printContentUtils = new PrintContentUtils();
-                            PrintAllDepartContentUtils printContentUtils = new PrintAllDepartContentUtils();
-                            String content = printContentUtils.getPringContent(appointmentsBean);
+                            String content = "";
+                            if(appointmentsBean != null && appointmentsBean.getPatient() != null){
+                                String patientType = appointmentsBean.getPatient().getPatientType();
+                                if(patientType.equals("GTZH")){
+                                    PrintContentUtils printContentUtils = new PrintContentUtils();
+                                    content = printContentUtils.getPringContent(appointmentsBean);
+                                } else {
+                                    PrintAllDepartContentUtils printContentUtils = new PrintAllDepartContentUtils();
+                                    content = printContentUtils.getPringContent(appointmentsBean);
+                                }
+                            }
                             String[] arr= content.split("\n");
                             for(String s: arr){
                                 printText(s);

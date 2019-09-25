@@ -1,8 +1,5 @@
 package com.ihealth.Printer;
 
-import android.view.View;
-
-import com.ihealth.Printer.adapter.DiseaseProcessAdapter;
 import com.ihealth.bean.AppointmentsBean;
 
 import java.text.SimpleDateFormat;
@@ -17,11 +14,10 @@ import java.util.List;
 public class PrintContentUtils {
 
     public String getPringContent(AppointmentsBean appointmentsBean){
-
         String content = "";
         AppointmentsBean.Patient patient = appointmentsBean.getPatient();
-        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointments();
-        List<AppointmentsBean.PatientReport> dataList = (List<AppointmentsBean.PatientReport>) appointmentsBean.getPatientReport();
+        AppointmentsBean.Appointments appointments = appointmentsBean.getAppointment();
+        List<AppointmentsBean.PatientReport> dataList = appointmentsBean.getPatientReport();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
@@ -43,24 +39,27 @@ public class PrintContentUtils {
                         dataList.get(i).getEndDate(),dataList.get(i).getContent());
             }
         }
-//        if(patient != null && appointments != null){
-//            String type= appointments.getType() ;
-        String type= "first";
-            if("first".equals(type)){
+        if(patient != null) {
+            String type = "";
+            if(appointments != null){
+                type = appointments.getType();
+            }
+            if ("first".equals(type)) {
                 type = "初诊";
-            } else if("addition".equals(type)){
+            } else if ("addition".equals(type)) {
                 type = "加诊";
-            } else if("year".equals(type)){
+            } else if ("year".equals(type)) {
                 type = "年诊";
             } else {
                 type = "复诊";
             }
-            name = "          "+"五月天"+"/"+type+"/医生："+"张琳"+"\n\n";
-//            height = patient.getHeight();
-            height = "183";
+            name = "          " +  patient.getNickname() + "/" + type + "/医生：" + patient.getDoctor() + "\n\n";
+            height = patient.getHeight();
             content = title + name + baseContent(height) + bloodContent() + quantizationContent() +
-            nutritionContent() + insulinContent() + footContent() + eyeContent() + doctorAskContent()
+                    nutritionContent() + insulinContent() + footContent() + eyeContent() + doctorAskContent()
                     + teachContent() + diseaseContent + payContent();
+            return content;
+        }
         return content;
     }
 
@@ -70,7 +69,7 @@ public class PrintContentUtils {
 
     private String baseContent(String height){
         String content = "______________________________________________\n"+
-                         " \n体征测量    腰围    体重    " + "身高："+height+"cm\n \n"+
+                         " \n体征测量    腰围    体重    " + "身高："+height+" cm\n \n"+
                          "            血压    心率    空腹/餐后\n"+
                          "----------------------------------------------\n";
         return content;
@@ -120,13 +119,13 @@ public class PrintContentUtils {
     }
 
     private String diseaseTitle(){
-        String content = "总结\n";
+        String content = "总结\n \n";
         return content;
     }
 
     private String diseaseProcessContent(String startDate, String endDate, String text){
-        String content = startDate + "-" + endDate + "\n" +
-                "本周总结：" + text +"\n"+
+        String content = startDate + "----" + endDate + "\n" +
+                "本周总结： " + text +"\n"+
                 "----------------------------------------------\n";
         return content;
     }
@@ -138,7 +137,7 @@ public class PrintContentUtils {
     }
 
     private String payContent(){
-        String content = "缴费   缴费后请把部分单据交回给护士\n"+
+        String content = "\n 缴费   缴费后请把部分单据交回给护士\n"+
                          "______________________________________________\n";
         return content;
     }
