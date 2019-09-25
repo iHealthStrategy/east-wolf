@@ -169,6 +169,8 @@ public class SelectPatientTypeActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
+                    loadingProgressBar.hide();
+                    Toast.makeText(SelectPatientTypeActivity.this,R.string.response_error,Toast.LENGTH_SHORT).show();
                     // Log.i("addUserRunnable", "onFailure: " + t.toString());
 //                    showRegisteredResultDialog("注册超时，请返回重试。");
                 }

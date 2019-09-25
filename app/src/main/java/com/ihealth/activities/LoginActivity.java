@@ -91,7 +91,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFailure(Call<HospitalBean> call, Throwable t) {
                 // Log.i("getHospitalsCall", "onFailure: " + t);
-                Toast.makeText(mContext, "请检查网络连接后重试", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,R.string.response_error,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "请检查网络连接后重试", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -173,7 +174,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFailure(Call<LoginBean> call, Throwable t) {
                 // Log.i("loginCall", "onFailure: "+t);
-                Toast.makeText(mContext, "请再试一次",Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,R.string.response_error,Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -261,10 +261,10 @@ public class RegisterPatientActivity extends BaseActivity {
             @Override
             public void onFailure(Call<FaceDetectResultByPhone> call, Throwable t) {
                 // Log.i(TAG, "onFailure: "+t);
+                Toast.makeText(RegisterPatientActivity.this,R.string.response_error,Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
     private static class InnerHandler extends Handler {
         private WeakReference<BaseActivity> mWeakReference;
@@ -541,10 +541,7 @@ public class RegisterPatientActivity extends BaseActivity {
 
     }
 
-
     Runnable addUserRunnable = new Runnable() {
-
-
         @Override
         public void run() {
             // Log.i("addUserRunnable", "run: base64Image = " + mFaceBase64Image);
@@ -571,6 +568,8 @@ public class RegisterPatientActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
+                    loadingProgressBar.hide();
+                    Toast.makeText(RegisterPatientActivity.this,R.string.response_error,Toast.LENGTH_SHORT).show();
                     // Log.i("addUserRunnable", "onFailure: " + t.toString());
 //                    showRegisteredResultDialog("注册超时，请返回重试。");
                 }
@@ -664,194 +663,6 @@ public class RegisterPatientActivity extends BaseActivity {
             dialogRegisteredSucceeded.show();
         }
     }
-
-    /**
-     * 展示对话框
-     *
-     * @param
-     */
-    private void showCommonDialog(final String phoneNumber, final String nickname, final String idCard) {
-        if (null == dialogMessage) {
-            return;
-        }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_common, null);
-
-        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
-        ivCloseDialog.setVisibility(View.VISIBLE);
-        ivCloseDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogMessage.dismiss();
-            }
-        });
-
-        final TextView tvDialogContent = (TextView) view.findViewById(R.id.tv_common_dialog_content);
-
-        tvDialogContent.setText(
-                "请确认如下信息是否正确：\n"
-                        + "手机号：" + (TextUtils.isEmpty(phoneNumber) ? "--" : (phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(7, 11))) + "\n"
-                        + "姓名：" + (TextUtils.isEmpty(nickname) ? "--" : nickname) + "\n"
-                        + "身份证号：" + (TextUtils.isEmpty(idCard) ? "--" : (idCard.substring(0, 6) + "********" + idCard.substring(idCard.length() - 4))) + "\n"
-
-        );
-
-
-        final TextView tvDialogOk = (TextView) view.findViewById(R.id.btn_dialog_ok);
-        tvDialogOk.setText("正确无误");
-        tvDialogOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogMessage.dismiss();
-
-                // 先把已有信息设定到对应控件上
-                activityRegisterNameEt.setText(TextUtils.isEmpty(nickname) ? "" : nickname);
-                // etvNewUserIdCard.setText(TextUtils.isEmpty(idCard) ? "" : idCard);
-
-                // 如果信息全部完整，那么进行签到
-                // 否则需要填写缺失信息
-                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(nickname) && !TextUtils.isEmpty(idCard) ) {
-                    mHandler.postDelayed(addUserRunnable, 100);
-                } else if (TextUtils.isEmpty(nickname)) {
-                    vfRegisterNewUserInfos.setDisplayedChild(1);
-                    changeTitle();
-                } else if (TextUtils.isEmpty(idCard)) {
-                    vfRegisterNewUserInfos.setDisplayedChild(2);
-                    changeTitle();
-                } else {
-                    vfRegisterNewUserInfos.setDisplayedChild(3);
-                    changeTitle();
-                }
-            }
-        });
-
-        final TextView tvDialogCancel = (TextView) view.findViewById(R.id.btn_dialog_cancel);
-        tvDialogCancel.setText("不是我");
-        tvDialogCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogMessage.dismiss();
-            }
-        });
-
-        dialogMessage.setContentView(view);
-        dialogMessage.setCancelable(false);
-        if (null != dialogMessage && !dialogMessage.isShowing()) {
-            dialogMessage.show();
-        }
-    }
-
-    /**
-     * 展示共同照护患者选择看诊门诊类型对话框
-     *
-     * @param
-     */
-    private void showChooseOutpatientDialog(final String patientId) {
-        if (null == dialogChooseOutpatient) {
-            return;
-        }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_choose_outpatient, null);
-
-        final ImageView ivCloseDialog = (ImageView) view.findViewById(R.id.iv_dialog_close);
-        ivCloseDialog.setVisibility(View.GONE);
-
-        final LinearLayout llChooseHealthCareTeam = (LinearLayout) view.findViewById(R.id.ll_dialog_health_care_team);
-        final LinearLayout llChooseOrdinaryOutpatient = (LinearLayout) view.findViewById(R.id.ll_dialog_ordinary_outpatients);
-        final RelativeLayout rlChooseHealthCareTeam = (RelativeLayout) view.findViewById(R.id.rl_dialog_health_care_team);
-        final RelativeLayout rlChooseOrdinaryOutpatient = (RelativeLayout) view.findViewById(R.id.rl_dialog_ordinary_outpatients);
-        final ImageButton ibtChooseHealthCareTeam = (ImageButton) view.findViewById(R.id.ibt_dialog_health_care_team);
-        final ImageButton ibtChooseOrdinaryOutpatient = (ImageButton) view.findViewById(R.id.ibt_dialog_ordinary_outpatients);
-
-        View.OnClickListener onChooseHealthCareTeamClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogChooseOutpatient.dismiss();
-                // checkInOnHealthCareTeamAttendanceState(patientId, true);
-                showRegisteredResultDialog("请您联系照护师改期或进行其他操作");
-            }
-        };
-
-        View.OnClickListener onChooseOrdinaryOutpatientClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogChooseOutpatient.dismiss();
-                checkInOnHealthCareTeamAttendanceState(patientId, false);
-            }
-        };
-
-        llChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
-        rlChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
-        ibtChooseHealthCareTeam.setOnClickListener(onChooseHealthCareTeamClickListener);
-        llChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
-        rlChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
-        ibtChooseOrdinaryOutpatient.setOnClickListener(onChooseOrdinaryOutpatientClickListener);
-
-        dialogChooseOutpatient.setContentView(view);
-        dialogChooseOutpatient.setCancelable(false);
-        if (null != dialogChooseOutpatient && !dialogChooseOutpatient.isShowing()) {
-            dialogChooseOutpatient.show();
-        }
-    }
-
-    private void checkInOnHealthCareTeamAttendanceState(String patientId, boolean hasAttendedHealthCareTeam) {
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("patientId", patientId);
-        requestMap.put("hospitalId",
-                SharedPreferenceUtil.getStringTypeSharedPreference(mContext, Constants.SP_NAME_HOSPITAL_INFOS, Constants.SP_KEY_HOSPITAL_GROUP_ID)
-        );
-        requestMap.put("hasHealthCare", hasAttendedHealthCareTeam);
-        Gson gson = new Gson();
-        String jsonStr = gson.toJson(requestMap, HashMap.class);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
-        ApiUtil.checkInWithConditionCall(mContext, requestBody).enqueue(new Callback<ResponseMessageBean>() {
-            @Override
-            public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
-                // Log.i("checkInWithConditionCall", "onResponse: "+response.body());
-                tackleWithResponds(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
-                // Log.i("checkInWithConditionCall", "onFailure: "+t);
-            }
-        });
-    }
-
-    private void tackleWithResponds(ResponseMessageBean responseMessageBean) {
-        int resultStatus = responseMessageBean.getResultStatus();
-        String resultMessage = responseMessageBean.getResultMessage();
-        String dialogContents = "";
-        switch (resultStatus) {
-            case Constants.FACE_RESPONSE_CODE_SUCCESS:
-                dialogContents = "签到成功！";
-                showRegisteredResultDialog(dialogContents);
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN:
-                dialogContents = "您已成功签到，请就诊。";
-                showRegisteredResultDialog(dialogContents);
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE:
-                dialogContents = "请联系照护师核对信息进行签到，谢谢。";
-                showRegisteredResultDialog(dialogContents);
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY:
-//                showChooseOutpatientDialog(responseMessageBean.getResultContent().getUserId());
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS:
-                dialogContents = "请联系照护师核对信息进行签到，谢谢。";
-                showRegisteredResultDialog(dialogContents);
-                break;
-
-            default:
-                dialogContents = "注册超时，请返回重试。";
-                showRegisteredResultDialog(dialogContents);
-                break;
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FinshDetectRegisterAndResultEvent event){
         finish();
