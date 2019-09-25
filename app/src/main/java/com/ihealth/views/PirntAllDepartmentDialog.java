@@ -124,7 +124,6 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
                 if(mListener!=null){
                     mListener.onDisClick();
                 }
-
                 break;
         }
     }

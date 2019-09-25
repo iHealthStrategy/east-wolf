@@ -150,7 +150,6 @@ private void initBluetooth(AppointmentsBean appointments){
                     mListener.onDisClick();
                 }
                 dialogPrint.dismiss();
-                dialogPrint.dismiss();
                 break;
         }
     }
