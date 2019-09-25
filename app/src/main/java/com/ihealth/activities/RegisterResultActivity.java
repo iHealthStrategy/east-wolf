@@ -22,6 +22,8 @@ import com.ihealth.views.PirntAllDepartmentDialog;
 import com.ihealth.views.PrintContentDialog;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -155,7 +157,6 @@ public class RegisterResultActivity extends BaseActivity {
     }
 
     private void finshActivitysByEvent(int status) {
-        finish();
         if (isComeFromSelectTypeUI) {
             switch (status) {
                 case ConstantArguments.REGISTER_SUCESS://打印就诊小条
@@ -183,4 +184,25 @@ public class RegisterResultActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshDetectRegisterAndResultEvent event){
+        finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshDetectRegisterSelectTypeAndResultEvent event){
+        finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshRegisterAndResultEvent event){
+        finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshRegisterSelectTypeAndResultEvent event){
+        finish();
+    }
 }
