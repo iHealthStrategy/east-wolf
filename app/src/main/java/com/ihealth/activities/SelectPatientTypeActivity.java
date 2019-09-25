@@ -15,6 +15,10 @@ import com.ihealth.BaseActivity;
 import com.ihealth.bean.AddUserRequestBean;
 import com.ihealth.bean.OfficesType;
 import com.ihealth.bean.ResponseMessageBean;
+import com.ihealth.events.FinshDetectRegisterAndResultEvent;
+import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
+import com.ihealth.events.FinshRegisterAndResultEvent;
+import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
@@ -27,6 +31,10 @@ import com.ihealth.utils.SharedPreferenceUtil;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +49,11 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+/**
+ * 注册新患者信息之后的     选择患者科室     的activity
+ * Created by Wangyuxu on 2019/09/23.
+ */
 
 public class SelectPatientTypeActivity extends BaseActivity {
     @BindView(R.id.common_header_title)
@@ -63,6 +76,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_patient_type);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 //        Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
@@ -116,7 +130,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
             case R.id.activity_patient_type_btn:
                 if (mPosition >= 0) {
 
-                   addUserRunnable.run();
+                    addUserRunnable.run();
                 } else {
                     Toast.makeText(this, "请选择患者病种信息！", Toast.LENGTH_SHORT).show();
                 }
@@ -164,9 +178,10 @@ public class SelectPatientTypeActivity extends BaseActivity {
     };
 
     private void handleResult(ResponseMessageBean responseMessage) {
-        Intent intent = new Intent(this,RegisterResultActivity.class);
+        Intent intent = new Intent(this, RegisterResultActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN,responseMessage.getResultContent());
+        bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, responseMessage.getResultContent());
+        bundle.putBoolean(BundleKeys.COME_FROM_SELECT_TYPE_UI, true);
         intent.putExtras(bundle);
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
@@ -191,5 +206,21 @@ public class SelectPatientTypeActivity extends BaseActivity {
         }
 
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshDetectRegisterSelectTypeAndResultEvent event) {
+        finish();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshRegisterSelectTypeAndResultEvent event) {
+        finish();
     }
 }

@@ -33,6 +33,10 @@ import com.ihealth.bean.AddUserRequestBean;
 import com.ihealth.bean.FaceDetectResultByPhone;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.bean.UserInfo;
+import com.ihealth.events.FinshDetectRegisterAndResultEvent;
+import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
+import com.ihealth.events.FinshRegisterAndResultEvent;
+import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
@@ -41,6 +45,10 @@ import com.ihealth.utils.ConstantArguments;
 import com.ihealth.utils.LoadingProgressBar;
 import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -55,7 +63,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+/**
+ * 注册新患者信息的activity
+ * Created by Wangyuxu on 2019/09/23.
+ */
 
 public class RegisterPatientActivity extends BaseActivity {
     private static final String TAG = "RegisterActivity";
@@ -146,7 +157,7 @@ public class RegisterPatientActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
-
+        EventBus.getDefault().register(this);
         mContext = this;
 
         initComponents();
@@ -429,6 +440,8 @@ public class RegisterPatientActivity extends BaseActivity {
             timer.cancel();
             timer = null;
         }
+        EventBus.getDefault().unregister(this);
+
     }
 
     private void changeTitle() {
@@ -839,6 +852,22 @@ public class RegisterPatientActivity extends BaseActivity {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshDetectRegisterAndResultEvent event){
+        finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshDetectRegisterSelectTypeAndResultEvent event){
+        finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshRegisterAndResultEvent event){
+        finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshRegisterSelectTypeAndResultEvent event){
+        finish();
+    }
 }
 
 

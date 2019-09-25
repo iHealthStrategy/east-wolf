@@ -11,15 +11,25 @@ import android.widget.TextView;
 
 import com.ihealth.BaseActivity;
 import com.ihealth.bean.AppointmentsBean;
+import com.ihealth.events.FinshDetectRegisterAndResultEvent;
+import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
+import com.ihealth.events.FinshRegisterAndResultEvent;
+import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.utils.BundleKeys;
 import com.ihealth.utils.ConstantArguments;
 import com.ihealth.views.PirntAllDepartmentDialog;
 import com.ihealth.views.PrintContentDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+/**
+ * 注册新患者信息之后返回结果的acitivity
+ * Created by Wangyuxu on 2019/09/23.
+ */
 
 public class RegisterResultActivity extends BaseActivity {
 
@@ -44,23 +54,26 @@ public class RegisterResultActivity extends BaseActivity {
     private AppointmentsBean data;
     private AppointmentsBean.Patient mPatient;
     private int status;
+    private boolean isComeFromSelectTypeUI = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_result);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         Intent intent = getIntent();
 
         if (intent != null) {
-            try{
+            try {
                 Bundle bundle = intent.getExtras();
                 data = (AppointmentsBean) bundle.getSerializable(BundleKeys.APPOINTMENTSBEAN);
                 mPatient = data.getPatient();
                 status = bundle.getInt(BundleKeys.REGISTER_RESULT_STATUS, 0);
+                isComeFromSelectTypeUI = bundle.getBoolean(BundleKeys.COME_FROM_SELECT_TYPE_UI, false);
                 setUIResultByStatus(status);
-            }catch (Exception e){
-                Log.e("123",e.toString());
+            } catch (Exception e) {
+                Log.e("123", e.toString());
             }
         }
     }
@@ -68,7 +81,7 @@ public class RegisterResultActivity extends BaseActivity {
     private void setUIResultByStatus(int status) {
         switch (status) {
             case ConstantArguments.REGISTER_SUCESS:
-                if(mPatient!=null)
+                if (mPatient != null)
                     activityRegisterResultName.setText(mPatient.getNickname());
                 commonHeaderTitle.setText(titles[0]);
                 activityRegisterResultIv.setImageDrawable(getResources().getDrawable(drawables[0]));
@@ -77,7 +90,7 @@ public class RegisterResultActivity extends BaseActivity {
                 activityRegisterResultOther.setVisibility(View.VISIBLE);
                 break;
             case ConstantArguments.REGISTER_FAILED:
-                if(mPatient!=null)
+                if (mPatient != null)
                     activityRegisterResultName.setText(mPatient.getNickname());
                 commonHeaderTitle.setText(titles[1]);
                 activityRegisterResultIv.setImageDrawable(getResources().getDrawable(drawables[1]));
@@ -109,6 +122,7 @@ public class RegisterResultActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.activity_register_result_btn:
                 setResultActionByStatus(status);
+                finshActivitysByEvent(status);
                 break;
             case R.id.activity_register_result_other:
                 break;
@@ -120,12 +134,12 @@ public class RegisterResultActivity extends BaseActivity {
     private void setResultActionByStatus(int status) {
         switch (status) {
             case ConstantArguments.REGISTER_SUCESS://打印就诊小条
-                if(data != null && data.getPatient() != null){
+                if (data != null && data.getPatient() != null) {
                     String patientType = data.getPatient().getPatientType();
-                    if(patientType.equals("GTZH")){
-                        new PrintContentDialog(RegisterResultActivity.this,data);
+                    if (patientType.equals("GTZH")) {
+                        new PrintContentDialog(RegisterResultActivity.this, data);
                     } else {
-                        new PirntAllDepartmentDialog(RegisterResultActivity.this,data);
+                        new PirntAllDepartmentDialog(RegisterResultActivity.this, data);
                     }
                 }
                 break;
@@ -134,8 +148,38 @@ public class RegisterResultActivity extends BaseActivity {
                 break;
             case ConstantArguments.REGISTER_FAILED_TO_TIMES://识别太多次数
             case ConstantArguments.REGISTER_FAILED_ADD_CLINIC://加诊
-                finish();
+
+
                 break;
+        }
+    }
+
+    private void finshActivitysByEvent(int status) {
+        finish();
+        if (isComeFromSelectTypeUI) {
+            switch (status) {
+                case ConstantArguments.REGISTER_SUCESS://打印就诊小条
+                case ConstantArguments.REGISTER_FAILED_TO_TIMES://识别太多次数
+                case ConstantArguments.REGISTER_FAILED_ADD_CLINIC://加诊
+
+                    EventBus.getDefault().post(new FinshDetectRegisterSelectTypeAndResultEvent("finsh掉Detect  RegisterPatient  selectType result 返回到主界面"));
+                    break;
+                case ConstantArguments.REGISTER_FAILED://录入失败，重新填写信息，重新拍照
+                    EventBus.getDefault().post(new FinshRegisterSelectTypeAndResultEvent("finsh掉RegisterPatient  selectType result ,返回到Detect"));
+                    break;
+            }
+        } else {
+            switch (status) {
+                case ConstantArguments.REGISTER_SUCESS://打印就诊小条
+                case ConstantArguments.REGISTER_FAILED_TO_TIMES://识别太多次数
+                case ConstantArguments.REGISTER_FAILED_ADD_CLINIC://加诊
+                    EventBus.getDefault().post(new FinshDetectRegisterAndResultEvent("finsh掉Detect  RegisterPatient result 返回到主界面\""));
+
+                    break;
+                case ConstantArguments.REGISTER_FAILED://录入失败，重新填写信息，重新拍照
+                    EventBus.getDefault().post(new FinshRegisterAndResultEvent("finsh掉RegisterPatient  selectType result ,返回到Detect"));
+                    break;
+            }
         }
     }
 

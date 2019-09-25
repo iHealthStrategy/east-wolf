@@ -126,10 +126,11 @@ public class FaceDetectResultDialog extends Dialog implements View.OnClickListen
                 }
                 break;
             case R.id.dialog_face_detect_second_btn:
-                dialogCheck.dismiss();
+
                 if (mListener != null) {
                     mListener.onSecondClick();
                 }
+                dialogCheck.dismiss();
                 break;
             case R.id.dialog_face_detect_new_patient_tv:
                 dialogCheck.dismiss();

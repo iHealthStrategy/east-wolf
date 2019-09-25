@@ -74,4 +74,5 @@ dependencies {
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.zhy:flowlayout-lib:1.0.3'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 }

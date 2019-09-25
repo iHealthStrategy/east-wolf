@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.aip.ImageFrame;
 import com.baidu.aip.face.CameraImageSource;
@@ -376,6 +377,7 @@ public class FaceDetectExtendManager {
                         new PirntAllDepartmentDialog(mContext, appointmentsBean);
                     }
                 }
+
             }
 
             @Override

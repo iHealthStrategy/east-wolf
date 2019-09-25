@@ -6,12 +6,17 @@ import android.view.WindowManager;
 
 import com.ihealth.utils.StatusBarUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtils.transparencyBar(this);
+
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+
+
 }

@@ -34,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.aip.ImageFrame;
 import com.baidu.aip.face.CameraImageSource;
@@ -54,6 +55,8 @@ import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.Printer.BluetoothPrinter;
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.ResponseMessageBean;
+import com.ihealth.events.FinshDetectRegisterAndResultEvent;
+import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
@@ -62,7 +65,12 @@ import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.views.CheckItemSelectDialog;
 import com.ihealth.views.PirntAllDepartmentDialog;
 import com.ihealth.views.PrintContentDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -154,6 +162,7 @@ public class DetectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detect);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         mContext = this;
         initComponents();
         initCameraView();
@@ -227,7 +236,7 @@ public class DetectActivity extends BaseActivity {
         commonHeaderTitle.setTextColor(getResources().getColor(R.color.colorFFFFFF));
         tvDetectNextSigningTimer = (TextView) findViewById(R.id.tv_detect_next_signing_timer);
         commonHeaderLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color1D1D1D));
-       faceDetectSuperManager = new FaceDetectExtendManager(this,previewView,mTextureView,tvDetectNextSigningTimer,mHandler);
+        faceDetectSuperManager = new FaceDetectExtendManager(this, previewView, mTextureView, tvDetectNextSigningTimer, mHandler);
 
     }
 
@@ -284,6 +293,7 @@ public class DetectActivity extends BaseActivity {
         dialogChooseOutpatient = null;
         dialogChooseRole = null;
 //        printer.destroy();
+        EventBus.getDefault().unregister(this);
 
     }
 
@@ -348,7 +358,7 @@ public class DetectActivity extends BaseActivity {
 //                    new CheckItemSelectDialog(DetectActivity.this, appointmentsBean);
 //                    new CheckItemSelectDialog(DetectActivity.this,appointmentsBean);
 //                    tackleWithResponds(responseMessage, "");
-                    new PrintContentDialog(DetectActivity.this,appointmentsBean);
+                    new PrintContentDialog(DetectActivity.this, appointmentsBean);
 //                    new PirntAllDepartmentDialog(DetectActivity.this,appointmentsBean);
                 } else {
 //                    showReLoginDialog("系统认证失败，请重新登录。");
@@ -374,5 +384,15 @@ public class DetectActivity extends BaseActivity {
                 break;
         }
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshDetectRegisterAndResultEvent event) {
+        finish();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinshDetectRegisterSelectTypeAndResultEvent event) {
+        finish();
     }
 }
