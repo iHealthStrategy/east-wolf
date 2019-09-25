@@ -45,13 +45,20 @@ public class PrintAllDepartContentUtils {
 
 
     private String diseasesTypeContent(AppointmentsBean.Patient patient, Map<String, String> diseaseMap){
-        String content = "\n \n所看病种      " + diseaseMap.get(patient.getDisease()) + "\n \n"+
+        String disease = patient.getDisease();
+        if(disease == null){
+            disease = "";
+        } else {
+            disease = diseaseMap.get(disease);
+        }
+
+        String content = "\n \n所看病种          " + disease + "\n \n"+
                 "----------------------------------------------\n \n";
         return content;
     }
 
     private String nameContent(AppointmentsBean.Patient patient){
-        String content = "患者姓名      " + patient.getNickname() + "\n \n"+
+        String content = "患者姓名          " + patient.getNickname() + "\n \n"+
                 "----------------------------------------------\n \n";
         return content;
     }
@@ -59,7 +66,7 @@ public class PrintAllDepartContentUtils {
     private String lastTimeContent(AppointmentsBean.Appointments appointments){
         String date = appointments.getDate();
         if(date == null){
-            date = "";
+            date = "--";
         }
         String content = "上次看诊时间      " + date + "\n \n"+
                 "----------------------------------------------\n \n";
@@ -69,7 +76,7 @@ public class PrintAllDepartContentUtils {
     private String lastDoctorContent(AppointmentsBean.Appointments appointments){
         String doctor = appointments.getDoctor();
         if(doctor == null){
-            doctor = "";
+            doctor = "--";
         }
         String content = "上次看诊医生      " + doctor + "\n \n"+
                 "----------------------------------------------\n \n";
