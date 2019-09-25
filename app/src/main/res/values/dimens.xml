@@ -82,6 +82,7 @@
     <dimen name="layout_size_158dp">158dp</dimen>
     <dimen name="layout_size_160dp">160dp</dimen>
     <dimen name="layout_size_170dp">170dp</dimen>
+    <dimen name="layout_size_175dp">175dp</dimen>
     <dimen name="layout_size_180dp">180dp</dimen>
     <dimen name="layout_size_190dp">190dp</dimen>
     <dimen name="layout_size_200dp">200dp</dimen>
@@ -125,6 +126,7 @@
     <dimen name="text_size_11sp">11sp</dimen>
     <dimen name="text_size_12sp">12sp</dimen>
     <dimen name="text_size_14sp">14sp</dimen>
+    <dimen name="text_size_15sp">15sp</dimen>
     <dimen name="text_size_16sp">16sp</dimen>
     <dimen name="text_size_17sp">17sp</dimen>
     <dimen name="text_size_18sp">18sp</dimen>

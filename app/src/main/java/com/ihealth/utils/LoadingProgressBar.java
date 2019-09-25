@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.ihealth.facecheckinapp.R;
+
 public class LoadingProgressBar {
     private Activity sourceActivity;
     private ProgressBar progressBar;
@@ -40,7 +42,7 @@ public class LoadingProgressBar {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
 
-        ProgressBar progressBar = new ProgressBar(activity, null, android.R.attr.progressBarStyleLarge);
+        ProgressBar progressBar = new ProgressBar(activity, null, R.layout.progress_dialog);
         progressBar.setVisibility(View.GONE);
         progressBar.setLayoutParams(lp);
         if (customIndeterminateDrawable != null) {

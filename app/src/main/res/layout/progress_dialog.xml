@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="@dimen/layout_size_175dp"
+        android:background="@color/colorFF000000"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="@dimen/layout_size_127dp">
+        <ImageView
+            android:layout_width="@dimen/layout_size_40dp"
+            android:layout_marginTop="@dimen/layout_size_20dp"
+            android:layout_marginBottom="@dimen/layout_size_20dp"
+            android:layout_height="@dimen/layout_size_40dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/loading"
+            />
+        <TextView
+            android:id="@+id/progress_status_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorFFFFFF"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_15sp"
+            android:text="加载中..."
+            />
+    </LinearLayout>
+</LinearLayout>

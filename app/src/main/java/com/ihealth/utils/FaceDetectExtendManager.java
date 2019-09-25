@@ -71,39 +71,7 @@ public class FaceDetectExtendManager {
     private Handler mHandler;
     private int mScreenW;
     private int mScreenH;
-    private DETECT_STATES detectStates;
     private CountDownTimer timer;
-
-    private enum DETECT_STATES {
-        /**
-         * 等待签到
-         */
-        WAITING_FOR_SIGNING,
-        /**
-         * 正在签到
-         */
-        SIGNING,
-        /**
-         * 签到失败：人脸识别失败-用户未找到（错误code: 1001）
-         */
-        SIGN_FAILED_USER_NOT_FOUND,
-        /**
-         * 签到失败：人脸识别失败-用户找到不匹配（错误code: 1002）
-         */
-        SIGN_FAILED_USER_NOT_MATCH,
-        /**
-         * 签到失败：人脸识别失败-其他错误（错误code: 1003）
-         */
-        SIGN_FAILED_OTHER_REASONS,
-        /**
-         * 签到失败：已经签到过，重复签到（错误code: 4001）
-         */
-        SIGN_FAILED_ALREADY_SIGNED_IN,
-        /**
-         * 签到成功
-         */
-        SIGN_SUCCEEDED,
-    }
 
     private int mRound = 2;
     private Context mContext;
@@ -189,7 +157,6 @@ public class FaceDetectExtendManager {
                 return true;
             }
         });
-
 
         ICameraControl control = cameraImageSource.getCameraControl();
         control.setPreviewView(mPreviewView);
@@ -312,7 +279,6 @@ public class FaceDetectExtendManager {
 
                         if (responseMessage != null) {
                             handleFaceResult(responseMessage, base64Image);
-//                            tackleWithResponds(responseMessage, base64Image);
                         } else {
 
 //                            showReLoginDialog("系统认证失败，请重新登录");
@@ -350,7 +316,6 @@ public class FaceDetectExtendManager {
         dialog.setOnFirstAndSecondClicker(new FaceDetectResultDialog.OnFirstAndSecondClicker() {
             @Override
             public void onFirstClick() {
-                mList.clear();
                 firstBtnResult(responseMessage.getResultStatus());
             }
 
@@ -363,26 +328,26 @@ public class FaceDetectExtendManager {
                         new PrintContentDialog(mContext, appointmentsBean).setOnPriterClicker(new PrintContentDialog.OnPriterClicker() {
                             @Override
                             public void onPriterClick() {
+                                Toast.makeText(mContext,R.string.priter_sucess_toast,Toast.LENGTH_SHORT).show();
                                 ((Activity)mContext).finish();
                             }
 
                             @Override
                             public void onCancel() {
-                                mList.clear();
-                                mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+                                reFaceDetect();
                             }
                         });
                     } else {
                         new PirntAllDepartmentDialog(mContext, appointmentsBean).setOnPriterClicker(new PirntAllDepartmentDialog.OnPriterClicker() {
                             @Override
                             public void onPriterClick() {
+                                Toast.makeText(mContext,R.string.priter_sucess_toast,Toast.LENGTH_SHORT).show();
                                 ((Activity)mContext).finish();
                             }
 
                             @Override
                             public void onCancel() {
-                                mList.clear();
-                                mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+                                reFaceDetect();
                             }
                         });
                     }
@@ -401,35 +366,13 @@ public class FaceDetectExtendManager {
 
             @Override
             public void onReFaceDetectClick() {
-                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
-                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
-//                int times = 0;
-//                if (!"".equals(faceTime)) {
-//                    times = Integer.parseInt(faceTime);
-//                }
-//                if (times < 3) {
-//                times++;
-//                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
-//                } else {
-//
-//                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
-//                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
-//                    intentToTimes.putExtras(bundle);
-//                    mContext.startActivity(intentToTimes, bundle);
-////                }
-
+                startThreeTimeFliter();
             }
         });
-
-
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
                 dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
-
                 break;
-
             case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND://跳转添加新用户，直接打印 1001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
@@ -440,29 +383,8 @@ public class FaceDetectExtendManager {
                 mContext.startActivity(intent);
                 break;
             case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID://重新扫脸  3001
-
-                //以下代码是重新拍照3次超过核验次数，版本不做
-//                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
-//                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
-//                int times = 1;
-//                if (!"".equals(faceTime)) {
-//                    times = Integer.parseInt(faceTime);
-//                }
-////                if (times < 3) {
-//                times++;
                 dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-//                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
-//                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
-//                } else {
-//
-//                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
-//                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
-//                    intentToTimes.putExtras(bundle);
-//                    mContext.startActivity(intentToTimes, bundle);
-//                }
-
+                startThreeTimeFliter();
 
                 break;
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST://添加用户失败 2001 2002
@@ -482,21 +404,41 @@ public class FaceDetectExtendManager {
 
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS://4004其他签到错误类型，直接提示，联系照护师
                 break;
-
             default:
                 break;
 //        }
         }
     }
+private void startThreeTimeFliter(){
+    //以下代码是重新拍照3次超过核验次数，版本不做
+//                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
+//                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
+//                int times = 1;
+//                if (!"".equals(faceTime)) {
+//                    times = Integer.parseInt(faceTime);
+//                }
+////                if (times < 3) {
+//                times++;
 
+//                detectStates = DETECT_STATES.SIGN_FAILED_USER_NOT_MATCH;
+//                SharedPreferenceUtil.editSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString, times + "");
+//                } else {
+//
+//                    Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, appointmentsBean);
+//                    bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_TO_TIMES);
+//                    intentToTimes.putExtras(bundle);
+//                    mContext.startActivity(intentToTimes, bundle);
+//                }
+
+}
     private void firstBtnResult(int status) {
         switch (status) {
-
-
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://重新扫脸  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
             case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
-                mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
+                reFaceDetect();
                 break;
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST://添加用户失败 2001 2002
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
@@ -515,127 +457,6 @@ public class FaceDetectExtendManager {
             default:
                 break;
         }
-    }
-
-    private void tackleWithResponds(ResponseMessageBean responseMessage, String base64Image) {
-        FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext);
-        AppointmentsBean appointmentsBean = responseMessage.getResultContent();
-        AppointmentsBean.Patient patient = appointmentsBean.getPatient();
-        String name = patient.getNickname();
-        String originMobile = patient.getPhoneNumber();
-//        String mobile = originMobile.substring(0, 3) + "****" + originMobile.substring(7, 11);
-        String patientId = patient.getUserId();
-        SharedPreferenceUtil.editSharedPreference(mContext, Constants.SP_NAME_PATIENT_INFOS, Constants.SP_KEY_PATIENT_ID, patientId);
-//        setDisplayElements(name);
-        switch (responseMessage.getResultStatus()) {
-            case Constants.FACE_RESPONSE_CODE_SUCCESS:
-                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_PREPARE_CLINIC);
-//                setDisplayElements(name);
-                // tvDetectResultName.setText(name);
-                // tvDetectResultMobile.setText(mobile);
-//                String originIdCard = resultContent.getIdCard();
-//                if (!originIdCard.isEmpty()) {
-//                    String idCard = originIdCard.substring(0, 6) + "********" + originIdCard.substring(originIdCard.length() - 4);
-//                    tvDetectResultIdCard.setText(idCard);
-//                } else {
-//                    tvDetectResultIdCard.setText("--");
-//                }
-//                String originSocialInsurance = resultContent.getSocialInsurance();
-//                if (!originSocialInsurance.isEmpty()) {
-//                    String socialInsurance = originSocialInsurance;
-//                  //  tvDetectResultIdCard.setText(socialInsurance);
-//                } else {
-//                  //  tvDetectResultIdCard.setText("--");
-//                }
-//                startCountDownTimer();
-                break;
-
-            case FACE_RESPONSE_CODE_ERROR_SEARCH_USER_NOT_FOUND:
-                Intent intent = new Intent(mContext, RegisterPatientActivity.class);
-                mContext.startActivity(intent);
-//                setDisplayElements(name);
-//                startRegisterActivity(base64Image);
-//                resetDisplayContents();
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH:
-            case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
-            case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
-                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-//                setDisplayElements(name);
-//                showChooseRoleDialog();
-                break;
-            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST://添加用户失败
-            case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_OTHER_ERRORS:
-//                dialog.setData(ConstantArguments.DETECT_RESULT_FAILED);
-//                setDisplayElements(name);
-//                showChooseRoleDialog();
-                break;
-
-//
-//                detectStates = DETECT_STATES.SIGN_FAILED_OTHER_REASONS;
-//                setDisplayElements(name);
-////                startCountDownTimer();
-//                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN://重复签到，打印就诊小条
-                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_SIGN_MORE_TIME);
-//                setDisplayElements(name);
-//                ResponseMessageBean.resultContent resultContent1 = responseMessage.getResultContent();
-//                String name1 = resultContent1.getNickname();
-//                showCommonMessageDialog((!TextUtils.isEmpty(name1)?("尊敬的"+name1+"：\n"):("尊敬的患者：\n")) + "您已成功签到，请就诊");
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE://4002签到错误，请联系照护师
-                // showCommonMessageDialog("签到失败："+responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
-//                showCommonMessageDialog("请联系照护师核对信息进行签到，谢谢");
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY://4003签到错误，共同照护患者不在当天
-//                showChooseOutpatientDialog(responseMessage.getResultContent().getUserId());
-                break;
-
-            case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS://4004其他签到错误类型，直接提示，联系照护师
-                // showCommonMessageDialog(responseMessage.getResultMessage()+"。\n请联系照护师，谢谢。");
-//                showCommonMessageDialog("请联系照护师核对信息进行签到，谢谢");
-                break;
-
-            default:
-                break;
-        }
-    }
-
-
-    private void startCountDownTimer() {
-        timer = new CountDownTimer(3000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                mResultTV.setText((millisUntilFinished / 1000 + 1) + " 秒后继续签到");
-            }
-
-            @Override
-            public void onFinish() {
-                mResultTV.setText("等待签到");
-                timer.cancel();
-                mList.clear();
-                resetDisplayContents();
-            }
-        }.start();
-    }
-
-    public void destoryTimeer() {
-        if (null != timer) {
-            timer.cancel();
-            timer = null;
-        }
-    }
-
-    private void resetDisplayContents() {
-//        setDisplayElements("");
-
-       /* tvDetectResultIdCard.setText("--");
-        tvDetectResultName.setText("--");
-        tvDetectResultMobile.setText("--");*/
     }
 
     /**

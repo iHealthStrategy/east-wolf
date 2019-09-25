@@ -548,7 +548,7 @@ public class RegisterPatientActivity extends BaseActivity {
         @Override
         public void run() {
             // Log.i("addUserRunnable", "run: base64Image = " + mFaceBase64Image);
-//            loadingProgressBar.show();
+            loadingProgressBar.show();
 
             Gson gson = new Gson();
             String jsonStr = gson.toJson(getEtString(), AddUserRequestBean.class);
@@ -559,7 +559,7 @@ public class RegisterPatientActivity extends BaseActivity {
                 @Override
                 public void onResponse(Call<ResponseMessageBean> call, Response<ResponseMessageBean> response) {
                     // Log.i("addUserRunnable", "onResponse: "+ response.body());
-//                    loadingProgressBar.hide();
+                    loadingProgressBar.hide();
                     if (response.isSuccessful()) {
                         ResponseMessageBean responseMessageBean = response.body();
                         if(isHasMyBody)

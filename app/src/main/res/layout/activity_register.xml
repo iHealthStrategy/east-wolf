@@ -110,6 +110,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/layout_size_20dp"
                         android:background="@null"
+                        android:maxLength="20"
                         android:hint="请录入患者姓名" />
 
                     <ImageView
@@ -171,6 +172,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/layout_size_20dp"
                             android:background="@null"
+                            android:maxLength="18"
                             android:hint="请输入患者身份证号" />
 
                         <ImageView

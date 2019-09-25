@@ -146,8 +146,10 @@ public class DetectActivity extends BaseActivity {
         mTextureView = (TextureView) findViewById(R.id.activity_detect_texture_view);
         backImageview.setBackground(getResources().getDrawable(R.drawable.back_white_iv));
         commonHeaderTitle.setTextColor(getResources().getColor(R.color.colorFFFFFF));
+        commonHeaderTitle.setText("共同照护内分泌全科室人脸识别");
         tvDetectNextSigningTimer = (TextView) findViewById(R.id.tv_detect_next_signing_timer);
         commonHeaderLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color1D1D1D));
+
         faceDetectSuperManager = new FaceDetectExtendManager(this, previewView, mTextureView, tvDetectNextSigningTimer, mHandler);
 
     }
