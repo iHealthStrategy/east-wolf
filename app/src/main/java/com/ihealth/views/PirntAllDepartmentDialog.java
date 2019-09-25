@@ -21,6 +21,8 @@ import com.ihealth.facecheckinapp.R;
 import com.ihealth.utils.ScreenUtils;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 全科室就诊小条dialog
@@ -49,13 +51,18 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
         this.appointmentsBean = appointmentsBean;
         dialogPrint = new BaseDialog(mContext);
 
+        Map<String, String> diseaseMap = new HashMap<>();
+        diseaseMap.put("diabetes", "糖尿病");
+        diseaseMap.put("thyroid", "甲状腺疾病");
+        diseaseMap.put("adrenalGland", "肾上腺疾病");
+        diseaseMap.put("pituitary", "垂体和下丘脑疾病");
+
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_print_all_department, null);
         tv_print_title = view.findViewById(R.id.tv_print_title);
         tv_name = view.findViewById(R.id.tv_name);
         tv_diseases_type = view.findViewById(R.id.tv_diseases_type);
         tv_last_time = view.findViewById(R.id.tv_last_time);
         tv_last_doctor = view.findViewById(R.id.tv_last_doctor);
-
 
         btn_cancel = view.findViewById(R.id.btn_dialog_cancel);
         btn_print = view.findViewById(R.id.btn_dialog_print);
@@ -73,7 +80,9 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
         tv_print_title.setText("本次门诊就诊项目（"+currentDay+"）");
 
         tv_name.setText(patient.getNickname());
-        tv_diseases_type.setText(patient.getDoctor());
+        tv_diseases_type.setText(diseaseMap.get(patient.getDisease()));
+        tv_last_time.setText(appointments.getDate());
+        tv_last_doctor.setText(appointments.getDoctor());
 
         dialogPrint.setContentView(view);
         dialogPrint.setCancelable(false);

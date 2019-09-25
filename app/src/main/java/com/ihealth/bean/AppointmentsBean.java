@@ -37,7 +37,7 @@ public class AppointmentsBean implements Serializable {
         this.appointment = appointment;
     }
 
-    public class PatientReport{
+    public class PatientReport implements Serializable{
         private String startDate;
         private String endDate;
         private String content;
@@ -83,6 +83,7 @@ public class AppointmentsBean implements Serializable {
         private String avatar;
         private String petname;
         private String patientType;
+        private String disease;
 
         public String getUserId() {
             return userId;
@@ -187,6 +188,14 @@ public class AppointmentsBean implements Serializable {
         public void setPatientType(String patientType) {
             this.patientType = patientType;
         }
+
+        public String getDisease() {
+            return disease;
+        }
+
+        public void setDisease(String disease) {
+            this.disease = disease;
+        }
     }
 
     public static class Appointments implements Serializable{
@@ -201,6 +210,13 @@ public class AppointmentsBean implements Serializable {
         private String quantizationAt;
         private String healthCareTeamId;
         private String type;
+        private String appointmentTime;
+
+        //下面的字段是全科室患者用到的字段
+        private String date;
+        private String hospitalId;
+        private String departmentId;
+        private String doctor;
 
         public String get_id() {
             return _id;
@@ -288,6 +304,46 @@ public class AppointmentsBean implements Serializable {
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public String getAppointmentTime() {
+            return appointmentTime;
+        }
+
+        public void setAppointmentTime(String appointmentTime) {
+            this.appointmentTime = appointmentTime;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getHospitalId() {
+            return hospitalId;
+        }
+
+        public void setHospitalId(String hospitalId) {
+            this.hospitalId = hospitalId;
+        }
+
+        public String getDepartmentId() {
+            return departmentId;
+        }
+
+        public void setDepartmentId(String departmentId) {
+            this.departmentId = departmentId;
+        }
+
+        public String getDoctor() {
+            return doctor;
+        }
+
+        public void setDoctor(String doctor) {
+            this.doctor = doctor;
         }
     }
 
