@@ -311,7 +311,6 @@ public class FaceDetectExtendManager {
         final AppointmentsBean appointmentsBean = responseMessage.getResultContent();
         final AppointmentsBean.Patient patient = appointmentsBean.getPatient();
         final FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext, patient, base64Image);
-        responseMessage.setResultStatus(Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH);
 
         dialog.setOnFirstAndSecondClicker(new FaceDetectResultDialog.OnFirstAndSecondClicker() {
             @Override
