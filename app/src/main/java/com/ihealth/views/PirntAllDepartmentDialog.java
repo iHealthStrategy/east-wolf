@@ -17,10 +17,13 @@ import com.ihealth.Printer.BluetoothPrinter;
 import com.ihealth.Printer.BluetoothPrinterStatus;
 import com.ihealth.Printer.PrinterStatusResponse;
 import com.ihealth.bean.AppointmentsBean;
+import com.ihealth.bean.OfficesType;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.utils.ScreenUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +59,8 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
         diseaseMap.put("thyroid", "甲状腺疾病");
         diseaseMap.put("adrenalGland", "肾上腺疾病");
         diseaseMap.put("pituitary", "垂体和下丘脑疾病");
+        diseaseMap.put("gonadal", "性腺疾病");
+        diseaseMap.put("difficultDisease", "其他少见病和疑难病");
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_dialog_print_all_department, null);
         tv_print_title = view.findViewById(R.id.tv_print_title);
@@ -76,11 +81,14 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
         int date = c.get(Calendar.DATE);
-        String currentDay = year+"年"+month+"月"+date+"日";
+        Date now = new Date();
+        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
+        String currSun = dateFm.format(now);
+        String currentDay = year+"年"+month+"月"+date+"日 " + currSun;
         tv_print_title.setText("本次门诊就诊项目（"+currentDay+"）");
 
         tv_name.setText(patient.getNickname());
-        tv_diseases_type.setText(diseaseMap.get(patient.getDisease()));
+        tv_diseases_type.setText(diseaseMap.get(patient.getDiseasesType()));
         tv_last_time.setText(appointments.getDate());
         tv_last_doctor.setText(appointments.getDoctor());
 

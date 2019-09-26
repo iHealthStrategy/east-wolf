@@ -19,6 +19,8 @@ public class PrintAllDepartContentUtils {
         diseaseMap.put("thyroid", "甲状腺疾病");
         diseaseMap.put("adrenalGland", "肾上腺疾病");
         diseaseMap.put("pituitary", "垂体和下丘脑疾病");
+        diseaseMap.put("gonadal", "性腺疾病");
+        diseaseMap.put("difficultDisease", "其他少见病和疑难病");
 
         String content;
         AppointmentsBean.Patient patient = appointmentsBean.getPatient();
@@ -45,7 +47,7 @@ public class PrintAllDepartContentUtils {
 
 
     private String diseasesTypeContent(AppointmentsBean.Patient patient, Map<String, String> diseaseMap){
-        String disease = patient.getDisease();
+        String disease = patient.getDiseasesType();
         if(disease == null){
             disease = "";
         } else {

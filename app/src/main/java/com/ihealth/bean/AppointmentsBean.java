@@ -83,7 +83,7 @@ public class AppointmentsBean implements Serializable {
         private String avatar;
         private String petname;
         private String patientType;
-        private String disease;
+        private String diseasesType;
 
         public String getUserId() {
             return userId;
@@ -189,12 +189,12 @@ public class AppointmentsBean implements Serializable {
             this.patientType = patientType;
         }
 
-        public String getDisease() {
-            return disease;
+        public String getDiseasesType() {
+            return diseasesType;
         }
 
-        public void setDisease(String disease) {
-            this.disease = disease;
+        public void setDiseasesType(String diseasesType) {
+            this.diseasesType = diseasesType;
         }
     }
 

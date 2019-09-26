@@ -110,11 +110,11 @@ public class SelectPatientTypeActivity extends BaseActivity {
 //        }
 //        temp = (ArrayList<OfficesType>) departmentBean.getDiseaseTypes();
         temp = new ArrayList<>();
-
         temp.add(new OfficesType("diabetes", "糖尿病"));
         temp.add(new OfficesType("thyroid", "甲状腺疾病"));
         temp.add(new OfficesType("adrenalGland", "肾上腺疾病"));
         temp.add(new OfficesType("pituitary", "垂体和下丘脑疾病"));
+        temp.add(new OfficesType("gonadal", "性腺疾病"));
         handleData(temp);
         mInflater = LayoutInflater.from(this);
         idFlowlayout.setAdapter(new TagAdapter<String>(patientTypes) {
@@ -169,7 +169,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
             loadingProgressBar.show();
 
             Gson gson = new Gson();
-            userBean.getUserInfo().setDisease(temp.get(mPosition).getValue());
+            userBean.getUserInfo().setDiseaseType(temp.get(mPosition).getValue());
             String jsonStr = gson.toJson(userBean, AddUserRequestBean.class);
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);

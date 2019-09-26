@@ -6,7 +6,7 @@ public class UserInfo implements Serializable {
     private String phoneNumber;
     private String nickname;
     private String idCard;
-    private String disease;
+    private String diseaseType;
 
     public UserInfo(String phoneNumber, String nickname, String idCard) {
         this.phoneNumber = phoneNumber;
@@ -14,11 +14,11 @@ public class UserInfo implements Serializable {
         this.idCard = idCard;
     }
 
-    public UserInfo(String phoneNumber, String nickname, String idCard, String disease) {
+    public UserInfo(String phoneNumber, String nickname, String idCard, String diseaseType) {
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.idCard = idCard;
-        this.disease = disease;
+        this.diseaseType = diseaseType;
     }
 
     public String getPhoneNumber() {
@@ -45,11 +45,11 @@ public class UserInfo implements Serializable {
         this.idCard = idCard;
     }
 
-    public String getDisease() {
-        return disease;
+    public String getDiseaseType() {
+        return diseaseType;
     }
 
-    public void setDisease(String disease) {
-        this.disease = disease;
+    public void setDiseaseType(String diseaseType) {
+        this.diseaseType = diseaseType;
     }
 }

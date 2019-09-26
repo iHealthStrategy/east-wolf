@@ -23,7 +23,9 @@ import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.utils.ScreenUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,7 +83,10 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
         int date = c.get(Calendar.DATE);
-        String currentDay = year+"年"+month+"月"+date+"日";
+        Date now = new Date();
+        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
+        String currSun = dateFm.format(now);
+        String currentDay = year+"年"+month+"月"+date+"日 " + currSun;
         tv_print_title.setText("本次门诊就诊项目（"+currentDay+"）");
         if(patient != null && appointments != null){
             String type = "复诊";
@@ -96,8 +101,16 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
                     type = "复诊";
                 }
             }
-            tv_print_name.setText(patient.getNickname()+"/"+type+"/医生："+patient.getDoctor());
-            tv_height.setText("身高："+patient.getHeight()+" cm");
+            String doctor = patient.getDoctor();
+            if(doctor == null){
+                doctor = "--";
+            }
+            String height = patient.getHeight();
+            if(height == null){
+                height = "  ";
+            }
+            tv_print_name.setText(patient.getNickname()+"/"+type+"/医生："+doctor);
+            tv_height.setText("身高："+height+" cm");
         }
 
         dialogPrint.setContentView(view);

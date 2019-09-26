@@ -53,8 +53,15 @@ public class PrintContentUtils {
             } else {
                 type = "复诊";
             }
-            name = "          " +  patient.getNickname() + "/" + type + "/医生：" + patient.getDoctor() + "\n\n";
+            String doctor = patient.getDoctor();
+            if(doctor == null){
+                doctor = "--";
+            }
             height = patient.getHeight();
+            if(height == null){
+                height = "  ";
+            }
+            name = "          " +  patient.getNickname() + "/" + type + "/医生：" + doctor + "\n\n";
             content = title + name + baseContent(height) + bloodContent() + quantizationContent() +
                     nutritionContent() + insulinContent() + footContent() + eyeContent() + doctorAskContent()
                     + teachContent() + diseaseContent + payContent();

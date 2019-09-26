@@ -26,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiUtil {
     // 上线最终打包前，注意修改此地址！
-    private static final String HOST = Constants.BACKEND_URL_LOCAL;
+    private static final String HOST = Constants.BACKEND_URL_STAGING;
     private static Retrofit retrofit;
     private static final int DEFAULT_TIMEOUT = 10;
 
