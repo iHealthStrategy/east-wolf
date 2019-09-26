@@ -2,6 +2,7 @@
 /local.properties
 /.idea
 *.jks
+*.apk
 .DS_Store
 /build
 /gradle
@@ -9,3 +10,4 @@
 .idea
 app/build
 facesdk/build
+app/release
