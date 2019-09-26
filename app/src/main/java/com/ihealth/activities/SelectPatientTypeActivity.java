@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.bean.AddUserRequestBean;
+import com.ihealth.bean.DepartmentBean;
+import com.ihealth.bean.HospitalBean;
 import com.ihealth.bean.OfficesType;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.events.FinshDetectRegisterAndResultEvent;
@@ -40,6 +42,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -71,6 +74,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
     private ArrayList<OfficesType> temp;
     private AddUserRequestBean userBean;
     private LoadingDialog loadingProgressBar;
+    private HospitalBean hospitalBean = new HospitalBean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +87,30 @@ public class SelectPatientTypeActivity extends BaseActivity {
 //        Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
         userBean = (AddUserRequestBean) bundle.getSerializable(BundleKeys.ADDUSERREQUESTBEAN);
         commonHeaderTitle.setText("共同照护内分泌全科室人脸签到");
-        loadingProgressBar = new LoadingDialog(this,"");
+        loadingProgressBar = new LoadingDialog(this, "");
         initAdapter();
     }
 
     private void initAdapter() {
-
+//        Gson gson = new Gson();
+//        String jsonString = SharedPreferenceUtil.getStringTypeSharedPreference(SelectPatientTypeActivity.this, SharedPreferenceUtil.SP_LOGIN_SUCESS_HOSPITAL_BEAN, SharedPreferenceUtil.SP_LOGIN_SUCESS_HOSPITAL_BEAN);
+//        if (!"".equals(jsonString)) {
+//           hospitalBean=  gson.fromJson(jsonString, HospitalBean.class);
+//        }
+//        List<DepartmentBean> departmentBeans= hospitalBean.getDepartment();
+//        if(departmentBeans==null){
+//            departmentBeans = new ArrayList<>();
+//        }
+//        if(departmentBeans.size()<1){
+//            return;
+//        }
+//        DepartmentBean departmentBean= departmentBeans.get(0);
+//        if(departmentBean==null){
+//            departmentBean = new DepartmentBean();
+//        }
+//        temp = (ArrayList<OfficesType>) departmentBean.getDiseaseTypes();
         temp = new ArrayList<>();
+
         temp.add(new OfficesType("diabetes", "糖尿病"));
         temp.add(new OfficesType("thyroid", "甲状腺疾病"));
         temp.add(new OfficesType("adrenalGland", "肾上腺疾病"));
@@ -171,7 +192,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
                 @Override
                 public void onFailure(Call<ResponseMessageBean> call, Throwable t) {
                     loadingProgressBar.hide();
-                    Toast.makeText(SelectPatientTypeActivity.this,R.string.response_error,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SelectPatientTypeActivity.this, R.string.response_error, Toast.LENGTH_SHORT).show();
                     // Log.i("addUserRunnable", "onFailure: " + t.toString());
 //                    showRegisteredResultDialog("注册超时，请返回重试。");
                 }

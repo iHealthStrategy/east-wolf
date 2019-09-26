@@ -76,7 +76,7 @@ public class SameCircleView extends View {
         minRadius = (int)context.getResources().getDimension(R.dimen.layout_size_94dp);
         this.
 //        textSize = (int)PixelTool.spToPx(context, );
-//        getAndroiodScreenProperty();
+        getAndroiodScreenProperty();
         innerColors = new int[]{mContext.getResources().getColor(R.color.color3381FB),mContext.getResources().getColor(R.color.color2ACBDD)};
     }
 
@@ -98,16 +98,16 @@ public class SameCircleView extends View {
         int screenHeight = (int) (height / density);// 屏幕高度(dp)
 
 
-//        Log.d("h_bl", "屏幕宽度（像素）：" + width);
-//        Log.d("h_bl", "屏幕高度（像素）：" + height);
-//        Log.d("h_bl", "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
-//        Log.d("h_bl", "屏幕密度dpi（120 / 160 / 240）：" + densityDpi);
-//        Log.d("h_bl", "屏幕宽度（dp）：" + screenWidth);
-//        Log.d("h_bl", "xPosition：" + xPosition+"context.getResources().getDimension(R.dimen.layout_size_64dp)"+mContext.getResources().getDimension(R.dimen.layout_size_64dp));
-//        Log.d("h_bl", "secondRadius：" + secondRadius);
-//        Log.d("h_bl", "minRadius（dp）：" + minRadius);
-//        Log.d("h_bl", "屏幕高度（dp）：" + screenHeight);
-//        Log.d("h_bl", "屏幕高度（dp）：" + screenHeight);
+        Log.d("h_bl", "屏幕宽度（像素）：" + width);
+        Log.d("h_bl", "屏幕高度（像素）：" + height);
+        Log.d("h_bl", "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
+        Log.d("h_bl", "屏幕密度dpi（120 / 160 / 240）：" + densityDpi);
+        Log.d("h_bl", "屏幕宽度（dp）：" + screenWidth);
+        Log.d("h_bl", "xPosition：" + xPosition+"context.getResources().getDimension(R.dimen.layout_size_64dp)"+mContext.getResources().getDimension(R.dimen.layout_size_64dp));
+        Log.d("h_bl", "secondRadius：" + secondRadius);
+        Log.d("h_bl", "minRadius（dp）：" + minRadius);
+        Log.d("h_bl", "屏幕高度（dp）：" + screenHeight);
+        Log.d("h_bl", "屏幕高度（dp）：" + screenHeight);
     }
     @Override
     protected void onDraw(Canvas canvas) {

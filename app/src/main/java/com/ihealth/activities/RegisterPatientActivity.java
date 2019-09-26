@@ -209,6 +209,17 @@ public class RegisterPatientActivity extends BaseActivity {
                 break;
             case R.id.btn_detect_new_user_step_4_next://页面刷新
 //                vfRegisterNewUserInfos.setDisplayedChild(3);
+                String s = activityRegisterIdcardEt.getText().toString().trim();
+                if (!TextUtils.isEmpty(s)) {
+                    if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
+//                        isUserIdCardValid = true;
+//                        setButtonState(btnDetectNewUserStep4Next, true);
+                    } else {
+//                        isUserIdCardValid = false;
+//                        setButtonState(btnDetectNewUserStep4Next, false);
+                        Toast.makeText(RegisterPatientActivity.this, R.string.txt_register_id_invalid_error, Toast.LENGTH_SHORT).show();
+                    }
+                }
                 registerPhone();
 //                changeTitle();
 
@@ -403,14 +414,14 @@ public class RegisterPatientActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 handleInputEt(s.toString(), activityRegisterIdcardEt, activityRegisterIdcardIv);
+
+
                 if (!TextUtils.isEmpty(s)) {
-                    if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
-                        isUserIdCardValid = true;
+                    int length = s.toString().trim().length();
+                    if(length == 18){
                         setButtonState(btnDetectNewUserStep4Next, true);
-                    } else {
-                        isUserIdCardValid = false;
+                    }else{
                         setButtonState(btnDetectNewUserStep4Next, false);
-                        Toast.makeText(RegisterPatientActivity.this, R.string.txt_register_id_invalid_error, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     isUserIdCardValid = true;

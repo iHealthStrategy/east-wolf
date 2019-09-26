@@ -17,9 +17,9 @@ public class LoginSpinnerAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater layoutInflater;
-    private List<HospitalBean.resultContent> hospitalList;
+    private List<HospitalBean> hospitalList;
 
-    public LoginSpinnerAdapter(Context mContext, List<HospitalBean.resultContent> hospitalList) {
+    public LoginSpinnerAdapter(Context mContext, List<HospitalBean> hospitalList) {
         this.mContext = mContext;
         this.hospitalList = hospitalList;
     }
@@ -47,7 +47,7 @@ public class LoginSpinnerAdapter extends BaseAdapter {
         }
         SpinnerViewHolder spinnerViewHolder = (SpinnerViewHolder) convertView.getTag();
 
-        HospitalBean.resultContent hospital = hospitalList.get(position);
+        HospitalBean hospital = hospitalList.get(position);
         // spinnerViewHolder.ivLoginSelectHospitalImage.setImageResource(hospitalBean.getLogoImg());
 //        if (!TextUtils.isEmpty(hospital.getLogoImg()) && hospital.getLogoImg().startsWith("http")){
 //            Glide.with(mContext).load(hospital.getLogoImg()).into(spinnerViewHolder.ivLoginSelectHospitalImage);

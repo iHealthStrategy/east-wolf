@@ -335,27 +335,27 @@
 
                     <TextView
                         android:id="@+id/btn_dialog_cancel"
-                        android:layout_width="@dimen/layout_size_60dp"
-                        android:layout_height="@dimen/layout_size_20dp"
+                        android:layout_width="@dimen/layout_size_113dp"
+                        android:layout_height="@dimen/layout_size_33dp"
                         android:layout_gravity="center"
                         android:background="@drawable/button_white_bg"
                         android:gravity="center"
                         android:text="取消"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_size_10sp"
+                        android:textSize="@dimen/text_size_15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/btn_dialog_print"
-                        android:layout_width="@dimen/layout_size_60dp"
-                        android:layout_height="@dimen/layout_size_20dp"
+                        android:layout_width="@dimen/layout_size_113dp"
+                        android:layout_height="@dimen/layout_size_33dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/layout_size_20dp"
                         android:background="@drawable/button_blue_bg"
                         android:gravity="center"
                         android:text="打印"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/text_size_10sp"
+                        android:textSize="@dimen/text_size_15sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>

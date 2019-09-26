@@ -16,15 +16,20 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonToken;
 import com.ihealth.BaseActivity;
 import com.ihealth.MainActivity;
 import com.ihealth.bean.HospitalBean;
+import com.ihealth.bean.HospitalListBean;
 import com.ihealth.bean.LoginBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.views.LoginSpinnerAdapter;
+
+import org.json.JSONStringer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,8 +54,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     SpinnerAdapter spinnerAdapter;
 
-    List<HospitalBean.resultContent> hospitalList = new ArrayList<>();
-    HospitalBean.resultContent defaultContent;
+    List<HospitalBean> hospitalList = new ArrayList<>();
+    HospitalBean defaultContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +70,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initData() {
 
-        defaultContent = new HospitalBean.resultContent("--","--","--","--请选择医院--","--");
-        ApiUtil.getHospitalsCall().enqueue(new Callback<HospitalBean>() {
+        defaultContent = new HospitalBean("--","--","--","--请选择医院--");
+        ApiUtil.getHospitalsCall().enqueue(new Callback<HospitalListBean>() {
             @Override
-            public void onResponse(Call<HospitalBean> call, Response<HospitalBean> response) {
+            public void onResponse(Call<HospitalListBean> call, Response<HospitalListBean> response) {
                 // Log.i("getHospitalsCall", "onResponse: " + response.body().getResultMessage() +"," + response.body().getResultContent()+","+ response.body().getResultStatus());
                 if (response.body().getResultContent() !=null){
                     int respondCode = response.body().getResultStatus();
                     String respondMsg = response.body().getResultMessage();
                     if (respondCode == 0){
-                        List<HospitalBean.resultContent> resultContents = response.body().getResultContent();
+                        List<HospitalBean> resultContents = response.body().getResultContent();
                         hospitalList.add(0,defaultContent);
                         hospitalList.addAll(resultContents);
                         Message message = Message.obtain(handler);
@@ -89,7 +94,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
 
             @Override
-            public void onFailure(Call<HospitalBean> call, Throwable t) {
+            public void onFailure(Call<HospitalListBean> call, Throwable t) {
                 // Log.i("getHospitalsCall", "onFailure: " + t);
                 Toast.makeText(LoginActivity.this,R.string.response_error,Toast.LENGTH_SHORT).show();
 //                Toast.makeText(mContext, "请检查网络连接后重试", Toast.LENGTH_LONG).show();
@@ -120,8 +125,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void healthCareTeamLogin(){
-        HospitalBean.resultContent hospital = (HospitalBean.resultContent)spinnerLoginSelectHospitals.getSelectedItem();
-        String hospitalId = hospital.getHospitalId();
+        final HospitalBean hospital = (HospitalBean)spinnerLoginSelectHospitals.getSelectedItem();
+        String hospitalId = hospital.get_id();
         // Log.i(TAG, "healthCareTeamLogin: hospitalId = "+ hospitalId);
         String password = etvLoginPassword.getText().toString();
 
@@ -151,6 +156,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 LoginBean loginBean = response.body();
                 if (null!=loginBean){
                     Toast.makeText(mContext, "登录成功！",Toast.LENGTH_SHORT).show();
+                    Gson gson = new Gson();
+                   String jsonString = gson.toJson(hospital);
+                    SharedPreferenceUtil.editSharedPreference(LoginActivity.this,SharedPreferenceUtil.SP_LOGIN_SUCESS_HOSPITAL_BEAN,SharedPreferenceUtil.SP_LOGIN_SUCESS_HOSPITAL_BEAN,jsonString);
                     LoginBean.User user = loginBean.getUser();
                     Bundle bundle = new Bundle();
                     bundle.putString("login_info_groupId", user.getGroupId());

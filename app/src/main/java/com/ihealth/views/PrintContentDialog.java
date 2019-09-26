@@ -36,7 +36,7 @@ public class PrintContentDialog extends Dialog implements View.OnClickListener {
     private Context mContext;
     private LinearLayout ll_disease;
     private TextView tv_print_title,tv_print_name,btn_print,btn_cancel,tv_height;
-    private ListView lv_disease;
+    private ListViewForScrollView  lv_disease;
     private  AppointmentsBean appointmentsBean;
     private BluetoothPrinter bluetoothPrinter;
 

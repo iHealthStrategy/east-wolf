@@ -1,6 +1,7 @@
 package com.ihealth.retrofit;
 
 import com.ihealth.bean.HospitalBean;
+import com.ihealth.bean.HospitalListBean;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,6 +15,6 @@ import retrofit2.http.Headers;
 public interface GetRequestInterface {
     @Headers({"Content-type:application/json;charset=UTF-8"})
     @GET("/api/getHospitals")
-    Call<HospitalBean> getHospitals();
+    Call<HospitalListBean> getHospitals();
 }
 

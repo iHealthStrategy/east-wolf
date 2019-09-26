@@ -70,6 +70,7 @@
     <dimen name="layout_size_100dp">100dp</dimen>
     <dimen name="layout_size_108dp">108dp</dimen>
     <dimen name="layout_size_110dp">110dp</dimen>
+    <dimen name="layout_size_113dp">113dp</dimen>
     <dimen name="layout_size_114dp">114dp</dimen>
     <dimen name="layout_size_117dp">117dp</dimen>
     <dimen name="layout_size_120dp">120dp</dimen>

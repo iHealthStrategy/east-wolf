@@ -5,6 +5,7 @@ import android.content.Context;
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.FaceDetectResultByPhone;
 import com.ihealth.bean.HospitalBean;
+import com.ihealth.bean.HospitalListBean;
 import com.ihealth.bean.LoginBean;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.utils.SharedPreferenceUtil;
@@ -96,7 +97,7 @@ public class ApiUtil {
         return ApiUtil.getPostApiService().addUser(headerMap, requestBody);
     }
 
-    public static Call<HospitalBean> getHospitalsCall(){
+    public static Call<HospitalListBean> getHospitalsCall(){
         return ApiUtil.getGetApiService().getHospitals();
     }
 

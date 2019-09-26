@@ -44,6 +44,7 @@
         android:id="@+id/activity_main_sign_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/layout_size_19dp"
         android:gravity="center"
         android:text="今日已签到：30 人次"
