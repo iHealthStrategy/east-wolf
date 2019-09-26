@@ -45,6 +45,7 @@ import com.ihealth.utils.ConstantArguments;
 import com.ihealth.utils.LoadingProgressBar;
 import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.utils.TextInfosCheckUtil;
+import com.ihealth.views.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -147,7 +148,7 @@ public class RegisterPatientActivity extends BaseActivity {
     private BaseDialog dialogMessage;
     private BaseDialog dialogChooseOutpatient;
 
-    LoadingProgressBar loadingProgressBar;
+    LoadingDialog loadingProgressBar;
     private String base64Image;
     //根据手机号去库里面查询是否有这个人，如果有这个人的话，在adduser的接口之后，是需要展示结果的ui的，如果没有的话，需要跳入选择科室的列表然后再次进行adduser
     private  boolean isHasMyBody =true;
@@ -310,7 +311,7 @@ public class RegisterPatientActivity extends BaseActivity {
         vfRegisterNewUserInfos.setOutAnimation(this, R.anim.bottom_out);
         vfRegisterNewUserInfos.setAutoStart(false);
         vfRegisterNewUserInfos.setDisplayedChild(0);
-        loadingProgressBar = new LoadingProgressBar(this);
+        loadingProgressBar = new LoadingDialog(this,"");
         commonHeaderTitle.setText("建立患者信息");
 
 
@@ -546,6 +547,7 @@ public class RegisterPatientActivity extends BaseActivity {
         public void run() {
             // Log.i("addUserRunnable", "run: base64Image = " + mFaceBase64Image);
             loadingProgressBar.show();
+
 
             Gson gson = new Gson();
             String jsonStr = gson.toJson(getEtString(), AddUserRequestBean.class);

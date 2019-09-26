@@ -311,7 +311,7 @@ public class FaceDetectExtendManager {
         final AppointmentsBean appointmentsBean = responseMessage.getResultContent();
         final AppointmentsBean.Patient patient = appointmentsBean.getPatient();
         final FaceDetectResultDialog dialog = new FaceDetectResultDialog(mContext, patient, base64Image);
-
+        responseMessage.setResultStatus(Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH);
 
         dialog.setOnFirstAndSecondClicker(new FaceDetectResultDialog.OnFirstAndSecondClicker() {
             @Override
@@ -328,8 +328,8 @@ public class FaceDetectExtendManager {
                         new PrintContentDialog(mContext, appointmentsBean).setOnPriterClicker(new PrintContentDialog.OnPriterClicker() {
                             @Override
                             public void onPriterClick() {
-                                Toast.makeText(mContext,R.string.priter_sucess_toast,Toast.LENGTH_SHORT).show();
-                                ((Activity)mContext).finish();
+                                Toast.makeText(mContext, R.string.priter_sucess_toast, Toast.LENGTH_SHORT).show();
+                                ((Activity) mContext).finish();
                             }
 
                             @Override
@@ -341,8 +341,8 @@ public class FaceDetectExtendManager {
                         new PirntAllDepartmentDialog(mContext, appointmentsBean).setOnPriterClicker(new PirntAllDepartmentDialog.OnPriterClicker() {
                             @Override
                             public void onPriterClick() {
-                                Toast.makeText(mContext,R.string.priter_sucess_toast,Toast.LENGTH_SHORT).show();
-                                ((Activity)mContext).finish();
+                                Toast.makeText(mContext, R.string.priter_sucess_toast, Toast.LENGTH_SHORT).show();
+                                ((Activity) mContext).finish();
                             }
 
                             @Override
@@ -409,8 +409,9 @@ public class FaceDetectExtendManager {
 //        }
         }
     }
-private void startThreeTimeFliter(){
-    //以下代码是重新拍照3次超过核验次数，版本不做
+
+    private void startThreeTimeFliter() {
+        //以下代码是重新拍照3次超过核验次数，版本不做
 //                String dateKetString = DateUtils.getFormatDateStringByFormat(DateUtils.getCurrentSystemDate(), DateUtils.DATE_FORMAT_yyyymmdd);
 //                String faceTime = SharedPreferenceUtil.getStringTypeSharedPreference(mContext, SharedPreferenceUtil.SP_FACE_DETECT_TIME, dateKetString);
 //                int times = 1;
@@ -432,12 +433,14 @@ private void startThreeTimeFliter(){
 //                    mContext.startActivity(intentToTimes, bundle);
 //                }
 
-}
+    }
+
     private void firstBtnResult(int status) {
         switch (status) {
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://重新扫脸  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
             case Constants.FACE_RESPONSE_CODE_ERROR_DETECT_USER_FACE_INVALID:
+            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN://重复签到，打印就诊小条 4001
                 reFaceDetect();
                 break;
             case Constants.FACE_RESPONSE_CODE_ERROR_ADD_USER_USER_NOT_EXIST://添加用户失败 2001 2002
@@ -467,7 +470,8 @@ private void startThreeTimeFliter(){
         cropProcessor.setDetectedRect(newDetectedRect);
         faceDetectManager.start();
     }
-    public  void stop(){
+
+    public void stop() {
         faceDetectManager.stop();
         int size = mList.size();
         for (int i = 0; i < size; i++) {
@@ -478,7 +482,8 @@ private void startThreeTimeFliter(){
         }
         mList.clear();
     }
-    public void reFaceDetect(){
+
+    public void reFaceDetect() {
         mList.clear();
         mHandler.sendEmptyMessageDelayed(MSG_INITVIEW, 200);
 

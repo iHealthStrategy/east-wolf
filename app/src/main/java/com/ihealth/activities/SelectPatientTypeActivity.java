@@ -28,6 +28,7 @@ import com.ihealth.utils.DateUtils;
 import com.ihealth.utils.FaceDetectExtendManager;
 import com.ihealth.utils.LoadingProgressBar;
 import com.ihealth.utils.SharedPreferenceUtil;
+import com.ihealth.views.LoadingDialog;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -69,7 +70,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
     private int mPosition = -1;
     private ArrayList<OfficesType> temp;
     private AddUserRequestBean userBean;
-    private LoadingProgressBar loadingProgressBar;
+    private LoadingDialog loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
 //        Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
         userBean = (AddUserRequestBean) bundle.getSerializable(BundleKeys.ADDUSERREQUESTBEAN);
         commonHeaderTitle.setText("共同照护内分泌全科室人脸签到");
-        loadingProgressBar = new LoadingProgressBar(this);
+        loadingProgressBar = new LoadingDialog(this,"");
         initAdapter();
     }
 
