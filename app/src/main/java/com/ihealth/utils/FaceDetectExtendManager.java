@@ -71,7 +71,39 @@ public class FaceDetectExtendManager {
     private Handler mHandler;
     private int mScreenW;
     private int mScreenH;
+    private DETECT_STATES detectStates;
     private CountDownTimer timer;
+
+    private enum DETECT_STATES {
+        /**
+         * 等待签到
+         */
+        WAITING_FOR_SIGNING,
+        /**
+         * 正在签到
+         */
+        SIGNING,
+        /**
+         * 签到失败：人脸识别失败-用户未找到（错误code: 1001）
+         */
+        SIGN_FAILED_USER_NOT_FOUND,
+        /**
+         * 签到失败：人脸识别失败-用户找到不匹配（错误code: 1002）
+         */
+        SIGN_FAILED_USER_NOT_MATCH,
+        /**
+         * 签到失败：人脸识别失败-其他错误（错误code: 1003）
+         */
+        SIGN_FAILED_OTHER_REASONS,
+        /**
+         * 签到失败：已经签到过，重复签到（错误code: 4001）
+         */
+        SIGN_FAILED_ALREADY_SIGNED_IN,
+        /**
+         * 签到成功
+         */
+        SIGN_SUCCEEDED,
+    }
 
     private int mRound = 2;
     private Context mContext;
@@ -279,6 +311,7 @@ public class FaceDetectExtendManager {
 
                         if (responseMessage != null) {
                             handleFaceResult(responseMessage, base64Image);
+//                            tackleWithResponds(responseMessage, base64Image);
                         } else {
 
 //                            showReLoginDialog("系统认证失败，请重新登录");
@@ -403,6 +436,7 @@ public class FaceDetectExtendManager {
 
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS://4004其他签到错误类型，直接提示，联系照护师
                 break;
+
             default:
                 break;
 //        }
