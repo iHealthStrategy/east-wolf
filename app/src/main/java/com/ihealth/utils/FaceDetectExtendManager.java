@@ -3,7 +3,6 @@ package com.ihealth.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -20,9 +19,7 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.TextureView;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -428,13 +425,7 @@ public class FaceDetectExtendManager {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE://4002签到错误，请联系照护师
-                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC);
-                break;
-
             case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY://4003签到错误，共同照护患者不在当天
-                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC);
-                break;
-
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS://4004其他签到错误类型，直接提示，联系照护师
                 dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC);
                 break;
@@ -489,7 +480,7 @@ public class FaceDetectExtendManager {
                 Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_ADD_CLINIC);
-
+                bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN, responseMessage.getResultContent());
                 intentToTimes.putExtras(bundle);
                 mContext.startActivity(intentToTimes, bundle);
                 break;

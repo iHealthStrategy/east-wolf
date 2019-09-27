@@ -3,92 +3,36 @@
  */
 package com.ihealth.activities;
 
-
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.RectF;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.TextureView;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.baidu.aip.ImageFrame;
-import com.baidu.aip.face.CameraImageSource;
 import com.baidu.aip.face.DetectRegionProcessor;
-import com.baidu.aip.face.FaceDetectManager;
-import com.baidu.aip.face.FaceFilter;
-import com.baidu.aip.face.PreviewView;
+
 import com.baidu.aip.face.TexturePreviewView;
-import com.baidu.aip.face.camera.ICameraControl;
-import com.baidu.aip.face.camera.PermissionCallback;
-import com.baidu.aip.fl.widget.BrightnessTools;
-import com.baidu.idl.facesdk.FaceInfo;
-import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
-import com.ihealth.BaseDialog;
-import com.ihealth.Printer.PrintAllDepartContentUtils;
-import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.Printer.BluetoothPrinter;
-import com.ihealth.bean.AppointmentsBean;
-import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.events.FinshDetectRegisterAndResultEvent;
 import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
 import com.ihealth.events.FinshRegisterAndResultEvent;
 import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
 import com.ihealth.facecheckinapp.R;
-import com.ihealth.retrofit.ApiUtil;
-import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.FaceDetectExtendManager;
-import com.ihealth.utils.SharedPreferenceUtil;
-import com.ihealth.views.CheckItemSelectDialog;
-import com.ihealth.views.PirntAllDepartmentDialog;
-import com.ihealth.views.PrintContentDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
-import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 /**
  * 实时检测人脸框并把检测到得人脸图片绘制在屏幕上，每10帧截图一张。
@@ -151,7 +95,6 @@ public class DetectActivity extends BaseActivity {
         commonHeaderLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color1D1D1D));
 
         faceDetectSuperManager = new FaceDetectExtendManager(this, previewView, mTextureView, tvDetectNextSigningTimer, mHandler);
-
     }
 
     private void initCameraView() {
@@ -167,8 +110,6 @@ public class DetectActivity extends BaseActivity {
 
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -177,7 +118,6 @@ public class DetectActivity extends BaseActivity {
             mDetectStopped = false;
             faceDetectSuperManager.start();
         }
-
     }
 
     @Override
