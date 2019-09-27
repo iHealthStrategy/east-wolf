@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ihealth.BaseDialog;
 import com.ihealth.Printer.BluetoothPrinter;
@@ -20,6 +21,8 @@ import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.OfficesType;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.utils.ScreenUtils;
+
+import net.xprinter.xpinterface.UiExecute;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -109,8 +112,21 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
         bluetoothPrinter = new BluetoothPrinter(getContext(), appointments, new PrinterStatusResponse() {
             @Override
             public void onStatusChange(BluetoothPrinterStatus status) {
-                switch (status){
+                switch (status) {
                 }
+            }
+        }, new UiExecute() {
+            @Override
+            public void onsucess() {
+                dialogPrint.dismiss();
+                if(mListener!=null){
+                    mListener.onPriterClick();
+                }
+            }
+
+            @Override
+            public void onfailed() {
+
             }
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -118,6 +134,8 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
             if (mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ((Activity)mContext).requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
                 return;
+            }else{
+                Toast.makeText(mContext,R.string.start_printer_please_wait,Toast.LENGTH_SHORT).show();
             }
         }
         bluetoothPrinter.searchAndConnect();
@@ -141,10 +159,7 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
                 break;
             case R.id.btn_dialog_print:
                 initBluetooth(appointmentsBean);
-                dialogPrint.dismiss();
-                if(mListener!=null){
-                    mListener.onPriterClick();
-                }
+
                 break;
         }
     }

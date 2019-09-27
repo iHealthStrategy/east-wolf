@@ -161,6 +161,7 @@ public class RegisterResultActivity extends BaseActivity {
                             new PrintContentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PrintContentDialog.OnPriterClicker() {
                                 @Override
                                 public void onPriterClick() {
+                                    Toast.makeText(RegisterResultActivity.this, R.string.priter_sucess_toast, Toast.LENGTH_SHORT).show();
                                     EventBus.getDefault().post(new FinshDetectRegisterSelectTypeAndResultEvent("finsh掉Detect  RegisterPatient  selectType result 返回到主界面"));
                                 }
 
@@ -173,6 +174,7 @@ public class RegisterResultActivity extends BaseActivity {
                             new PirntAllDepartmentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PirntAllDepartmentDialog.OnPriterClicker() {
                                 @Override
                                 public void onPriterClick() {
+                                    Toast.makeText(RegisterResultActivity.this, R.string.priter_sucess_toast, Toast.LENGTH_SHORT).show();
                                     EventBus.getDefault().post(new FinshDetectRegisterSelectTypeAndResultEvent("finsh掉Detect  RegisterPatient  selectType result 返回到主界面"));
                                 }
 

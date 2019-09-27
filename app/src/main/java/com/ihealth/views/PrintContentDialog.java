@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ihealth.BaseDialog;
 import com.ihealth.Printer.BluetoothPrinter;
@@ -22,6 +23,8 @@ import com.ihealth.Printer.adapter.DiseaseProcessAdapter;
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.utils.ScreenUtils;
+
+import net.xprinter.xpinterface.UiExecute;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -130,8 +133,21 @@ private void initBluetooth(AppointmentsBean appointments){
     bluetoothPrinter = new BluetoothPrinter(getContext(), appointments, new PrinterStatusResponse() {
         @Override
         public void onStatusChange(BluetoothPrinterStatus status) {
-            switch (status){
+            switch (status) {
             }
+
+        }
+    }, new UiExecute() {
+        @Override
+        public void onsucess() {
+            dialogPrint.dismiss();
+            if(mListener!=null){
+                mListener.onPriterClick();
+            }
+        }
+
+        @Override
+        public void onfailed() {
 
         }
     });
@@ -140,6 +156,8 @@ private void initBluetooth(AppointmentsBean appointments){
         if (mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ((Activity)mContext).requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
             return;
+        }else{
+            Toast.makeText(mContext,R.string.start_printer_please_wait,Toast.LENGTH_SHORT).show();
         }
     }
     bluetoothPrinter.searchAndConnect();
@@ -162,10 +180,6 @@ private void initBluetooth(AppointmentsBean appointments){
                 break;
             case R.id.btn_dialog_print:
                 initBluetooth(appointmentsBean);
-                if(mListener!=null){
-                    mListener.onPriterClick();
-                }
-                dialogPrint.dismiss();
                 break;
         }
     }

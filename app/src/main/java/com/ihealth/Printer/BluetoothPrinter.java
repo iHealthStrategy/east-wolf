@@ -1,4 +1,5 @@
 package com.ihealth.Printer;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import static net.xprinter.utils.DataForSendToPrinterXp80.strTobytes;
 
 public class BluetoothPrinter {
 
+    private  ServiceConnection conn;
+    private  UiExecute mPrintFinsh;
     private String MAC = "";
     private String name = "";
     private BluetoothClient mClient;
@@ -53,7 +56,7 @@ public class BluetoothPrinter {
     private UiExecute exe = new UiExecute() {
         @Override
         public void onsucess() {
-            Log.e("123","onsucess");
+
         }
 
         @Override
@@ -61,17 +64,20 @@ public class BluetoothPrinter {
 
         }
     };
-    public BluetoothPrinter(Context context, AppointmentsBean appointmentsBean,
-                            PrinterStatusResponse response){
+
+
+    public BluetoothPrinter(final Context context, AppointmentsBean appointmentsBean,
+                            PrinterStatusResponse response, UiExecute printFinsh) {
         this.response = response;
         this.appointmentsBean = appointmentsBean;
-        Intent intent=new Intent(context, XprinterService.class);
-        ServiceConnection conn=new ServiceConnection() {
+        this.mPrintFinsh = printFinsh;
+        Intent intent = new Intent(context, XprinterService.class);
+         conn = new ServiceConnection() {
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
                 // TODO Auto-generated method stub
-
+                context.unbindService(conn);
             }
 
             @Override
@@ -83,19 +89,20 @@ public class BluetoothPrinter {
         };
         context.bindService(intent, conn, BIND_AUTO_CREATE);
 
-            mClient = new BluetoothClient(context);
+        mClient = new BluetoothClient(context);
         mClient.registerBluetoothStateListener(mBluetoothStateListener);
 
     }
 
-    private void setStatus(BluetoothPrinterStatus status){
+    private void setStatus(BluetoothPrinterStatus status) {
         this.status = status;
-        BluetoothLog.v("status changed --> "+status.toString());
+        BluetoothLog.v("status changed --> " + status.toString());
         this.response.onStatusChange(this.status);
     }
-    public void searchAndConnect(){
 
-        if(!mClient.isBluetoothOpened()){
+    public void searchAndConnect() {
+
+        if (!mClient.isBluetoothOpened()) {
             setStatus(OPEN);
         }
         SearchRequest request = new SearchRequest.Builder()
@@ -112,8 +119,8 @@ public class BluetoothPrinter {
             public void onDeviceFounded(SearchResult device) {
                 Beacon beacon = new Beacon(device.scanRecord);
                 boolean isPrinter = device.getName().startsWith("Print");
-                BluetoothLog.v(String.format("beacon for %s\n%s\n%s",device.getName(), device.getAddress(), beacon.toString()));
-                if(isPrinter){
+                BluetoothLog.v(String.format("beacon for %s\n%s\n%s", device.getName(), device.getAddress(), beacon.toString()));
+                if (isPrinter) {
 
                     name = device.getName();
                     MAC = device.getAddress();
@@ -125,7 +132,7 @@ public class BluetoothPrinter {
                             setStatus(CONNECTED);
                             initPrinter();
                             beep();
-                      String img =  "    *  ┏┓　    ┏┓\n" +
+                            String img = "    *  ┏┓　    ┏┓\n" +
                                     "    *┏┛┻━━━┛┻┓\n" +
                                     "    *┃　　　　　　　┃ 　\n" +
                                     "    *┃　　　━　　　┃\n" +
@@ -148,9 +155,9 @@ public class BluetoothPrinter {
 //
 //                            }
                             String content = "";
-                            if(appointmentsBean != null && appointmentsBean.getPatient() != null){
+                            if (appointmentsBean != null && appointmentsBean.getPatient() != null) {
                                 String patientType = appointmentsBean.getPatient().getPatientType();
-                                if(patientType.equals("GTZH")){
+                                if (patientType.equals("GTZH")) {
                                     PrintContentUtils printContentUtils = new PrintContentUtils();
                                     content = printContentUtils.getPringContent(appointmentsBean);
                                 } else {
@@ -158,8 +165,8 @@ public class BluetoothPrinter {
                                     content = printContentUtils.getPringContent(appointmentsBean);
                                 }
                             }
-                            String[] arr= content.split("\n");
-                            for(String s: arr){
+                            String[] arr = content.split("\n");
+                            for (String s : arr) {
                                 printText(s);
                             }
                             cut();
@@ -179,6 +186,7 @@ public class BluetoothPrinter {
             public void onSearchStopped() {
                 setStatus(SEARCHING_STOPPED);
             }
+
             @Override
             public void onSearchCanceled() {
                 setStatus(SEARCHING_CANCELED);
@@ -194,27 +202,29 @@ public class BluetoothPrinter {
     public void printText(String text) {
 
         binder.write(strTobytes(text), exe);
-        binder.write(printAndFeed(1),exe);
+        binder.write(printAndFeed(1), exe);
     }
-    public void beep(){
-        binder.write(printerOrderBuzzingAndWarningLight(3,1,1), exe);
+
+    public void beep() {
+        binder.write(printerOrderBuzzingAndWarningLight(3, 1, 1), exe);
     }
-    public void cut(){
-        binder.write(printAndFeed(200),exe);
-        binder.write(selectCutPagerModerAndCutPager(66,8), exe);
+
+    public void cut() {
+        binder.write(printAndFeed(200), exe);
+        binder.write(selectCutPagerModerAndCutPager(66, 8), mPrintFinsh);
     }
 
     private final BluetoothStateListener mBluetoothStateListener = new BluetoothStateListener() {
         @Override
         public void onBluetoothStateChanged(boolean openOrClosed) {
-            status= openOrClosed? OPEN:BluetoothPrinterStatus.CLOSED;
+            status = openOrClosed ? OPEN : BluetoothPrinterStatus.CLOSED;
             setStatus(status);
         }
 
     };
 
 
-    public void destroy(){
+    public void destroy() {
         mClient.unregisterBluetoothStateListener(mBluetoothStateListener);
     }
 }

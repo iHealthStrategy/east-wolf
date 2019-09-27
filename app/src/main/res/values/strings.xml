@@ -48,6 +48,7 @@
     <string name="time_line_text_two">患者姓名</string>
     <string name="time_line_text_three">患者身份证</string>
     <string name="time_line_text_four">患者社保号</string>
-    <string name="priter_sucess_toast">正在打印中，请稍后！</string>
+    <string name="priter_sucess_toast">打印成功！</string>
     <string name="response_error">服务器错误，请稍后再试！</string>
+    <string name="start_printer_please_wait">正在启动打印机，请稍等！</string>
 </resources>

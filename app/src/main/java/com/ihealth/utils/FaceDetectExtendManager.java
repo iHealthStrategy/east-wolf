@@ -436,6 +436,7 @@ public class FaceDetectExtendManager {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_OTHER_REASONS://4004其他签到错误类型，直接提示，联系照护师
+                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC);
                 break;
 
             default:
