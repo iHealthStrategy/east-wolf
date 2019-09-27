@@ -112,7 +112,7 @@ public class SameCircleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.restore();
+//        canvas.restore();
         mPaint.setColor(mContext.getResources().getColor(R.color.colorF5FAFF));
         canvas.drawCircle(xPosition,yPosition,maxRadius,mPaint);
         mPaint.setColor(mContext.getResources().getColor(R.color.colorE1F0FE));

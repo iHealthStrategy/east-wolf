@@ -594,7 +594,7 @@ public class RegisterPatientActivity extends BaseActivity {
         Intent intent = new Intent(this,RegisterResultActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(BundleKeys.APPOINTMENTSBEAN,responseMessage.getResultContent());
-        intent.putExtras(bundle);
+
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
 
@@ -621,7 +621,7 @@ public class RegisterPatientActivity extends BaseActivity {
                 bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_ADD_CLINIC);
                 break;
         }
-
+        intent.putExtras(bundle);
         startActivity(intent);
     }
     private AddUserRequestBean getEtString(){
