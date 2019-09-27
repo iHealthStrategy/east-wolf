@@ -110,10 +110,13 @@ public class RegisterResultActivity extends BaseActivity {
                 activityRegisterResultOther.setVisibility(View.GONE);
                 break;
             case ConstantArguments.REGISTER_FAILED_ADD_CLINIC:
+
                 activityRegisterResultName.setText("您好");
                 commonHeaderTitle.setText(titles[1]);
                 activityRegisterResultIv.setImageDrawable(getResources().getDrawable(drawables[2]));
                 activityRegisterResultMessage.setText(messages[3]);
+                if(!isComeFromSelectTypeUI)
+                    activityRegisterResultMessage.setText("今日还没您的预约，"+messages[3]);
                 activityRegisterResultBtn.setText(btnMessages[2]);
                 activityRegisterResultOther.setVisibility(View.GONE);
                 break;
