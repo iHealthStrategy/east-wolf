@@ -1,6 +1,4 @@
-<!--
-  ~ Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
-  -->
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<!-- Default screen margins, per the Android Design guidelines.
      当前只是针对华为SHT-W09型号的尺寸 分辨率2560*1600  屏幕尺寸8.4吋  像素密度是3.0 如果想要适配其他的
@@ -144,4 +142,3 @@
 	<dimen name="layout_size_53dp">53dp</dimen>
 	<dimen name="layout_size_52dp">52dp</dimen>
 </resources>
-
