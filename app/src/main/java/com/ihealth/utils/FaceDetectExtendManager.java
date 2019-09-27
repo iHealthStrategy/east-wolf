@@ -348,7 +348,7 @@ public class FaceDetectExtendManager {
         dialog.setOnFirstAndSecondClicker(new FaceDetectResultDialog.OnFirstAndSecondClicker() {
             @Override
             public void onFirstClick() {
-                firstBtnResult(responseMessage.getResultStatus());
+                firstBtnResult(responseMessage);
             }
 
             @Override
@@ -428,6 +428,7 @@ public class FaceDetectExtendManager {
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_NEED_CONTACT_CDE://4002签到错误，请联系照护师
+                dialog.setData(ConstantArguments.DETECT_RESULT_SUCESS_NOT_SUBSCRIBE_ADD_CLINIC);
                 break;
 
             case Constants.FACE_RESPONSE_CODE_ERROR_SHOULD_CHECK_CERTAIN_DAY://4003签到错误，共同照护患者不在当天
@@ -468,7 +469,8 @@ public class FaceDetectExtendManager {
 
     }
 
-    private void firstBtnResult(int status) {
+    private void firstBtnResult(ResponseMessageBean responseMessage) {
+        int status =responseMessage.getResultStatus();
         switch (status) {
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_USER_FOUND_NOT_MATCH://重新扫脸  1002 1003  3001
             case Constants.FACE_RESPONSE_CODE_ERROR_SEARCH_OTHER_ERRORS:
@@ -486,6 +488,7 @@ public class FaceDetectExtendManager {
                 Intent intentToTimes = new Intent(mContext, RegisterResultActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_FAILED_ADD_CLINIC);
+
                 intentToTimes.putExtras(bundle);
                 mContext.startActivity(intentToTimes, bundle);
                 break;

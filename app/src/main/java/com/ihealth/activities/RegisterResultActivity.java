@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ihealth.BaseActivity;
 import com.ihealth.bean.AppointmentsBean;
@@ -136,14 +137,7 @@ public class RegisterResultActivity extends BaseActivity {
     private void setResultActionByStatus(int status) {
         switch (status) {
             case ConstantArguments.REGISTER_SUCESS://打印就诊小条
-                if (data != null && data.getPatient() != null) {
-                    String patientType = data.getPatient().getPatientType();
-                    if (patientType.equals("GTZH")) {
-                        new PrintContentDialog(RegisterResultActivity.this, data);
-                    } else {
-                        new PirntAllDepartmentDialog(RegisterResultActivity.this, data);
-                    }
-                }
+
                 break;
             case ConstantArguments.REGISTER_FAILED://录入失败，重新填写信息，重新拍照
 
@@ -208,6 +202,7 @@ public class RegisterResultActivity extends BaseActivity {
                             new PrintContentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PrintContentDialog.OnPriterClicker() {
                                 @Override
                                 public void onPriterClick() {
+                                    Toast.makeText(RegisterResultActivity.this, R.string.priter_sucess_toast, Toast.LENGTH_SHORT).show();
                                     EventBus.getDefault().post(new FinshDetectRegisterAndResultEvent("finsh掉Detect  RegisterPatient result 返回到主界面\""));
                                 }
 
@@ -220,6 +215,7 @@ public class RegisterResultActivity extends BaseActivity {
                             new PirntAllDepartmentDialog(RegisterResultActivity.this, data).setOnPriterClicker(new PirntAllDepartmentDialog.OnPriterClicker() {
                                 @Override
                                 public void onPriterClick() {
+                                    Toast.makeText(RegisterResultActivity.this, R.string.priter_sucess_toast, Toast.LENGTH_SHORT).show();
                                     EventBus.getDefault().post(new FinshDetectRegisterAndResultEvent("finsh掉Detect  RegisterPatient result 返回到主界面\""));
                                 }
 

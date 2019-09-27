@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.views.PirntAllDepartmentDialog;
@@ -52,7 +53,7 @@ public class BluetoothPrinter {
     private UiExecute exe = new UiExecute() {
         @Override
         public void onsucess() {
-
+            Log.e("123","onsucess");
         }
 
         @Override
