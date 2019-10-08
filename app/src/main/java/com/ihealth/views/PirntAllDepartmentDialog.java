@@ -92,9 +92,24 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
 
         tv_name.setText(patient.getNickname());
         tv_diseases_type.setText(diseaseMap.get(patient.getDiseasesType()));
-        tv_last_time.setText(appointments.getDate());
-        tv_last_doctor.setText(appointments.getDoctor());
 
+        String nextDate = "--";
+        if(appointments != null){
+            nextDate = appointments.getDate();
+        }
+        if(nextDate == null){
+            nextDate = "--";
+        }
+        String doctor = "--";
+        if(appointments != null && appointments.getExtraData() != null){
+            doctor = appointments.getExtraData().getDoctor();
+        }
+        if(doctor == null){
+            doctor = "--";
+        }
+
+        tv_last_time.setText(nextDate);
+        tv_last_doctor.setText(doctor);
         dialogPrint.setContentView(view);
         dialogPrint.setCancelable(false);
         WindowManager.LayoutParams params = dialogPrint.getWindow().getAttributes();

@@ -198,7 +198,7 @@ public class AppointmentsBean implements Serializable {
         }
     }
 
-    public static class Appointments implements Serializable{
+    public class Appointments implements Serializable{
         private String _id;
         private String isOutPatient;
         private String blood;
@@ -216,7 +216,7 @@ public class AppointmentsBean implements Serializable {
         private String date;
         private String hospitalId;
         private String departmentId;
-        private String doctor;
+        private ExtraData extraData;
 
         public String get_id() {
             return _id;
@@ -336,6 +336,36 @@ public class AppointmentsBean implements Serializable {
 
         public void setDepartmentId(String departmentId) {
             this.departmentId = departmentId;
+        }
+
+        public ExtraData getExtraData() {
+            return extraData;
+        }
+
+        public void setExtraData(ExtraData extraData) {
+            this.extraData = extraData;
+        }
+    }
+
+    public class ExtraData implements Serializable {
+        private String patientId;
+        private String nextVisitDate;
+        private String doctor;
+
+        public String getPatientId() {
+            return patientId;
+        }
+
+        public void setPatientId(String patientId) {
+            this.patientId = patientId;
+        }
+
+        public String getNextVisitDate() {
+            return nextVisitDate;
+        }
+
+        public void setNextVisitDate(String nextVisitDate) {
+            this.nextVisitDate = nextVisitDate;
         }
 
         public String getDoctor() {

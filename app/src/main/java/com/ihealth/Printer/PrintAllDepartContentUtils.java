@@ -66,7 +66,10 @@ public class PrintAllDepartContentUtils {
     }
 
     private String lastTimeContent(AppointmentsBean.Appointments appointments){
-        String date = appointments.getDate();
+        String date = "--";
+        if(appointments != null){
+            date = appointments.getDate();
+        }
         if(date == null){
             date = "--";
         }
@@ -76,7 +79,10 @@ public class PrintAllDepartContentUtils {
     }
 
     private String lastDoctorContent(AppointmentsBean.Appointments appointments){
-        String doctor = appointments.getDoctor();
+        String doctor = "--";
+        if(appointments != null && appointments.getExtraData() != null){
+            doctor = appointments.getExtraData().getDoctor();
+        }
         if(doctor == null){
             doctor = "--";
         }

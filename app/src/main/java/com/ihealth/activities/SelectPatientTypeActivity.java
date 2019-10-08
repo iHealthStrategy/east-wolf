@@ -115,6 +115,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
         temp.add(new OfficesType("adrenalGland", "肾上腺疾病"));
         temp.add(new OfficesType("pituitary", "垂体和下丘脑疾病"));
         temp.add(new OfficesType("gonadal", "性腺疾病"));
+        temp.add(new OfficesType("difficultDisease", "其他少见病和疑难病"));
         handleData(temp);
         mInflater = LayoutInflater.from(this);
         idFlowlayout.setAdapter(new TagAdapter<String>(patientTypes) {

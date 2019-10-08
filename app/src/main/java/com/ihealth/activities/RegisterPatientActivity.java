@@ -219,6 +219,7 @@ public class RegisterPatientActivity extends BaseActivity {
 //                        setButtonState(btnDetectNewUserStep4Next, false);
                         Toast.makeText(RegisterPatientActivity.this, R.string.txt_register_id_invalid_error, Toast.LENGTH_SHORT).show();
                     }
+                    return;
                 }
                 registerPhone();
 //                changeTitle();
@@ -391,8 +392,14 @@ public class RegisterPatientActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 handleInputEt(s.toString(), activityRegisterNameEt, activityRegisterNameIv);
                 if (!TextUtils.isEmpty(s)) {
-                    isUserNameValid = true;
-                    setButtonState(btnDetectNewUserStep3Next, true);
+                    if (TextInfosCheckUtil.checkNickname(s.toString())) {
+                        isUserNameValid = true;
+                        setButtonState(btnDetectNewUserStep3Next, true);
+                    } else {
+                        isUserNameValid = false;
+                        setButtonState(btnDetectNewUserStep3Next, false);
+                        Toast.makeText(RegisterPatientActivity.this, R.string.txt_register_name_error, Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     isUserNameValid = false;
                     setButtonState(btnDetectNewUserStep3Next, false);

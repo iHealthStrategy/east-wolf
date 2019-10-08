@@ -80,7 +80,7 @@ public class CheckItemSelectDialog extends Dialog implements View.OnClickListene
 
         AppointmentsBean.Appointments appointments = appointmentsBean.getAppointment();
         if(appointments == null){
-            appointments = new AppointmentsBean.Appointments();
+            appointments = null;
             appointments.setBlood("true");
             appointments.setEyeGroundAt("true");
             appointments.setInsulinAt("true");

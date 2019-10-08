@@ -39,6 +39,7 @@
     <string name="please_for_person_face_to_windows">请将人脸对准框内</string>
     <string name="txt_register_mobile_error">手机号格式不正确！</string>
     <string name="txt_register_mobile_cannot_blank">手机号不能为空！</string>
+    <string name="txt_register_name_error">姓名只支持大小写字母、中文及./-/_标点符号！</string>
     <string name="txt_register_name_cannot_blank">姓名不能为空！</string>
     <string name="txt_register_id_invalid_error">身份证号无效！请核对！</string>
     <string name="txt_register_id_cannot_blank">身份证号不能为空！</string>

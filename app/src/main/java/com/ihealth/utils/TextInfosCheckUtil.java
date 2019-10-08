@@ -283,8 +283,24 @@ public class TextInfosCheckUtil {
      * @return
      */
     public static boolean checkChineseName(String value, int length) {
-        return value.matches("^[\u4e00-\u9fa5]+{1}")
+        return value.matches("^[\\u4E00-\\u9FA5A-Za-z0-9]")
                 && value.length() <= length;
+    }
+
+    /**
+     * 检查姓名输入是否正确，格式限制为汉字、大小写英文字母、./-/_三个标点符号
+     *
+     * @param value
+     * @return
+     */
+    public static boolean checkNickname(String value) {
+        Pattern p = null;
+        Matcher m = null;
+        boolean b = false;
+        p = Pattern.compile("^[\\u4E00-\\u9FA5A-Za-z._\\-]+$");
+        m = p.matcher(value);
+        b = m.matches();
+        return b;
     }
 
 

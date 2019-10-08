@@ -3,7 +3,6 @@
  */
 package com.ihealth;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,13 +26,13 @@ import com.ihealth.activities.DetectActivity;
 import com.ihealth.activities.LoginActivity;
 import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.Constants;
-import com.ihealth.utils.ConstantArguments;
 import com.ihealth.utils.DateUtils;
 import com.ihealth.utils.SharedPreferenceUtil;
-import com.ihealth.views.FaceDetectResultDialog;
 import com.ihealth.views.SameCircleView;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,13 +62,11 @@ public class MainActivity extends BaseActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         mContext = this;
-
         initView();
         initData();
+        setDateWithTimer();
     }
-
 
     private void initView() {
         ivMainHospitalLogo = (ImageView) findViewById(R.id.iv_main_hospital_logo);
@@ -96,6 +94,17 @@ public class MainActivity extends BaseActivity  {
                 Glide.with(mContext).load(logoUrl).into(ivMainHospitalLogo);
             }
         }
+    }
+
+    private void setDateWithTimer(){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                Date temp = DateUtils.getCurrentSystemDate();
+                activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
+                activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
+            }
+        }, 0 , 10000);
     }
 
 //    private void addListener() {
