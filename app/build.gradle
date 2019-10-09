@@ -52,8 +52,8 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':facesdk')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':facesdk')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
