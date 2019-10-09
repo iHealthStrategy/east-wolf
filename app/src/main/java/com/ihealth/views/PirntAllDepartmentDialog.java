@@ -101,8 +101,18 @@ public class PirntAllDepartmentDialog extends Dialog implements View.OnClickList
             nextDate = "--";
         }
         String doctor = "--";
-        if(appointments != null && appointments.getExtraData() != null){
-            doctor = appointments.getExtraData().getDoctor();
+        if (appointments != null && appointments.getExtraData() != null && appointments.getExtraData().size() > 0 && patient != null ) {
+            String userId = patient.getUserId();
+            for (int i = 0; i < appointments.getExtraData().size(); i++) {
+                AppointmentsBean.ExtraData extraData = appointments.getExtraData().get(i);
+                if(extraData.getPatientId().equals(userId)){
+                    doctor = extraData.getDoctor();
+                    if(doctor == null){
+                        doctor = "--";
+                    }
+                }
+            }
+
         }
         if(doctor == null){
             doctor = "--";

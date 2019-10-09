@@ -18,6 +18,7 @@ import com.baidu.aip.fl.model.AccessToken;
 import com.baidu.aip.fl.utils.OnResultListener;
 import com.baidu.idl.facesdk.FaceTracker;
 
+
 public class FaceCheckApplication extends Application {
 
     private Handler handler = new Handler(Looper.getMainLooper());

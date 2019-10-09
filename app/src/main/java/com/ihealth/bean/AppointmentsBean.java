@@ -216,7 +216,7 @@ public class AppointmentsBean implements Serializable {
         private String date;
         private String hospitalId;
         private String departmentId;
-        private ExtraData extraData;
+        private List<ExtraData> extraData;
 
         public String get_id() {
             return _id;
@@ -338,11 +338,11 @@ public class AppointmentsBean implements Serializable {
             this.departmentId = departmentId;
         }
 
-        public ExtraData getExtraData() {
+        public List<ExtraData> getExtraData() {
             return extraData;
         }
 
-        public void setExtraData(ExtraData extraData) {
+        public void setExtraData(List<ExtraData> extraData) {
             this.extraData = extraData;
         }
     }

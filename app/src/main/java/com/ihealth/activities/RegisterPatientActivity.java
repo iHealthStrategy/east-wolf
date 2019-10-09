@@ -51,9 +51,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Console;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -462,7 +465,24 @@ public class RegisterPatientActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
 
     }
-
+    public  boolean stringFilter(String str) {
+        // 只允许字母、数字和汉字
+        String regEx = "[^a-zA-Z.-_\u4E00-\u9FA5]";//正则表达式
+        Pattern pattern = Pattern.compile(regEx);
+        Matcher matcher = pattern.matcher(str);
+        if(matcher.matches()){
+            return  true;
+        }else{
+            return  false;
+        }
+    }
+public  void test(){
+    if(stringFilter("?")){
+        System.out.println("字符不匹配规则");
+    }else{
+        System.out.println("字符匹配规则");
+    }
+}
     private void changeTitle() {
         int index = vfRegisterNewUserInfos.getDisplayedChild();
         switch (index) {

@@ -5,11 +5,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.ihealth.facecheckinapp"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 2
         versionName "1.1"
     }
@@ -53,7 +53,6 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':facesdk')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
@@ -63,16 +62,18 @@ dependencies {
     implementation 'com.victor:lib:1.0.4'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.github.vipulasri:timelineview:1.1.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
-    implementation 'com.inuker.bluetooth:library:1.4.0'
-    implementation 'com.dilusense.android:customkeyboard:1.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.inuker.bluetooth:library:1.4.0'
+    compile 'com.dilusense.android:customkeyboard:1.1'
     implementation ("com.github.bumptech.glide:glide:4.8.0")
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation files('libs/xprinterconnectandsendsdk.jar')
     implementation 'pub.devrel:easypermissions:1.0.1'
-    implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.zhy:flowlayout-lib:1.0.3'
     implementation 'org.greenrobot:eventbus:3.0.0'
+    compile project(':facesdk')
 }
