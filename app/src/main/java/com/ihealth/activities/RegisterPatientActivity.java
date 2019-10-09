@@ -624,6 +624,7 @@ public  void test(){
 
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
+            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN://4001
 
                 bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_SUCESS);
                 break;

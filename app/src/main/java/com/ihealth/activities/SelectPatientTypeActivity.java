@@ -170,7 +170,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
             loadingProgressBar.show();
 
             Gson gson = new Gson();
-            userBean.getUserInfo().setDiseaseType(temp.get(mPosition).getValue());
+            userBean.getUserInfo().setDiseasesType(temp.get(mPosition).getValue());
             String jsonStr = gson.toJson(userBean, AddUserRequestBean.class);
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
@@ -210,7 +210,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
         intent.putExtras(bundle);
         switch (responseMessage.getResultStatus()) {
             case Constants.FACE_RESPONSE_CODE_SUCCESS://识别成功，直接打印 0
-
+            case Constants.FACE_RESPONSE_CODE_ERROR_ALREADY_SIGNED_IN://4001
                 bundle.putInt(BundleKeys.REGISTER_RESULT_STATUS, ConstantArguments.REGISTER_SUCESS);
                 break;
 
