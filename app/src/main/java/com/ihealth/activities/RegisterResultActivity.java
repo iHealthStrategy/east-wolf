@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 /**
  * 注册新患者信息之后返回结果的acitivity
  * Created by Wangyuxu on 2019/09/23.
@@ -115,15 +116,15 @@ public class RegisterResultActivity extends BaseActivity {
                 commonHeaderTitle.setText(titles[1]);
                 activityRegisterResultIv.setImageDrawable(getResources().getDrawable(drawables[2]));
                 activityRegisterResultMessage.setText(messages[3]);
-                if(!isComeFromSelectTypeUI)
-                    activityRegisterResultMessage.setText("今日还没您的预约，"+messages[3]);
+                if (!isComeFromSelectTypeUI)
+                    activityRegisterResultMessage.setText("今日还没您的预约，" + messages[3]);
                 activityRegisterResultBtn.setText(btnMessages[2]);
                 activityRegisterResultOther.setVisibility(View.GONE);
                 break;
         }
     }
 
-    @OnClick({R.id.common_header_layout, R.id.activity_register_result_btn, R.id.activity_register_result_other})
+    @OnClick({R.id.common_header_layout, R.id.activity_register_result_btn, R.id.activity_register_result_other,R.id.common_header_back_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.activity_register_result_btn:
@@ -133,6 +134,9 @@ public class RegisterResultActivity extends BaseActivity {
             case R.id.activity_register_result_other:
                 break;
             case R.id.common_header_layout:
+                break;
+                case R.id.common_header_back_layout:
+                    finish();
                 break;
         }
     }
@@ -249,20 +253,28 @@ public class RegisterResultActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FinshDetectRegisterAndResultEvent event){
+    public void onEvent(FinshDetectRegisterAndResultEvent event) {
         finish();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FinshDetectRegisterSelectTypeAndResultEvent event){
+    public void onEvent(FinshDetectRegisterSelectTypeAndResultEvent event) {
         finish();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FinshRegisterAndResultEvent event){
+    public void onEvent(FinshRegisterAndResultEvent event) {
         finish();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FinshRegisterSelectTypeAndResultEvent event){
+    public void onEvent(FinshRegisterSelectTypeAndResultEvent event) {
         finish();
+    }
+
+    @OnClick(R.id.common_header_back_layout)
+    public void onViewClicked() {
     }
 }
