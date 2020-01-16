@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.ihealth.BaseActivity;
 import com.ihealth.MainActivity;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
 

@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.ihealth.activities.DetectActivity;
 import com.ihealth.activities.LoginActivity;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.DateUtils;
 import com.ihealth.utils.SharedPreferenceUtil;

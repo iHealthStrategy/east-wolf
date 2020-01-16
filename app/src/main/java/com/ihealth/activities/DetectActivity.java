@@ -21,7 +21,7 @@ import com.ihealth.events.FinshDetectRegisterAndResultEvent;
 import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
 import com.ihealth.events.FinshRegisterAndResultEvent;
 import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 import com.ihealth.utils.FaceDetectExtendManager;
 
 import org.greenrobot.eventbus.EventBus;
