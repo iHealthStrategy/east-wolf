@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">签到转诊</string>
-    <string name="login_title">iHealth\n签到转诊系统</string>
+    <string name="app_name">人脸签到</string>
+    <string name="login_title">iHealth\n人脸签到系统</string>
     <string name="login_copyright">Copyright © iHealth 2019 </string>
     <string name="login_username">照护组</string>
     <string name="login_password">密码</string>

@@ -32,7 +32,7 @@ import com.ihealth.BaseDialog;
 import com.ihealth.bean.AddUserRequestBean;
 import com.ihealth.bean.ResponseMessageBean;
 import com.ihealth.bean.UserInfo;
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.LoadingProgressBar;

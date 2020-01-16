@@ -37,7 +37,7 @@ import com.ihealth.events.FinshDetectRegisterAndResultEvent;
 import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
 import com.ihealth.events.FinshRegisterAndResultEvent;
 import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.BundleKeys;

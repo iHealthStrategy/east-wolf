@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
 

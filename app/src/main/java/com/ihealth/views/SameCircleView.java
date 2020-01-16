@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 
 public class SameCircleView extends View {
     private Paint mPaint;

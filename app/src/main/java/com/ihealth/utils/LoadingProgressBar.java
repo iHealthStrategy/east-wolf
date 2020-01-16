@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 
 public class LoadingProgressBar {
     private Activity sourceActivity;

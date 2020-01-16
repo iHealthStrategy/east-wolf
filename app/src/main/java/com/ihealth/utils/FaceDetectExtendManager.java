@@ -40,7 +40,7 @@ import com.ihealth.activities.RegisterPatientActivity;
 import com.ihealth.activities.RegisterResultActivity;
 import com.ihealth.bean.AppointmentsBean;
 import com.ihealth.bean.ResponseMessageBean;
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.views.FaceDetectResultDialog;

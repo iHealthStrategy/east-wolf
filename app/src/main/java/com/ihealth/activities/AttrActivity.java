@@ -36,7 +36,7 @@ import com.baidu.aip.fl.cube.SquareRenderer;
 import com.baidu.aip.fl.widget.BrightnessTools;
 import com.baidu.idl.facesdk.FaceInfo;
 import com.ihealth.BaseActivity;
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 
 import java.lang.ref.WeakReference;
 

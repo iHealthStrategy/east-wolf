@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ihealth.facecheckin.R;
+import com.ihealth.facecheckinapp.R;
 
 import java.util.List;
 
