@@ -35,7 +35,7 @@ import com.baidu.idl.facesdk.FaceInfo;
 import com.baidu.idl.facesdk.FaceSDK;
 import com.baidu.idl.facesdk.FaceTracker;
 import com.ihealth.BaseActivity;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 
 import java.lang.ref.WeakReference;
 

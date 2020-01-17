@@ -21,7 +21,7 @@ import com.ihealth.Printer.BluetoothPrinterStatus;
 import com.ihealth.Printer.PrinterStatusResponse;
 import com.ihealth.Printer.adapter.DiseaseProcessAdapter;
 import com.ihealth.bean.AppointmentsBean;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 import com.ihealth.utils.ScreenUtils;
 
 import net.xprinter.xpinterface.UiExecute;
