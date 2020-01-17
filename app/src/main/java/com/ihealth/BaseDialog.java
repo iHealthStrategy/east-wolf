@@ -4,7 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 
 public class BaseDialog extends Dialog {
     public BaseDialog(@NonNull Context context) {

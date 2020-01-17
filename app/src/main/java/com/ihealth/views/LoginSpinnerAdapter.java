@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ihealth.bean.HospitalBean;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 
 import java.util.List;
 

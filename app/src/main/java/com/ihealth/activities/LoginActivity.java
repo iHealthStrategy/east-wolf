@@ -23,7 +23,7 @@ import com.ihealth.MainActivity;
 import com.ihealth.bean.HospitalBean;
 import com.ihealth.bean.HospitalListBean;
 import com.ihealth.bean.LoginBean;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;

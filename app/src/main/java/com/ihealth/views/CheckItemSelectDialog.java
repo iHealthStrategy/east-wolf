@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.ihealth.BaseDialog;
 import com.ihealth.bean.AppointmentsBean;
-import com.ihealth.facecheckinapp.R;
+import com.ihealth.facecheckin.R;
 
 /**
  * 选择检查项目dialog
