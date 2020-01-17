@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Built application files
 *.apk
 *.aar
@@ -83,3 +84,18 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+=======
+.gradle
+/local.properties
+/.idea
+*.jks
+*.apk
+.DS_Store
+/build
+/gradle
+*.iml
+.idea
+app/build
+facesdk/build
+app/release
+>>>>>>> 9b33eb6e08ea15694ca1f3558e7b07758eda9466

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFFFFFF"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.ihealth.activities.RegisterActivity">
+
+    <include
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_47dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/preview_margin">
+
+
+        <include
+            android:id="@+id/ll_time_line"
+            layout="@layout/layout_time_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/layout_size_27dp" />
+
+        <ViewFlipper
+            android:id="@+id/vf_register_new_user_infos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/layout_size_27dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="537dp"
+                    android:layout_height="@dimen/layout_size_53dp"
+                    android:background="@drawable/shape_corner_efefef">
+
+                    <EditText
+                        android:id="@+id/activity_register_telephone_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/layout_size_20dp"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:background="@null"
+                        android:hint="请输入患者手机号" />
+
+                    <ImageView
+                        android:id="@+id/activity_register_telephone_dele_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/layout_size_20dp"
+                        android:visibility="gone"
+                        android:padding="@dimen/layout_size_5dp"
+                        android:src="@drawable/delete_iv" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_27dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_detect_new_user_step_2_previous"
+                        style="@style/pre_button_style"
+                        android:enabled="true"
+                        android:text="上一步"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_detect_new_user_step_2_next"
+                        style="@style/next_button_style"
+                        android:layout_marginStart="@dimen/layout_size_10dp"
+                        android:enabled="false"
+                        android:text="下一步" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/layout_size_27dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="@dimen/layout_size_537dp"
+                    android:layout_height="@dimen/layout_size_53dp"
+                    android:background="@drawable/shape_corner_efefef">
+
+                    <EditText
+                        android:id="@+id/activity_register_name_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/layout_size_20dp"
+                        android:background="@null"
+                        android:maxLength="20"
+                        android:hint="请录入患者姓名" />
+
+                    <ImageView
+                        android:id="@+id/activity_register_name_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:padding="@dimen/layout_size_5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/layout_size_20dp"
+                        android:src="@drawable/delete_iv" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_27dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_detect_new_user_step_3_previous"
+                        style="@style/pre_button_style"
+                        android:text="上一步" />
+
+                    <Button
+                        android:id="@+id/btn_detect_new_user_step_3_next"
+                        android:layout_marginStart="@dimen/layout_size_10dp"
+                        android:enabled="false"
+                        android:text="下一步"
+                        style="@style/next_button_style"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/layout_size_27dp"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/layout_size_53dp"
+
+                    android:layout_marginLeft="@dimen/layout_size_158dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/layout_size_537dp"
+                        android:layout_height="@dimen/layout_size_53dp"
+                        android:background="@drawable/shape_corner_efefef">
+
+                        <EditText
+                            android:id="@+id/activity_register_idcard_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/layout_size_20dp"
+                            android:background="@null"
+                            android:maxLength="18"
+                            android:hint="请输入患者身份证号" />
+
+                        <ImageView
+                            android:id="@+id/activity_register_idcard_iv"
+                            android:layout_width="wrap_content"
+                            android:padding="@dimen/layout_size_5dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:visibility="gone"
+                            android:layout_marginRight="@dimen/layout_size_20dp"
+                            android:src="@drawable/delete_iv" />
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/btn_detect_new_user_step_3_skip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:layout_marginLeft="@dimen/layout_size_27dp"
+                        android:gravity="center_vertical"
+                        android:text="一键跳过"
+                        android:textColor="@color/color318FF5"
+                        android:textSize="@dimen/text_size_20sp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/layout_size_27dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_detect_new_user_step_4_previous"
+                            style="@style/pre_button_style"
+                            android:text="上一步" />
+
+                        <Button
+                            android:id="@+id/btn_detect_new_user_step_4_next"
+                            style="@style/next_button_style"
+                            android:layout_marginStart="@dimen/layout_size_10dp"
+                            android:enabled="false"
+                            android:text="下一步" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ViewFlipper>
+    </LinearLayout>
+</LinearLayout>

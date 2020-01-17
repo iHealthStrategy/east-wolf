@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_patient_type_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/layout_size_52dp"
+    android:layout_marginLeft="@dimen/layout_size_7dp"
+    android:layout_marginRight="@dimen/layout_size_7dp"
+    android:layout_marginBottom="@dimen/layout_size_20dp"
+    android:background="@drawable/drawable_select_patient_type"
+    android:gravity="center"
+    android:paddingLeft="@dimen/layout_size_20dp"
+    android:paddingRight="@dimen/layout_size_20dp"
+    android:textColor="@color/selector_patient_type"
+    android:textSize="@dimen/text_size_20sp" />

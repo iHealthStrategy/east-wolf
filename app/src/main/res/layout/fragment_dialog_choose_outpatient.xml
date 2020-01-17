@@ -1,0 +1,153 @@
+<!--
+  ~ Copyright (c) 2017.
+  ~ All rights reserved by Li Yanwen.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/layout_size_360dp"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@drawable/dialog_round_shape_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/layout_size_10dp"
+            android:paddingLeft="@dimen/layout_size_20dp"
+            android:paddingRight="@dimen/layout_size_20dp"
+            android:text="欢迎您"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_16sp"
+            android:textStyle="bold"/>
+        <ImageView
+            android:id="@+id/iv_dialog_close"
+            android:layout_width="@dimen/layout_size_24dp"
+            android:layout_height="@dimen/layout_size_24dp"
+            android:background="@drawable/ic_close_white_48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/layout_size_10dp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_1dp"
+        android:background="@android:color/white" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="start"
+        android:layout_margin="@dimen/layout_size_10dp"
+        android:text="请选择您需要看的门诊："
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_16sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="@dimen/layout_size_10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_120dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/layout_size_10dp"
+        android:layout_marginLeft="@dimen/layout_size_10dp"
+        android:layout_marginRight="@dimen/layout_size_10dp">
+
+        <LinearLayout
+            android:id="@+id/ll_dialog_health_care_team"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/layout_size_10dp">
+            <RelativeLayout
+                android:id="@+id/rl_dialog_health_care_team"
+                android:layout_width="@dimen/layout_size_60dp"
+                android:layout_height="@dimen/layout_size_60dp"
+                android:background="@drawable/button_round_shape_white">
+                <ImageButton
+                    android:id="@+id/ibt_dialog_health_care_team"
+                    android:layout_width="@dimen/layout_size_30dp"
+                    android:layout_height="@dimen/layout_size_40dp"
+                    android:background="@drawable/ic_detect_gongtongzhaohu"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:textColor="@color/colorPrimary"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/layout_size_10dp"
+                android:text="共同照护门诊"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/layout_size_1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/layout_size_16dp"
+            android:layout_marginBottom="@dimen/layout_size_16dp"
+            android:layout_marginStart="@dimen/layout_size_20dp"
+            android:layout_marginEnd="@dimen/layout_size_20dp"
+            android:background="@android:color/white"/>
+
+        <LinearLayout
+            android:id="@+id/ll_dialog_ordinary_outpatients"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/layout_size_10dp">
+            <RelativeLayout
+                android:id="@+id/rl_dialog_ordinary_outpatients"
+                android:layout_width="@dimen/layout_size_60dp"
+                android:layout_height="@dimen/layout_size_60dp"
+                android:background="@drawable/button_round_shape_white">
+                <ImageButton
+                    android:id="@+id/ibt_dialog_ordinary_outpatients"
+                    android:layout_width="@dimen/layout_size_40dp"
+                    android:layout_height="@dimen/layout_size_40dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_detect_putongmenzhen"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:textColor="@color/colorPrimary"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/layout_size_10dp"
+                android:text="普通门诊"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

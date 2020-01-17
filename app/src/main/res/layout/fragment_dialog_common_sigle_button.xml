@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="6dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_size_26dp"
+        android:gravity="right"
+        >
+        <ImageButton
+            android:id="@+id/iv_dialog_close"
+            android:layout_width="@dimen/layout_size_40dp"
+            android:layout_height="@dimen/layout_size_40dp"
+            android:layout_marginEnd="0dp"
+            android:src="@mipmap/icon_close"
+            android:background="@color/colorTransparency"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_common_dialog_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="@dimen/layout_size_10dp"
+        android:background="@mipmap/bg_dialog_tip_common"
+        android:maxLines="4"
+        android:text="您好\n您已签到，无需重复签到\n直接就诊即可，谢谢"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_14sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="@dimen/layout_size_10dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/layout_size_30dp">
+
+        <Button
+            android:id="@+id/btn_dialog_ok"
+            android:layout_width="@dimen/layout_size_130dp"
+            android:layout_height="@dimen/layout_size_60dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/shape_corner"
+            android:text="我知道了"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</LinearLayout>

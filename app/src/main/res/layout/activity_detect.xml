@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2018 Baidu, Inc. All Rights Reserved.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/colorTransiton"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_47dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:background="#4d000000"
+
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/activity_detect_preview_view_rl"
+            android:layout_width="@dimen/layout_size_255dp"
+            android:layout_height="@dimen/layout_size_255dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/layout_size_67dp"
+            android:orientation="vertical"
+            >
+
+            <com.baidu.aip.face.TexturePreviewView
+                android:id="@+id/activity_detect_texture_preview_view"
+                android:layout_width="@dimen/layout_size_255dp"
+                android:layout_height="@dimen/layout_size_255dp"/>
+
+            <TextureView
+                android:id="@+id/activity_detect_texture_view"
+                android:layout_width="@dimen/layout_size_255dp"
+                android:layout_height="@dimen/layout_size_255dp"
+                />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_detect_next_signing_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/please_for_person_face_to_windows"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_16sp"
+            android:layout_marginTop="@dimen/layout_size_16dp"
+             />
+
+
+
+    </LinearLayout>
+    <!--以下布局为上次的创建的布局，现在的版本已经废弃，为了防止之前的逻辑会出现问题，现将以前的布局给gone了
+      修改时间2019.09.16
+      -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.ihealth.commonLayout.HeaderBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/ll_preview_view"
+                android:layout_width="@dimen/preview_image_width"
+                android:layout_height="@dimen/preview_image_height"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/preview_margin">
+
+                <com.baidu.aip.face.TexturePreviewView
+                    android:id="@+id/preview_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextureView
+                    android:id="@+id/texture_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/text_detect_waiting_for_signing"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_size_10dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/layout_size_10dp"
+                    android:layout_height="@dimen/layout_size_10dp"
+                    android:background="@drawable/icon_point_shape"
+                    android:gravity="center" />
+
+                <View
+                    android:layout_width="@dimen/layout_size_10dp"
+                    android:layout_height="@dimen/layout_size_10dp"
+                    android:layout_marginHorizontal="@dimen/layout_size_8dp"
+                    android:background="@drawable/icon_point_shape_white"
+                    android:gravity="center" />
+
+                <View
+                    android:layout_width="@dimen/layout_size_10dp"
+                    android:layout_height="@dimen/layout_size_10dp"
+                    android:background="@drawable/icon_point_shape"
+                    android:gravity="center" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <color name="colorPrimary">#4E90FF</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorTransparency">#00ffffff</color>
+    <color name="color_time_line_point_off">#9B9B9B</color>
+    <color name="color_line_bg">#D8D8D8</color>
+    <color name="color_print_title">#574E61</color>
+    <color name="color_main_btn_1">#F44336</color>
+    <color name="color_main_btn_2">#4CAF50</color>
+    <color name="color_main_btn_3">#9C27B0</color>
+    <color name="color000000">#000000</color>
+    <color name="colorf9f9f9">#f9f9f9</color>
+    <color name="color333333">#333333</color>
+    <color name="color676F84">#676F84</color>
+    <color name="color3381FB">#3381FB</color>
+    <color name="color2ACBDD">#2ACBDD</color>
+    <color name="colorE1F0FE">#E1F0FE</color>
+    <color name="colorF5FAFF">#F5FAFF</color>
+    <color name="colorFFFFFF">#FFFFFF</color>
+    <color name="colorEFEFEF">#EFEFEF</color>
+    <color name="colorTransiton">#00FFFFFF</color>
+    <color name="colorFF000000">#FF000000</color>
+    <color name="color1D1D1D">#1D1D1D</color>
+    <color name="color2CC8DF">#2CC8DF</color>
+    <color name="color3383FB">#3383FB</color>
+    <color name="color318FF5">#318FF5</color>
+    <color name="color999999">#999999</color>
+    <color name="color666666">#666666</color>
+</resources>
