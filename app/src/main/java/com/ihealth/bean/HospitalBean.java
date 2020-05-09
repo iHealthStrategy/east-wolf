@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class HospitalBean implements Serializable {
-    private String _id;
-    private String code;
+    private String hospitalId;
+    private String hospitalCode;
     private String name;
     private String fullname;
     private List<DepartmentBean> department;
@@ -14,8 +14,8 @@ public class HospitalBean implements Serializable {
     }
 
     public HospitalBean(String _id, String code, String name, String fullname) {
-        this._id = _id;
-        this.code = code;
+        this.hospitalId = _id;
+        this.hospitalCode = code;
         this.name = name;
         this.fullname = fullname;
     }
@@ -23,19 +23,19 @@ public class HospitalBean implements Serializable {
 
 
     public String get_id() {
-        return _id;
+        return hospitalId;
     }
 
     public void set_id(String _id) {
-        this._id = _id;
+        this.hospitalId = _id;
     }
 
     public String getCode() {
-        return code;
+        return hospitalCode;
     }
 
     public void setCode(String code) {
-        this.code = code;
+        this.hospitalCode = code;
     }
 
     public String getName() {

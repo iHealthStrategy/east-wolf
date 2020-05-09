@@ -217,4 +217,10 @@ public class DateUtils {
         return new Date(System.currentTimeMillis());
     }
 
+    public static String formatDay(String time){
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT_MMCDD, Locale.getDefault());
+        Date date = new Date(time);
+        return formatter.format(date);
+    }
+
 }

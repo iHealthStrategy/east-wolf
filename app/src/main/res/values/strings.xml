@@ -52,4 +52,24 @@
     <string name="priter_sucess_toast">打印成功！</string>
     <string name="response_error">服务器错误，请稍后再试！</string>
     <string name="start_printer_please_wait">正在启动打印机，请稍等！</string>
+
+    <string name="txt_save">保存</string>
+    <string name="title_measure_bg">测血糖</string>
+    <string name="title_manual_measure_bg">手动录入</string>
+    <string name="confirm_tip_bg1_connect">血糖仪连接中...</string>
+    <string name="confirm_tip_bg1_1">请把血糖仪插入手机耳机孔</string>
+    <string name="confirm_tip_bg1_2">请将试纸插入血糖仪</string>
+    <string name="confirm_tip_bg1_3">请将试纸底端接触手指采血处</string>
+    <string name="confirm_tip_bg1_4">正在检测，请稍后</string>
+    <string name="confirm_tip_bg1_5">拔出试条再次插入可重新测量</string>
+    <string name="confirm_tip_bg1_6">血糖仪连接失败</string>
+
+    <string name="meal_midnight">凌晨</string>
+    <string name="meal_before_breakfast">早餐前</string>
+    <string name="meal_after_breakfast">早餐后</string>
+    <string name="meal_before_lunch">午餐前</string>
+    <string name="meal_after_lunch">午餐后</string>
+    <string name="meal_before_dinner">晚餐前</string>
+    <string name="meal_after_dinner">晚餐后，请稍后</string>
+    <string name="meal_before_sleeping">睡前</string>
 </resources>

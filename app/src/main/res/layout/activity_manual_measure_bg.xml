@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_47dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryGreen"
+        android:gravity="center_horizontal" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_size_20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_date"
+                android:layout_width="@dimen/layout_size_200dp"
+                android:layout_height="@dimen/layout_size_60dp"
+                android:background="@drawable/bg_manual_date"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2020-05-10"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/layout_size_22dp"
+                    android:layout_height="@dimen/layout_size_11dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:src="@mipmap/icon_arrow_down" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_time"
+                android:layout_width="@dimen/layout_size_200dp"
+                android:layout_height="@dimen/layout_size_60dp"
+                android:background="@drawable/bg_manual_date"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="早餐前"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/layout_size_22dp"
+                    android:layout_height="@dimen/layout_size_11dp"
+                    android:layout_marginLeft="@dimen/layout_size_10dp"
+                    android:src="@mipmap/icon_arrow_down" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_manual_circle"
+            android:layout_marginTop="@dimen/layout_size_50dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/et_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0.0"
+                android:textColorHint="@color/colorWhite"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:background="@null"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_60sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mmol/L"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_14sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_save"
+            android:layout_width="@dimen/layout_size_300dp"
+            android:layout_height="@dimen/layout_size_50dp"
+            android:background="@drawable/bg_meal_select"
+            android:layout_marginTop="@dimen/layout_size_50dp"
+            android:text="@string/txt_save"
+            android:textColor="@color/colorPrimaryGreen"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

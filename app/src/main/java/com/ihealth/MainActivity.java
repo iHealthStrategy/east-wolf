@@ -5,10 +5,15 @@ package com.ihealth;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -22,8 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.ihealth.activities.BGManualActivity;
+import com.ihealth.activities.BGMeasureActivity;
 import com.ihealth.activities.DetectActivity;
 import com.ihealth.activities.LoginActivity;
+import com.ihealth.activities.MeasureResultActivity;
+import com.ihealth.communication.control.Bg1Profile;
 import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.DateUtils;
@@ -37,6 +46,10 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import com.ihealth.communication.control.Bg1Control;
+import com.ihealth.communication.manager.iHealthDevicesCallback;
+import com.ihealth.communication.manager.iHealthDevicesManager;
 
 public class MainActivity extends BaseActivity  {
 
@@ -56,6 +69,13 @@ public class MainActivity extends BaseActivity  {
     private ImageView ivMainHospitalLogo;
     private Button btnMainFacialCheckIn;
     private LinearLayout close_ll;
+
+    private static final String TAG = "BG1";
+    public Bg1Control mBg1Control;
+
+    private boolean isGetStripInBg1 = false;
+    private boolean isGetResultBg1 = false;
+    private boolean isGetBloodBg1 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +98,14 @@ public class MainActivity extends BaseActivity  {
         commonHeaderTitle.setText("共同照护内分泌全科室人脸签到");
         activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
         activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
+
+//        registerBroadcast();
+        Intent intent = getIntent();
+//        String userName = intent.getExtras().getString("userName");
+        mDeviceMac = intent.getStringExtra("mac");
+        mDeviceName = intent.getStringExtra("type");
+        mBg1Control = Bg1Control.getInstance();
+        mBg1Control.init(this, "", 0x00FF1304, true);
     }
 
     private void initData() {
@@ -95,6 +123,7 @@ public class MainActivity extends BaseActivity  {
             }
         }
     }
+
 
     private void setDateWithTimer(){
         Timer timer = new Timer();
@@ -220,10 +249,11 @@ public class MainActivity extends BaseActivity  {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
                 } else {
                     // TODO 实时人脸检测
-                    Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
+                    Intent itDetect = new Intent(MainActivity.this, BGManualActivity.class);
                     startActivity(itDetect);
                 }
         }
     }
+
 }
 

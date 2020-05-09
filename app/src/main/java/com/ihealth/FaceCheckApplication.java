@@ -17,6 +17,7 @@ import com.baidu.aip.fl.exception.FaceError;
 import com.baidu.aip.fl.model.AccessToken;
 import com.baidu.aip.fl.utils.OnResultListener;
 import com.baidu.idl.facesdk.FaceTracker;
+import com.ihealth.communication.manager.iHealthDevicesManager;
 
 
 public class FaceCheckApplication extends Application {
@@ -66,6 +67,11 @@ public class FaceCheckApplication extends Application {
         // assets目录下License文件名
         FaceSDKManager.getInstance().init(this, Config.licenseID, Config.licenseFileName);
         setFaceConfig();
+        /*
+         * Initializes the iHealth devices manager. Can discovery available iHealth devices nearby
+         * and connect these devices through iHealthDevicesManager.
+         */
+        iHealthDevicesManager.getInstance().init(this,  Log.VERBOSE, Log.VERBOSE);
     }
 
     private void setFaceConfig() {

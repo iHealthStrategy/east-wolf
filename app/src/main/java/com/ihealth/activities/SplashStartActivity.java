@@ -8,12 +8,17 @@ import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ihealth.BaseActivity;
 import com.ihealth.MainActivity;
+import com.ihealth.communication.manager.iHealthDevicesManager;
 import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class SplashStartActivity extends BaseActivity implements View.OnClickListener {
 
@@ -28,6 +33,7 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_splash_start);
         mContext = this;
         initView();
+        initData();
         initListeners();
         initTimer();
     }
@@ -35,6 +41,28 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
 
     private void initView() {
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fabtn_login_next_step);
+    }
+
+    private void initData(){
+        try {
+            //Please apply for authorization on the server and download the. PEM file,
+            //then put it in the assets folder and modify the corresponding name to call the following method
+            //When ispass replays true, it indicates that the authentication has passed
+            InputStream is = mContext.getAssets().open("com_ihealth_facecheckin_android.pem");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            boolean isPass = iHealthDevicesManager.getInstance().sdkAuthWithLicense(buffer);
+            Toast.makeText(this,"isPass:" + isPass,Toast.LENGTH_LONG).show();
+            if (isPass) {
+
+            } else {
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initListeners() {

@@ -12,6 +12,24 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- Internet communication	and	detect	/ manage Wi-Fi state -->
+    <uses-permission	android:name="android.permission.INTERNET" />
+    <uses-permission	android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission	android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission	android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission	android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <!-- Bluetooth permission for communicating with iHealth devices -->
+    <uses-permission	android:name="android.permission.BLUETOOTH" />
+    <uses-permission	android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- Permission	for writing	on device memory -->
+    <uses-permission	android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Permission	for locating user device in	order to search	beacons	-->
+    <uses-permission	android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission	android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Permission	for iHealth	BG1	device	(which	connect	with phone by headphone	jack) -->
+    <uses-permission	android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission	android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
@@ -78,16 +96,30 @@
         <activity android:name="com.ihealth.activities.SelectPatientTypeActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        </activity>
+        <activity android:name="com.ihealth.activities.BGMeasureActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name="com.ihealth.activities.MeasureResultActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name="com.ihealth.activities.BGManualActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
         <service
             android:name="com.inuker.bluetooth.library.BluetoothService" />
         <service android:name="net.xprinter.service.XprinterService"></service>
+        <service
+            android:name="com.ido.ble.bluetooth.DeviceConnectService"
+            android:exported="false"	/>
+        <service
+            android:name="com.ido.ble.dfu.DFUService"
+            android:enabled="true"
+            android:exported="false"	/>
 
     </application>
 

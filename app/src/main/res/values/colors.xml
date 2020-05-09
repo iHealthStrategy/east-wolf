@@ -30,4 +30,12 @@
     <color name="color318FF5">#318FF5</color>
     <color name="color999999">#999999</color>
     <color name="color666666">#666666</color>
+    <color name="colorPrimaryGreen">#24C6AE</color>
+    <color name="colorHalfWhite">#80FFFFFF</color>
+    <color name="color9B9B9B">#9B9B9B</color>
+
+    <color name="colorMeasureResultNormal">#66BB6A</color>
+    <color name="colorMeasureResultLow">#EF5350</color>
+    <color name="colorMeasureResultHigh">#FF7043</color>
+
 </resources>

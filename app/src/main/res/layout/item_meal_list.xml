@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_meal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_meal_icon"-->
+        <!--android:layout_width="@dimen/layout_size_40dp"-->
+        <!--android:layout_height="@dimen/layout_size_30dp"-->
+        <!--android:src="@mipmap/icon_arrow_down" />-->
+
+    <TextView
+        android:id="@+id/tv_meal_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_size_10dp"
+        android:layout_marginBottom="@dimen/layout_size_10dp"
+        android:text="@string/meal_before_breakfast"
+        android:textColor="@color/color_time_line_point_off"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

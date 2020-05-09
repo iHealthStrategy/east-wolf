@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_size_47dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorMeasureResultNormal"
+        android:gravity="center_horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_measure_result_circle"
+            android:layout_marginTop="@dimen/layout_size_50dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_measure_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6.6"
+                android:textStyle="bold"
+                android:textColor="@color/color000000"
+                android:textSize="@dimen/text_size_60sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mmol/L"
+                android:textColor="@color/color9B9B9B"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <TextView
+                android:id="@+id/tv_measure_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_size_1dp"
+                android:text="血糖正常"
+                android:textStyle="bold"
+                android:textColor="@color/colorMeasureResultNormal"
+                android:textSize="@dimen/text_size_18sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_measure_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_size_30dp"
+            android:text="餐前控糖目标 4 ~ 7"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_size_1dp"
+            android:layout_marginLeft="@dimen/layout_size_50dp"
+            android:layout_marginRight="@dimen/layout_size_50dp"
+            android:layout_marginTop="@dimen/layout_size_30dp"
+            android:background="@color/colorWhite" />
+
+        <LinearLayout
+            android:id="@+id/ll_mark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_size_30dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_measure_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击此处添加备注"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <ImageView
+                android:layout_width="@dimen/layout_size_20dp"
+                android:layout_height="@dimen/layout_size_20dp"
+                android:layout_marginLeft="@dimen/layout_size_10dp"
+                android:src="@mipmap/icon_mark" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
