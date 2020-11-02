@@ -10,7 +10,7 @@ public class Config {
     // 为了的安全，建议放在您的服务端，端把人脸传给服务器，在服务端端进行人脸注册、识别放在示例里面是为了您快速看到效果
     public static String apiKey = "OA49H41Ui2ZLMkhDeIFdKGMF";
     public static String secretKey = "eXCHspOpwIkWjEWIvDjKCsGcp4gQYgsM";
-    public static String licenseID = "iHealthFaceCheckIn-face-android";
+    public static String licenseID = "iHealthHuaiRou-face-android";
     public static String licenseFileName = "../assets/idl-licence.face-android";
 
 

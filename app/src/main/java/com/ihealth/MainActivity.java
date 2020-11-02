@@ -130,8 +130,8 @@ public class MainActivity extends BaseActivity  {
         timer.schedule(new TimerTask() {
             public void run() {
                 Date temp = DateUtils.getCurrentSystemDate();
-                activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
-                activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
+//                activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
+//                activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
             }
         }, 0 , 10000);
     }
@@ -249,7 +249,7 @@ public class MainActivity extends BaseActivity  {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
                 } else {
                     // TODO 实时人脸检测
-                    Intent itDetect = new Intent(MainActivity.this, BGManualActivity.class);
+                    Intent itDetect = new Intent(MainActivity.this, DetectActivity.class);
                     startActivity(itDetect);
                 }
         }
