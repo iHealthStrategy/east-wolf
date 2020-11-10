@@ -100,9 +100,15 @@ public class MainActivity extends BaseActivity  {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                Date temp = DateUtils.getCurrentSystemDate();
-                activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
-                activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Date temp = DateUtils.getCurrentSystemDate();
+                        activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
+                        activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
+                    }
+                });
+
             }
         }, 0 , 10000);
     }

@@ -19,7 +19,7 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
 
     private static final String TAG = "SplashStartActivity";
     Context mContext;
-    FloatingActionButton floatingActionButton;
+//    FloatingActionButton floatingActionButton;
     CountDownTimer timer;
 
     @Override
@@ -28,18 +28,18 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_splash_start);
         mContext = this;
         initView();
-        initListeners();
+//        initListeners();
         initTimer();
     }
 
 
     private void initView() {
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fabtn_login_next_step);
+//        floatingActionButton = (FloatingActionButton) findViewById(R.id.fabtn_login_next_step);
     }
 
-    private void initListeners() {
-        floatingActionButton.setOnClickListener(this);
-    }
+//    private void initListeners() {
+//        floatingActionButton.setOnClickListener(this);
+//    }
 
     private void initTimer() {
         timer = new CountDownTimer(2000,1000){
@@ -76,14 +76,14 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fabtn_login_next_step:
-                Intent intent = new Intent(this,LoginActivity.class);
-                startActivity(intent);
-                this.finish();
-                break;
-            default:
-                break;
-        }
+//        switch (v.getId()) {
+//            case R.id.fabtn_login_next_step:
+//                Intent intent = new Intent(this,LoginActivity.class);
+//                startActivity(intent);
+//                this.finish();
+//                break;
+//            default:
+//                break;
+//        }
     }
 }
