@@ -32,7 +32,6 @@ import com.ihealth.activities.BGMeasureActivity;
 import com.ihealth.activities.DetectActivity;
 import com.ihealth.activities.LoginActivity;
 import com.ihealth.activities.MeasureResultActivity;
-import com.ihealth.communication.control.Bg1Profile;
 import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.DateUtils;
@@ -47,9 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import com.ihealth.communication.control.Bg1Control;
-import com.ihealth.communication.manager.iHealthDevicesCallback;
-import com.ihealth.communication.manager.iHealthDevicesManager;
+
 
 public class MainActivity extends BaseActivity  {
 
@@ -71,7 +68,6 @@ public class MainActivity extends BaseActivity  {
     private LinearLayout close_ll;
 
     private static final String TAG = "BG1";
-    public Bg1Control mBg1Control;
 
     private boolean isGetStripInBg1 = false;
     private boolean isGetResultBg1 = false;
@@ -104,8 +100,7 @@ public class MainActivity extends BaseActivity  {
 //        String userName = intent.getExtras().getString("userName");
         mDeviceMac = intent.getStringExtra("mac");
         mDeviceName = intent.getStringExtra("type");
-        mBg1Control = Bg1Control.getInstance();
-        mBg1Control.init(this, "", 0x00FF1304, true);
+
     }
 
     private void initData() {
@@ -129,9 +124,16 @@ public class MainActivity extends BaseActivity  {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                Date temp = DateUtils.getCurrentSystemDate();
-//                activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
-//                activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Date temp = DateUtils.getCurrentSystemDate();
+                        activityMainTime.setText(DateUtils.getFormatDateStringByFormat(temp,DateUtils.FORMAT_HH_MM));
+                        activityMainDate.setText(DateUtils.getFormatDateStringByFormat(temp, DateUtils.FORMAT_YYYYCMMCDD)+" "+DateUtils.getWeekOfDate(temp));
+                    }
+                });
+
             }
         }, 0 , 10000);
     }

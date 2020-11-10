@@ -2,10 +2,11 @@ package com.ihealth.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,23 +14,16 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.ihealth.BaseActivity;
 import com.ihealth.bean.AddUserRequestBean;
-import com.ihealth.bean.DepartmentBean;
 import com.ihealth.bean.HospitalBean;
 import com.ihealth.bean.OfficesType;
 import com.ihealth.bean.ResponseMessageBean;
-import com.ihealth.events.FinshDetectRegisterAndResultEvent;
 import com.ihealth.events.FinshDetectRegisterSelectTypeAndResultEvent;
-import com.ihealth.events.FinshRegisterAndResultEvent;
 import com.ihealth.events.FinshRegisterSelectTypeAndResultEvent;
 import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.ApiUtil;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.BundleKeys;
 import com.ihealth.utils.ConstantArguments;
-import com.ihealth.utils.DateUtils;
-import com.ihealth.utils.FaceDetectExtendManager;
-import com.ihealth.utils.LoadingProgressBar;
-import com.ihealth.utils.SharedPreferenceUtil;
 import com.ihealth.views.LoadingDialog;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -40,10 +34,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,6 +58,8 @@ public class SelectPatientTypeActivity extends BaseActivity {
     TagFlowLayout idFlowlayout;
     @BindView(R.id.activity_patient_type_btn)
     Button activityPatientTypeBtn;
+    @BindView(R.id.back_imageview)
+    ImageView backImageview;
     private ArrayList<String> patientTypes = new ArrayList<>();
     private LayoutInflater mInflater;
     private int mPosition = -1;
@@ -81,14 +73,23 @@ public class SelectPatientTypeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_patient_type);
         ButterKnife.bind(this);
+        backImageview.setVisibility(View.GONE);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-//        Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
-        userBean = (AddUserRequestBean) bundle.getSerializable(BundleKeys.ADDUSERREQUESTBEAN);
-        commonHeaderTitle.setText("共同照护内分泌全科室人脸签到");
-        loadingProgressBar = new LoadingDialog(this, "");
+        if (bundle != null) {
+            //        Bundle bundle = intent.getBundleExtra("data_from_detect_activity");
+            userBean = (AddUserRequestBean) bundle.getSerializable(BundleKeys.ADDUSERREQUESTBEAN);
+            commonHeaderTitle.setText("共同照护内分泌全科室人脸签到");
+            loadingProgressBar = new LoadingDialog(this, "");
+        }
+
         initAdapter();
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     private void initAdapter() {
@@ -148,7 +149,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.common_header_back_layout:
-                finish();
+//                finish();
                 break;
             case R.id.activity_patient_type_btn:
                 if (mPosition >= 0) {
@@ -231,6 +232,7 @@ public class SelectPatientTypeActivity extends BaseActivity {
         }
 
         startActivity(intent);
+        SelectPatientTypeActivity.this.finish();
     }
 
     @Override
@@ -248,4 +250,5 @@ public class SelectPatientTypeActivity extends BaseActivity {
     public void onEvent(FinshRegisterSelectTypeAndResultEvent event) {
         finish();
     }
+
 }

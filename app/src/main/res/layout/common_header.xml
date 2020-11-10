@@ -34,6 +34,19 @@
                 android:layout_marginLeft="@dimen/layout_size_8dp"
                 android:src="@drawable/back_iv" />
         </LinearLayout>
-
+        <LinearLayout
+            android:id="@+id/back_main_layout"
+            android:layout_width="@dimen/layout_size_20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/layout_size_13dp"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/back_main_iv"
+                android:layout_width="@dimen/layout_size_19dp"
+                android:layout_height="@dimen/layout_size_18dp"
+                android:src="@mipmap/back_to_main" />
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

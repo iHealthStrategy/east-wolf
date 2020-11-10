@@ -215,6 +215,7 @@ public class RegisterPatientActivity extends BaseActivity {
                 String s = activityRegisterIdcardEt.getText().toString().trim();
                 if (!TextUtils.isEmpty(s)) {
                     if ("".equals(TextInfosCheckUtil.IDCardValidate(s.toString()))) {
+                        registerPhone();
 //                        isUserIdCardValid = true;
 //                        setButtonState(btnDetectNewUserStep4Next, true);
                     } else {
@@ -224,7 +225,7 @@ public class RegisterPatientActivity extends BaseActivity {
                     }
                     return;
                 }
-                registerPhone();
+//                registerPhone();
 //                changeTitle();
 
                 break;
@@ -268,6 +269,7 @@ public class RegisterPatientActivity extends BaseActivity {
 //                        bundle.putString(BundleKeys.BASE64IMAGE, base64Image);
                         intentToTimes.putExtras(bundle);
                         mContext.startActivity(intentToTimes, bundle);
+                        RegisterPatientActivity.this.finish();
                     }
                 } else {
                     showRegisteredResultDialog("注册超时，请返回重试。");
@@ -651,6 +653,7 @@ public  void test(){
         }
         intent.putExtras(bundle);
         startActivity(intent);
+        RegisterPatientActivity.this.finish();
     }
     private AddUserRequestBean getEtString(){
         String nickname = activityRegisterNameEt.getText().toString();

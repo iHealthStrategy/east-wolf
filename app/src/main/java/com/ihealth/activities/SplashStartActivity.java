@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.ihealth.BaseActivity;
 import com.ihealth.MainActivity;
-import com.ihealth.communication.manager.iHealthDevicesManager;
 import com.ihealth.facecheckin.R;
 import com.ihealth.retrofit.Constants;
 import com.ihealth.utils.SharedPreferenceUtil;
@@ -24,7 +23,7 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
 
     private static final String TAG = "SplashStartActivity";
     Context mContext;
-    FloatingActionButton floatingActionButton;
+//    FloatingActionButton floatingActionButton;
     CountDownTimer timer;
 
     @Override
@@ -33,41 +32,21 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_splash_start);
         mContext = this;
         initView();
-        initData();
-        initListeners();
+
+//        initListeners();
         initTimer();
     }
 
 
     private void initView() {
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fabtn_login_next_step);
+//        floatingActionButton = (FloatingActionButton) findViewById(R.id.fabtn_login_next_step);
     }
 
-    private void initData(){
-        try {
-            //Please apply for authorization on the server and download the. PEM file,
-            //then put it in the assets folder and modify the corresponding name to call the following method
-            //When ispass replays true, it indicates that the authentication has passed
-            InputStream is = mContext.getAssets().open("com_ihealth_facecheckin_android.pem");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            boolean isPass = iHealthDevicesManager.getInstance().sdkAuthWithLicense(buffer);
-            Toast.makeText(this,"isPass:" + isPass,Toast.LENGTH_LONG).show();
-            if (isPass) {
 
-            } else {
+//    private void initListeners() {
+//        floatingActionButton.setOnClickListener(this);
+//    }
 
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void initListeners() {
-        floatingActionButton.setOnClickListener(this);
-    }
 
     private void initTimer() {
         timer = new CountDownTimer(2000,1000){
@@ -104,14 +83,14 @@ public class SplashStartActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fabtn_login_next_step:
-                Intent intent = new Intent(this,LoginActivity.class);
-                startActivity(intent);
-                this.finish();
-                break;
-            default:
-                break;
-        }
+//        switch (v.getId()) {
+//            case R.id.fabtn_login_next_step:
+//                Intent intent = new Intent(this,LoginActivity.class);
+//                startActivity(intent);
+//                this.finish();
+//                break;
+//            default:
+//                break;
+//        }
     }
 }

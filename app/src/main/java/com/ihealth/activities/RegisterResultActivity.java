@@ -55,6 +55,10 @@ public class RegisterResultActivity extends BaseActivity {
     String[] messages = {"您的信息录入成功，请打印就诊小条准备门诊", "录入失败，重新填写信息", "识别失败次数过多，请现场咨询工作人员", "加诊咨询现场工作人员"};
     String[] titles = {"系统录入成功", "系统录入失败"};
     String[] btnMessages = {"打印就诊小条", "重新拍照", "确定"};
+    @BindView(R.id.back_imageview)
+    ImageView backImageview;
+    @BindView(R.id.back_main_layout)
+    LinearLayout backMainLayout;
     private AppointmentsBean data;
     private AppointmentsBean.Patient mPatient;
     private int status;
@@ -67,7 +71,8 @@ public class RegisterResultActivity extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
-
+        backImageview.setVisibility(View.GONE);
+        backMainLayout.setVisibility(View.VISIBLE);
         if (intent != null) {
             try {
                 Bundle bundle = intent.getExtras();
@@ -81,7 +86,10 @@ public class RegisterResultActivity extends BaseActivity {
             }
         }
     }
+    @Override
+    public void onBackPressed() {
 
+    }
     private void setUIResultByStatus(int status) {
         switch (status) {
             case ConstantArguments.REGISTER_SUCESS:
@@ -124,7 +132,7 @@ public class RegisterResultActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.common_header_layout, R.id.activity_register_result_btn, R.id.activity_register_result_other,R.id.common_header_back_layout})
+    @OnClick({R.id.back_main_layout,R.id.common_header_layout, R.id.activity_register_result_btn, R.id.activity_register_result_other, R.id.common_header_back_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.activity_register_result_btn:
@@ -135,8 +143,8 @@ public class RegisterResultActivity extends BaseActivity {
                 break;
             case R.id.common_header_layout:
                 break;
-                case R.id.common_header_back_layout:
-                    finish();
+            case R.id.back_main_layout:
+                finish();
                 break;
         }
     }
@@ -274,7 +282,5 @@ public class RegisterResultActivity extends BaseActivity {
         finish();
     }
 
-    @OnClick(R.id.common_header_back_layout)
-    public void onViewClicked() {
-    }
+
 }
